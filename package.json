@@ -1,0 +1,24 @@
+{
+  "name": "npdc-dataset",
+  "version": "1.0.0",
+  "description": "NPDC dataset app",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "npolar",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "^1.4.3",
+    "angular-npolar": "git://github.com/npolar/angular-npolar.git",
+    "angular-route": "^1.4.3",
+    "formula": "git://github.com/npolar/formula.git",
+    "lodash": "^3.10.0",
+    "tv4": "^1.1.12"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-debug": "^2.0.1",
+    "should": "^7.0.2"
+  }
+}
