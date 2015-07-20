@@ -9,7 +9,7 @@ require('formula');
 require('angular-route');
 require('angular-npolar');
 
-var AutoConfig = require('npdc-common').autoConf;
+var AutoConfig = require('npdc-common').AutoConfig;
 
 var npdcDatasetApp = angular.module('npdcDatasetApp', ['ngRoute', 'formula', 'npolarApi', 'npolarUi', 'templates']);
 
