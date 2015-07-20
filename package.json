@@ -14,7 +14,8 @@
     "angular-route": "^1.4.3",
     "formula": "git://github.com/npolar/formula.git",
     "lodash": "^3.10.0",
-    "tv4": "^1.1.12"
+    "tv4": "^1.1.12",
+    "npdc-common": "git://github.com/npolar/npdc-common.git"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
