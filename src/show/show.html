@@ -1,9 +1,14 @@
-<div ng-include="'angular-npolar/ui/template/_head.html'"></div>
-
+<!--
+  <div ng-include="'angular-npolar/ui/template/_head.html'"></div>
+-->
 <h3>{{document.title}}</h3>
-<a ng-if="document.id && user.name" ng-href="{{document.id}}/edit"><button class="btn btn-danger">edit</button></a>
+<a ng-if="document.id && isAuthenticated()" ng-href="{{document.id}}/edit"><button class="btn btn-danger">edit</button></a>
 <button ng-click="locationBase()" class="btn btn-default">back</button></a>
 <div ng-repeat="(k,v) in document">
   <h4>{{k}}</h4>
   <p>{{v|json}}</p>
 </div>
+
+<section ng-repeat="link in document.links">
+  <a ng-href="{{link.href}}">{{link.title}}</a>
+</section>
