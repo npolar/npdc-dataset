@@ -1,6 +1,6 @@
 {
   "name": "npdc-dataset",
-  "version": "0.4.2",
+  "version": "1.0.0",
   "description": "NPDC dataset app",
   "main": "gulpfile.js",
   "scripts": {
