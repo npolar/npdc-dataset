@@ -20,7 +20,7 @@ describe('DatasetEditController', function () {
       var expected = {
         schema: '//api.npolar.no/schema/dataset',
         form: 'edit/formula.json',
-        template: 'bootstrap3'
+        //template: 'bootstrap3'
       };
       $scope.formula.should.eql(expected);
     });

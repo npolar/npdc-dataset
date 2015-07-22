@@ -20,7 +20,7 @@ var resources = [
 ];
 
 resources.forEach(function (service) {
-  // Expressive DI syntax is needed here because of the loop..
+  // Expressive DI syntax is needed here
   npdcDatasetApp.factory(service.resource, ['NpolarApiResource', function (NpolarApiResource) {
     return NpolarApiResource.resource(service);
   }]);
@@ -41,7 +41,7 @@ npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditCo
 
 // Inject npolarApiConfig and run
 npdcDatasetApp.run(function(npolarApiConfig) {
-  var environment = "test"; // development | test | production
+  var environment; // development | test | production
   var autoconfig = new AutoConfig(environment);
   angular.extend(npolarApiConfig, autoconfig);
   console.log("npolarApiConfig", npolarApiConfig);

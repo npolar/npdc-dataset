@@ -8,7 +8,8 @@
   <button ng-if="isExpert()" ng-click="initFormula()" class="btn btn-default">simple</button>
 
   <span ng-if="user.name">
-    <button ng-if="document.id" ng-click="delete()" class="btn btn-danger" ng-disabled="deleting || saving">delete</button>
+    [delete]
+    <!--<button ng-if="document.id" ng-click="delete()" class="btn btn-danger" ng-disabled="deleting || saving">delete</button>-->
     <button ng-if="document" ng-click="save()" class="btn btn-success" ng-disabled="deleting || saving">save</button>
     <div ng-init="deleteClicked=false" ng-if="deleteClicked" ng-include="'angular-npolar/ui/template/_delete.html'"></div>
   </span>
