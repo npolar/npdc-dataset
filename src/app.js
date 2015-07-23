@@ -1,9 +1,6 @@
 'use strict';
 var angular = require('angular');
 
-// Formula dependency, TODO move to formula and don't use globals...
-window.tv4 = require('tv4');
-
 // Angular modules
 require('formula');
 require('angular-route');
@@ -41,7 +38,7 @@ npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditCo
 
 // Inject npolarApiConfig and run
 npdcDatasetApp.run(function(npolarApiConfig) {
-  var environment; // development | test | production
+  var environment = 'test'; // development | test | production
   var autoconfig = new AutoConfig(environment);
   angular.extend(npolarApiConfig, autoconfig);
   console.log("npolarApiConfig", npolarApiConfig);
