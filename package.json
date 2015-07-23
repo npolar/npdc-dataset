@@ -8,6 +8,8 @@
   },
   "author": "npolar",
   "license": "MIT",
+  "private": true,
+  "repository": "https://github.com/npolar/npdc-dataset",
   "dependencies": {
     "angular": "^1.4.3",
     "angular-npolar": "git://github.com/npolar/angular-npolar.git",
