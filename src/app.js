@@ -1,4 +1,5 @@
 'use strict';
+
 var angular = require('angular');
 
 // Angular modules
@@ -27,7 +28,7 @@ resources.forEach(function (service) {
 npdcDatasetApp.config(require('./router'));
 
 // Auth interceptor
-npdcDatasetApp.config(function ($httpProvider) {
+npdcDatasetApp.config($httpProvider => {
   $httpProvider.interceptors.push('npolarApiAuthInterceptor');
 });
 
