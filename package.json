@@ -8,6 +8,8 @@
   },
   "author": "npolar",
   "license": "MIT",
+  "private": true,
+  "repository": "https://github.com/npolar/npdc-dataset",
   "dependencies": {
     "angular": "^1.4.3",
     "angular-npolar": "git://github.com/npolar/angular-npolar.git#http-message",
@@ -21,6 +23,6 @@
     "gulp": "^3.9.0",
     "gulp-debug": "^2.0.1",
     "should": "^7.0.2",
-    "npdc-gulp": "git://github.com/npolar/npdc-gulp.git"
+    "npdc-gulp": "git://github.com/npolar/npdc-gulp.git#2.0.0"
   }
 }

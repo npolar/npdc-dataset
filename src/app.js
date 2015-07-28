@@ -1,8 +1,6 @@
 'use strict';
-var angular = require('angular');
 
-// Formula dependency, TODO move to formula and don't use globals...
-window.tv4 = require('tv4');
+var angular = require('angular');
 
 // Angular modules
 require('formula');
@@ -29,8 +27,8 @@ resources.forEach(function (service) {
 // Routing
 npdcDatasetApp.config(require('./router'));
 
-// Auth interceptor
-npdcDatasetApp.config(function ($httpProvider) {
+// API HTTP interceptor
+npdcDatasetApp.config($httpProvider => {
   $httpProvider.interceptors.push('npolarApiInterceptor');
 });
 
