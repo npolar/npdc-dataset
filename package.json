@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "angular": "^1.4.3",
-    "angular-npolar": "git://github.com/npolar/angular-npolar.git",
+    "angular-npolar": "git://github.com/npolar/angular-npolar.git#http-message",
     "angular-route": "^1.4.3",
     "formula": "git://github.com/npolar/formula.git",
     "lodash": "^3.10.0",

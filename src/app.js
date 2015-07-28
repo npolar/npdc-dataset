@@ -31,7 +31,7 @@ npdcDatasetApp.config(require('./router'));
 
 // Auth interceptor
 npdcDatasetApp.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('npolarApiAuthInterceptor');
+  $httpProvider.interceptors.push('npolarApiInterceptor');
 });
 
 // Controllers
