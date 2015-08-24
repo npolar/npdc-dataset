@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <!-- formula css -->
 <link rel="stylesheet" href="assets/formula/dist/formula.min.css">
 <div ng-include="'angular-npolar/ui/template/_head.html'"></div>
 
 <article>
-  <button ng-click="locationBase()"class="btn btn-info">cancel</button></a>
+  <button ng-click="locationBase()" class="btn btn-info">cancel</button>
   <button ng-if="!isExpert()" ng-click="expert()" class="btn btn-default">expert</button>
   <button ng-if="isExpert()" ng-click="initFormula()" class="btn btn-default">simple</button>
 
