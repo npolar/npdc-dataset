@@ -19,10 +19,8 @@ describe('DatasetEditController', function () {
       var datasetEditController = new DatasetEditController($scope, $controller, $routeParams, Dataset);
       var expected = {
         schema: '//api.npolar.no/schema/dataset',
-        form: 'edit/formula.json',
-        //template: 'bootstrap3'
       };
-      $scope.formula.should.eql(expected);
+      $scope.formula.schema.should.eql(expected.schema);
     });
   });
 });
