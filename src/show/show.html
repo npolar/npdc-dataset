@@ -5,11 +5,15 @@
 {{ citation | json }}
 </code>
 
+<a ng-show="document.id && security.isAuthorized('update', resource.path)" ng-href="{{document.id}}/edit"><button class="btn btn-danger">edit</button></a>
+
+<button ng-click="locationBase()" class="btn btn-default">back</button></a>
+
+
 <h2>Abstract</h2>
 {{document.summary }}
 
-<a ng-if="document.id && isAuthorized('update', resource.path)" ng-href="{{document.id}}/edit"><button class="btn btn-danger">edit</button></a>
-<button ng-click="locationBase()" class="btn btn-default">back</button></a>
+
 <div ng-repeat="(k,v) in document">
   <h4>{{k}}</h4>
   <p>{{v|json}}</p>
