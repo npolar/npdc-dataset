@@ -12,11 +12,10 @@
   "repository": "https://github.com/npolar/npdc-dataset",
   "dependencies": {
     "angular": "^1.4.3",
-    "angular-npolar": "git://github.com/npolar/angular-npolar.git#http-message",
+    "angular-npolar": "git://github.com/npolar/angular-npolar.git",
     "angular-route": "^1.4.3",
     "formula": "git://github.com/npolar/formula.git",
     "lodash": "^3.10.0",
-    "tv4": "^1.1.12",
     "npdc-common": "git://github.com/npolar/npdc-common.git"
   },
   "devDependencies": {
