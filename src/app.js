@@ -1,15 +1,27 @@
 'use strict';
 
-var angular = require('angular');
+var environment = require('./environment');
 
-// Angular modules
+var npdcCommon = require('npdc-common');
+var AutoConfig = npdcCommon.AutoConfig;
+
+//require('npdc-material');
+
+var angular = require('angular');
 require('formula');
 require('angular-route');
 require('angular-npolar');
 
-var AutoConfig = require('npdc-common').AutoConfig;
+//require('angular-animate');
+//require('angular-aria');
+//require('angular-material');
 
-var npdcDatasetApp = angular.module('npdcDatasetApp', ['ngRoute', 'formula', 'npolarApi', 'npolarUi', 'templates']);
+
+var npdcDatasetApp = angular.module('npdcDatasetApp', ['ngRoute', 'formula', 'npolarApi', 'npolarUi', 'npdcUi', 'templates']);
+
+npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
+npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
+npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
 
 // Bootstrap ngResource models using NpolarApiResource
 var resources = [
@@ -17,7 +29,7 @@ var resources = [
   {'path': '/dataset', 'resource': 'Dataset' }
 ];
 
-resources.forEach(function (service) {
+resources.forEach(service => {
   // Expressive DI syntax is needed here
   npdcDatasetApp.factory(service.resource, ['NpolarApiResource', function (NpolarApiResource) {
     return NpolarApiResource.resource(service);
@@ -32,15 +44,9 @@ npdcDatasetApp.config($httpProvider => {
   $httpProvider.interceptors.push('npolarApiInterceptor');
 });
 
-// Controllers
-npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
-npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
-npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
-
 // Inject npolarApiConfig and run
-npdcDatasetApp.run(function(npolarApiConfig) {
-  var environment; // development | test | production
+npdcDatasetApp.run(npolarApiConfig => {
   var autoconfig = new AutoConfig(environment);
-  angular.extend(npolarApiConfig, autoconfig);
+  angular.extend(npolarApiConfig, autoconfig, { resources });
   console.log("npolarApiConfig", npolarApiConfig);
 });
