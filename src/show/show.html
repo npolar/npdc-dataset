@@ -1,13 +1,16 @@
+
+
+<npdc:edit-button></npdc:edit-button>
+
+
+
+
 <h1>{{document.title}}</h1>
 
 <h4 title="Use the following string to cite the dataset">Citation</h4>
 <code>
-{{ citation | json }}
+{{ citation  }} 
 </code>
-
-<a ng-show="document.id && security.isAuthorized('update', resource.path)" ng-href="{{document.id}}/edit"><button class="btn btn-danger">edit</button></a>
-
-<button ng-click="locationBase()" class="btn btn-default">back</button></a>
 
 
 <h2>Abstract</h2>
