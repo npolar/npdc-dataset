@@ -1,21 +1,16 @@
 <!-- formula css -->
+<npdc:delete-button></npdc:delete-button>
+<npdc:save-button></npdc:save-button>
+
 <link rel="stylesheet" href="assets/formula/dist/formula.min.css">
 
 <article>
-  <button ng-click="locationBase()"class="btn btn-info">cancel</button></a>
+  <!--<button ng-click="./"class="btn btn-info">cancel</button></a>-->
   
-  <button ng-if="!isExpert()" ng-click="expert()" class="btn btn-default">expert</button>
-  <button ng-if="isExpert()" ng-click="initFormula()" class="btn btn-default">simple</button>
+<!--  <button ng-if="!isExpert()" ng-click="expert()" class="btn btn-default">expert</button>
+  <button ng-if="isExpert()" ng-click="initFormula()" class="btn btn-default">simple</button>-->
 
-  <span ng-if="user.name">
-    <button ng-if="document._rev && security.isAuthorized('delete', resource.path)" ng-click="alert('DELETE clicked')" class="btn btn-success" ng-disabled="deleting || saving">DELETE</button>
-    
-    
-    <button ng-if="document && security.isAuthorized('update', resource.path)" ng-click="save()" class="btn btn-success" ng-disabled="deleting || saving">save</button>
-    
-    
-    <div ng-init="deleteClicked=false" ng-if="deleteClicked" ng-include="'angular-npolar/ui/template/_delete.html'"></div>
-  </span>
+
 
   <h3>{{ document._rev ? 'Editing' : 'New' }}<a ng-href="{{document.id}}">{{document.title}}</a></h3>
     <!--
