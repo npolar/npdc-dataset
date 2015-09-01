@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * @ngInject
  */
@@ -7,22 +8,12 @@ var DatasetEditController = function ($scope, $controller, $routeParams, Dataset
   // EditController -> NpolarEditController
   $controller('NpolarEditController', { $scope: $scope });
   
-    // Dataset -> npolarApiResource -> ngResource
+  // Dataset -> npolarApiResource -> ngResource
   $scope.resource = Dataset;
 
-  $scope.formula = {
-    schema: '//api.npolar.no/schema/dataset',
-    form: 'edit/formula.json'
-  };
-
-
-  $scope.expert = function() {
-    $scope.formula.form = null;
-  };
-
-  $scope.isExpert = function() {
-    return ($scope.formula.form === null);
-  };
+  // Formula ($scope.formula set by parent)
+  $scope.formula.schema = '//api.npolar.no/schema/dataset';
+  $scope.formula.form = 'edit/formula.json';
 
   // edit (or new) action
   $scope.edit();

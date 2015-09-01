@@ -1,13 +1,13 @@
 'use strict';
 
+var environment = require('./environment');
+
+var npdcCommon = require('npdc-common');
+var AutoConfig = npdcCommon.AutoConfig;
+
 var angular = require('angular');
 require('formula');
 require('angular-route');
-var npdcCommon = require('npdc-common');
-var environment = require('./environment');
-var AutoConfig = npdcCommon.AutoConfig;
-
-
 require('angular-npolar');
 
 var npdcDatasetApp = angular.module('npdcDatasetApp', ['ngRoute', 'formula', 'npolarApi', 'npolarUi', 'npdcUi', 'templates']);

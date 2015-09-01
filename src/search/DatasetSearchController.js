@@ -9,8 +9,10 @@ var DatasetSearchController = function ($scope, $location, $controller, Dataset)
   $scope.resource = Dataset;
     
   $scope.query = function() {
-    var defaults = { limit: "all", sort: "-updated" };
-    var invariants = { fields: 'title,id,updated' };
+    
+    let defaults = { limit: "all", sort: "-updated", fields: 'title,id,updated' };
+    let invariants = $scope.security.isAuthenticated() ? {} : { "not-draft": "yes" } ;
+    
     return angular.extend(defaults, $location.search(), invariants);
   };
 
