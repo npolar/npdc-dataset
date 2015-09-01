@@ -1,22 +1,26 @@
-<!DOCTYPE html>
 <!-- formula css -->
 <link rel="stylesheet" href="assets/formula/dist/formula.min.css">
-<div ng-include="'angular-npolar/ui/template/_head.html'"></div>
 
 <article>
-  <button ng-click="locationBase()" class="btn btn-info">cancel</button>
+  <button ng-click="locationBase()"class="btn btn-info">cancel</button></a>
+  
   <button ng-if="!isExpert()" ng-click="expert()" class="btn btn-default">expert</button>
   <button ng-if="isExpert()" ng-click="initFormula()" class="btn btn-default">simple</button>
 
   <span ng-if="user.name">
-    [delete]
-    <!--<button ng-if="document.id" ng-click="delete()" class="btn btn-danger" ng-disabled="deleting || saving">delete</button>-->
-    <button ng-if="document" ng-click="save()" class="btn btn-success" ng-disabled="deleting || saving">save</button>
+    <button ng-if="document._rev && security.isAuthorized('delete', resource.path)" ng-click="alert('DELETE clicked')" class="btn btn-success" ng-disabled="deleting || saving">DELETE</button>
+    
+    
+    <button ng-if="document && security.isAuthorized('update', resource.path)" ng-click="save()" class="btn btn-success" ng-disabled="deleting || saving">save</button>
+    
+    
     <div ng-init="deleteClicked=false" ng-if="deleteClicked" ng-include="'angular-npolar/ui/template/_delete.html'"></div>
   </span>
 
   <h3>{{ document._rev ? 'Editing' : 'New' }}<a ng-href="{{document.id}}">{{document.title}}</a></h3>
+    <!--
+    @todo Need to split also the isAuthorized() check above to either create (no rev) or update (with _rev)
+    -->
+  
   <div formula="formula"></div>
 </article>
-
-<div ng-include="'angular-npolar/ui/template/_foot.html'"></div>

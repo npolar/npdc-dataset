@@ -1,9 +1,19 @@
-<!--
-  <div ng-include="'angular-npolar/ui/template/_head.html'"></div>
--->
-<h3>{{document.title}}</h3>
-<a ng-if="document.id && isAuthenticated()" ng-href="{{document.id}}/edit"><button class="btn btn-danger">edit</button></a>
+<h1>{{document.title}}</h1>
+
+<h4 title="Use the following string to cite the dataset">Citation</h4>
+<code>
+{{ citation | json }}
+</code>
+
+<a ng-show="document.id && security.isAuthorized('update', resource.path)" ng-href="{{document.id}}/edit"><button class="btn btn-danger">edit</button></a>
+
 <button ng-click="locationBase()" class="btn btn-default">back</button></a>
+
+
+<h2>Abstract</h2>
+{{document.summary }}
+
+
 <div ng-repeat="(k,v) in document">
   <h4>{{k}}</h4>
   <p>{{v|json}}</p>

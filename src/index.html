@@ -5,17 +5,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<base href="/dataset/"/>
 	<title>Dataset</title>
-	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-	<link rel="stylesheet" href="assets/formula/dist/formula.min.css">
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://rawgit.com/npolar/npdc-material/master/dist/npdc-ui.css" rel="stylesheet">
+	
 	<script>var VERSION = '<!-- @echo VERSION -->'; console.log("npdc-dataset version:", VERSION)</script>
+	
 </head>
 <body>
-	<!-- npdc-breadcrumbs -->
-	<a href="/">Norwegian Polar Data Centre</a><a href="/dataset"> datasets</a>
-	<!--div npolar-api-message></div>
-	<div npolar-login-logout></div-->
-	<div ng-view></div>
+	<npdc:top></npdc:top>
+  <div ng-view></div>
 
 	<script src="app.js"></script>
+	
 </body>
 </html>

@@ -4,16 +4,17 @@
  */
 var DatasetEditController = function ($scope, $controller, $routeParams, Dataset) {
 
-  // EditController -> NpolarUiEditController
+  // EditController -> NpolarEditController
   $controller('NpolarEditController', { $scope: $scope });
+  
+    // Dataset -> npolarApiResource -> ngResource
+  $scope.resource = Dataset;
 
   $scope.formula = {
     schema: '//api.npolar.no/schema/dataset',
     form: 'edit/formula.json'
   };
 
-  // Dataset -> npolarApiResource -> ngResource
-  $scope.resource = Dataset;
 
   $scope.expert = function() {
     $scope.formula.form = null;
