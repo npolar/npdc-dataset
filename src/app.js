@@ -12,11 +12,6 @@ require('formula');
 require('angular-route');
 require('angular-npolar');
 
-//require('angular-animate');
-//require('angular-aria');
-//require('angular-material');
-
-
 var npdcDatasetApp = angular.module('npdcDatasetApp', ['ngRoute', 'formula', 'npolarApi', 'npolarUi', 'npdcUi', 'templates']);
 
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
