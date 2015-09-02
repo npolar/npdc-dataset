@@ -40,6 +40,6 @@ npdcDatasetApp.config($httpProvider => {
 // Inject npolarApiConfig and run
 npdcDatasetApp.run(npolarApiConfig => {
   var autoconfig = new AutoConfig(environment);
-  angular.extend(npolarApiConfig, autoconfig, { resources });
+  angular.extend(npolarApiConfig, autoconfig, { resources, formula : { template : 'material' } });
   console.log("npolarApiConfig", npolarApiConfig);
 });
