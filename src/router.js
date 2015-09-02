@@ -9,13 +9,12 @@ var router = function ($routeProvider, $locationProvider) {
 
   $routeProvider.when('/:id', {
     templateUrl: 'show/show.html',
-    controller: 'DatasetShowController',
-    breadcrumbs: [{'href': '/path'}]}
-   ).when('/:id/edit', {
-    templateUrl: 'edit/edit.html',
+    controller: 'DatasetShowController'
+  }).when('/:id/edit', {
+    template: '<npdc:formula></npdc:formula>',
     controller: 'DatasetEditController'
   }).when('/', {
-    templateUrl: 'search/search.html',
+    template: '<npdc:search></npdc:search>',
     controller: 'DatasetSearchController'
   });
 };
