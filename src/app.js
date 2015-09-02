@@ -1,7 +1,6 @@
 'use strict';
 
-var environment = require('./environment');
-
+var environment = require('../environment');
 var npdcCommon = require('npdc-common');
 var AutoConfig = npdcCommon.AutoConfig;
 
