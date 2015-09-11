@@ -12,19 +12,19 @@
   "repository": "https://github.com/npolar/npdc-dataset",
   "dependencies": {
     "angular": "1.4.5",
-    "angular-npolar": "git://github.com/npolar/angular-npolar.git",
+    "angular-npolar": "npolar/angular-npolar",
     "angular-route": "1.4.5",
-    "formula": "git://github.com/npolar/formula.git",
+    "formula": "npolar/formula",
     "lodash": "^3.10.0",
-    "npdc-common": "git://github.com/npolar/npdc-common.git"
+    "npdc-common": "npolar/npdc-common"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-debug": "^2.0.1",
-    "should": "^7.0.2",
-    "npdc-gulp": "git://github.com/npolar/npdc-gulp.git",
+    "should": "^7.1.0",
+    "npdc-gulp": "npolar/npdc-gulp",
     "babelify": "^6.2.0",
-    "browserify": "^11.0.1",
+    "browserify": "^11.1.0",
     "browserify-ngannotate": "^1.0.1",
     "partialify": "^3.1.3"
   },
