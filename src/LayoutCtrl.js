@@ -9,7 +9,6 @@ let LayoutCtrl = function ($scope) {
     menu: [{
       title: 'New',
       link: '__new/edit',
-      alt: 'New dataset'
     }]
   };
 
