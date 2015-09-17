@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="npdcDatasetApp" ng-cloak>
+<html lang="en" ng-app="npdcDatasetApp" ng-cloak ng-strict-di>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,15 +13,19 @@
 	<script>var VERSION = '<!-- @echo VERSION -->'; console.log("npdc-dataset version:", VERSION)</script>
 
 </head>
-<body>
-	<div class="np-page-container">
-		<npdc:top class="np-header"></npdc:top>
-		<div class="np-content">
-			<npdc:crumbs></npdc:crumbs>
-  		<div ng-view></div>
-		</div>
+
+<body class="np-body" layout="row" ng-controller="LayoutCtrl">
+  <npdc-md:sidenav class="np-sidenav" sidenav="sidenav">
+  </npdc-md:sidenav>
+  <div layout="column" flex role="main">
+    <npdc:top class="np-header" top="toolbar"></npdc:top>
+    <md-content class="np-content" flex md-scroll-y>
+      <div layout-padding>
+				<npdc:crumbs></npdc:crumbs>
+	  		<div ng-view></div>
+			</div>
+		</md-content>
 	</div>
 	<script src="app.js"></script>
-
 </body>
 </html>

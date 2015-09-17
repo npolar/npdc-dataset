@@ -11,6 +11,7 @@ require('angular-npolar');
 
 var npdcDatasetApp = angular.module('npdcDatasetApp', ['ngRoute', 'formula', 'npolarApi', 'npolarUi', 'npdcUi', 'templates']);
 
+npdcDatasetApp.controller('LayoutCtrl', require('./LayoutCtrl'));
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
