@@ -40,9 +40,8 @@
 
   <section ng-if="data.length > 0">
 
-    <md-card>
-      <md-card-content>
-        <h2 class="md-title">Data</h2>
+
+        <h3>Get dataset</h3>
 
         <ul ng-repeat="link in data">
           <li>
@@ -70,80 +69,48 @@
             <span property="dc:date">2006</span>.</div>
 
         </p>
-
-      </md-card-content>
-    </md-card>
   </section>
 
   <section>
-    <md-card>
-      <md-card-content>
-        <h2 class="md-title">Data quality</h2>
-        <p class="md-title">{{ document.quality }}</p>
-      </md-card-content>
-    </md-card>
-  </section>
-
-  <section>
-    <md-card>
-
-      <md-card-content>
-        <h2 class="md-title">Links</h2>
-        <p class="md-title" ng-repeat="link in links">
-          <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
-          {{ link.rel }}</p>
-      </md-card-content>
-    </md-card>
-
-  </section>
-
-  <section>
-    <md-card>
-      <md-card-content>
-        <h2 class="md-display-1">Abstract</h2>
+        <h3>Abstract</h3>
         <p style="white-space: pre-wrap;">{{document.summary }}</p>
-      </md-card-content>
-    </md-card>
+   </section>
+
+
+  <section>
+        <h3>Data quality</h3>
+        <p class="md-title">{{ document.quality }}</p>
   </section>
 
   <section>
-    <md-card>
-      <h3 class="md-display-1">Coverage</h3>
-      <md-card-content>
+        <h3>Links</h3>
+        <div ng-repeat="link in links">
+         {{ link.rel }}: <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
+          </div>
+  </section>
 
-        <div ng-repeat="c in document.coverage">
-          {{ c | json }}
-        </div>
-      </md-card-content>
-    </md-card>
+<section>
+      <h3>Coverage</h3>
+      {{ coverage }}
+</section>
+
+  <section>
+      <h3>Fieldwork</h3>
+           {{ activity.substr(0,16) }}
+   <!--     <div ng-repeat="a in document.activity">
+          {{ a  }}
+        </div> -->
   </section>
 
   <section>
-    <md-card>
-      <h3 class="md-display-1">Fieldwork</h3>
-      <md-card-content>
-
-        <div ng-repeat="a in document.activity">
-          {{ a | json }}
-        </div>
-      </md-card-content>
-    </md-card>
-  </section>
-
-  <section>
-    <md-card>
-      <h3 class="md-display-1">Placenames</h3>
-      <md-card-content>
-
+      <h3>Placenames</h3>
         <div ng-repeat="p in document.placenames">
-          {{ p | json }}
+          placenames: {{ p.placename }}
         </div>
-      </md-card-content>
-    </md-card>
   </section>
 
   <section>
-    <h3 class="md-display-1">People</h3>
+    <h3>People</h3>
     <md-card ng-repeat="person in document.people">
 
       <md-card-content>
@@ -184,33 +151,25 @@
   </section>
 
   <aside>
-    <h2 class="md-display-1">Classification</h2>
-    <md-card>
-      Topics
-      <md-card-content ng-repeat="topic in document.topics">
+     <md-card>
+    <md-card-content>
+    <h3>Classification</h3>
+      <h4>Topics</h4>
+      <div ng-repeat="topic in document.topics">
         <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>
-      </md-card-content>
-    </md-card>
+      </div>
 
-    <md-card>
-      <md-card-content>ISO Topics</md-card-content>
-      <ul>
-        <li ng-repeat="iso_topic in document.iso_topics">
+      <h4>ISO Topics</h4>
+        <div ng-repeat="iso_topic in document.iso_topics">
           <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>
-        </li>
-      </ul>
-    </md-card>
+        </div>
 
-    <md-card>
-      Tags
-      <md-card-content ng-repeat="tag in document.tags">
+      <h4>Tags</h4>
+      <div ng-repeat="tag in document.tags">
         <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>
-      </md-card-content>
-    </md-card>
+      </div>
 
-    <md-card>
-      <h3>NASA GCMD Science Keywords</h3>
-      <md-card-content>
+      <h4>NASA GCMD Science Keywords</h4>
 
         <div ng-repeat="k in document.gcmd.sciencekeywords">
           <a href="?q=&filter-gcmd.sciencekeywords={{ k.Category}}">{{ k.Category}}</a>
@@ -222,75 +181,54 @@
           <a href="">{{ k.Variable_Level_1}}</a>
         </div>
 
-      </md-card-content>
-    </md-card>
+         </md-card-content>
+      </md-card>
+
   </aside>
 
   <section>
-    <md-card>
-
-      <md-card-content>
-        <h3>Metadata in other, machine readable formats</h3>
-        <ul>
-          <li class="md-title" ng-repeat="link in alternate">
+        <h3>Metadata in alternative machine readable formats</h3>
+          <div ng-repeat="link in alternate">
             <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
-            ({{link.type}})</li>
-        </ul>
-      </md-card-content>
-
-    </md-card>
+            ({{link.type}})</div>
   </section>
 
   <section>
-    <md-card>
-      <md-card-content>
-        <h2 class="md-display-1">Document properties</h2>
+        <h3>Document properties</h3>
         Created
-        {{document.created }}, updated to revision
+        {{document.created.substr(0,10) }}, updated to revision
         {{ document._rev.split('-')[0] }}
         on
-        {{ document.updated }}
+        {{ document.updated.substr(0,10) }}
 
         <a ng-href="{{uri}}">{{uri}}</a>
         {{ document._rev }}
         {{ document.edits | json }}
-
-      </md-card-content>
-    </md-card>
   </section>
 
 </article>
 
 <aside flex>
-
-  <md-card>
-
-    <md-card-content>
-
+      <h3> Related datasets ({{related.datasets.length}}) </h3>
       <ol ng-if="related.datasets.length > 0">
-        Related datasets ({{related.datasets.length}})
         <li ng-if="p._score > 0.5" ng-repeat="p in related.datasets ">
           <a ng-href="{{p.id}}">{{ p.title }}</a>
           {{p._score}}</li>
       </ol>
 
-      Related publications
+      <h3>Related publications</h3>
       <ol>
         <li ng-if="p._score > 0.5" ng-repeat="p in related.publications ">
           <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ unescape(p.title) }}</a>
           {{p._score}}</li>
       </ol>
 
-      Related projects
+      <h3>Related projects</h3>
       <ol>
         <li ng-if="p._score > 0.5" ng-repeat="p in related.projects">
           <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ p.title }}</a>
           {{p._score}}</li>
       </ol>
-
-    </md-card-content>
-
-  </md-card>
 
 </aside>
 
