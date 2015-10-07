@@ -119,8 +119,6 @@ var DatasetShowController = function ($anchorScroll, $controller, $location, $lo
 
     $scope.alternate = dataset.links.filter(l => ( ( l.rel === "alternate" && l.type !== "text/html") || l.rel === "edit" ));
 
-    console.log(JSON.stringify(dataset.coverage));
-
     $scope.coverage = (JSON.stringify(dataset.coverage)).replace(/[{"\[\]}]/g, '');
 
     $scope.activity = (JSON.stringify(dataset.activity)).replace(/[{"\[\]}]/g, '');
