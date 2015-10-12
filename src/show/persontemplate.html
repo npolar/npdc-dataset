@@ -1,0 +1,20 @@
+<md-card>
+  <md-card-content>
+  <section>
+    <h3>People</h3>
+    <div ng-repeat="person in listperson">
+        <h2 class="md-title">{{ person.first_name }}
+          {{ person.last_name }}</h2>
+        <p>
+          <a ng-click="gotoAnchor('organisation-'+person.organisation)">{{ orgName(person.organisation, document.organisations) }}</a>
+        </p>
+        <p>
+          <span ng-repeat="role in person.roles">{{ role }}
+            <span ng-if="!$last">,
+            </span>
+          </span>
+        </p>
+      </div>
+  </section>
+  </md-card-content>
+  </md-card>

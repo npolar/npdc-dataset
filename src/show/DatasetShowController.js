@@ -119,11 +119,11 @@ var DatasetShowController = function ($anchorScroll, $controller, $location, $lo
 
     $scope.alternate = dataset.links.filter(l => ( ( l.rel === "alternate" && l.type !== "text/html") || l.rel === "edit" ));
 
-    if (typeof dataset.coverage != "undefined") {
+    if (typeof dataset.coverage !== "undefined") {
         $scope.coverage = (JSON.stringify(dataset.coverage)).replace(/[{"\[\]}]/g, '');
     }
 
-    if (typeof dataset.activity != "undefined") {
+    if (typeof dataset.activity !== "undefined") {
         $scope.activity = (JSON.stringify(dataset.activity)).replace(/[{"\[\]}]/g, '');
     }
 

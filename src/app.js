@@ -15,6 +15,11 @@ npdcDatasetApp.controller('LayoutCtrl', require('./LayoutCtrl'));
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
+npdcDatasetApp.directive('citation', require('./show/citationDirective'));
+npdcDatasetApp.directive('organisation', require('./show/organisationDirective'));
+npdcDatasetApp.directive('person', require('./show/personDirective'));
+npdcDatasetApp.directive('link', require('./show/linkDirective'));
+
 
 // Bootstrap ngResource models using NpolarApiResource
 var resources = [
@@ -23,7 +28,7 @@ var resources = [
   {'path': '/dataset', 'resource': 'Dataset' },
   {'path': '/publication', 'resource': 'Publication' },
   {'path': '/project', 'resource': 'Project' }
-  
+
 ];
 
 resources.forEach(service => {
@@ -53,7 +58,7 @@ npdcDatasetApp.filter('isodate', function() {
   } else {
     return input;
   }
-  
+
   };
 });
 
@@ -64,7 +69,7 @@ npdcDatasetApp.filter('year', function() {
   } else {
     return input;
   }
-  
+
   };
 });
 
@@ -75,7 +80,7 @@ npdcDatasetApp.filter('year', function() {
 //  } else {
 //    return input;
 //  }
-//  
+//
 //  };
 //});
 

@@ -22,23 +22,14 @@
     </span>
   </h3>
 
-  <md-card style="background-color: #ff7043;">
-    <md-card-content>
-      <h3 title="Use the following string to cite the dataset" style="color: white;">Cite dataset</h3>
-    <!--  <code style="background-color: yellow;"> -->
-
-        {{ citation  }}
-
-   <!--   </code> -->
-    </md-card-content>
-  </md-card>
+  <div citation></div>
 
 <!--<nav>
   See http://www.nature.com/articles/sdata201544
   </nav>
   -->
 
-   <md-card>
+ <md-card>
  <md-card-content>
   <section>
         <h3>Abstract</h3>
@@ -46,6 +37,7 @@
    </section>
    </md-card-content>
   </md-card>
+
 
  <md-card>
     <md-card-content>
@@ -89,7 +81,7 @@
     </md-card-content>
     </md-card>
 
-  <md-card>
+  <!-- <md-card>
   <md-card-content>
   <section>
     <h3>People</h3>
@@ -108,9 +100,13 @@
       </div>
   </section>
   </md-card-content>
-  </md-card>
+  </md-card> -->
 
-  <section>
+  <div person listperson="document.people"></div>
+
+
+
+<!-- <section>
     <md-card>
     <md-card-content>
     <h3 class="headline">Organisations</h3>
@@ -123,16 +119,17 @@
 
             <md-chip>{{ role }}</md-chip>
           </md-chips>
-
-
     </div>
     </md-card-content>
     </md-card>
-  </section>
+  </section> -->
+
+<div organisation listorganisation="document.organisations"></div>
 
 
 </article>
 
+<!--
 <aside flex>
   <md-card>
   <md-card-content>
@@ -164,7 +161,10 @@
 
 </aside>
  </md-card-content>
-   </md-card>
+   </md-card> -->
+
+ <!--lINKS<div link listlinks="['1','2']"></div>  -->
+  <div link listlinks="links" listrelated="related"></div>
 
   <md-card>
     <md-card-content>

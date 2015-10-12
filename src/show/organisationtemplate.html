@@ -1,0 +1,15 @@
+<md-card>
+    <md-card-content>
+    <h3 class="headline">Organisations</h3>
+    <div ng-repeat="o in listorganisation">
+
+            <h2 class="md-title" id="organisation-{{ o.id }}">{{ o.name }}</h2>
+            <p>{{ o.roles.join(" ")}}</p>
+          </md-card-content>
+          <md-chips class="md-actions" layout-align="end center" layout="row" ng-repeat="role in person.roles">
+
+            <md-chip>{{ role }}</md-chip>
+          </md-chips>
+    </div>
+    </md-card-content>
+    </md-card>
