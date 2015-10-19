@@ -11,7 +11,6 @@ require('angular-npolar');
 
 var npdcDatasetApp = angular.module('npdcDatasetApp', ['ngRoute', 'formula', 'npolarApi', 'npolarUi', 'npdcUi', 'templates']);
 
-npdcDatasetApp.controller('LayoutCtrl', require('./LayoutCtrl'));
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
@@ -50,53 +49,6 @@ npdcDatasetApp.config(require('./router')).config(function($mdThemingProvider) {
 //  return input;
 //  };
 //});
-
-npdcDatasetApp.filter('isodate', function() {
-  return function(input) {
-  if ((/^\d{4}\-\d{2}\d{2}T/).test(input)) {
-    return input.split("T")[0];
-  } else {
-    return input;
-  }
-
-  };
-});
-
-npdcDatasetApp.filter('year', function() {
-  return function(input) {
-  if ((/^\d{4}(\-\d{2}\d{2}T)?/).test(input)) {
-    return input.split("-")[0];
-  } else {
-    return input;
-  }
-
-  };
-});
-
-//npdcDatasetApp.filter('i', function() {
-//  return function(input) {
-//  if ((/_/).test(input)) {
-//    return input.split("T")[0];
-//  } else {
-//    return input;
-//  }
-//
-//  };
-//});
-
-npdcDatasetApp.filter('lang', ($log) => {
-  return function(texts, prop) {
-  if (texts === undefined) {
-    return '';
-  }
-  let text = texts.find(t => { return (t.lang === 'en'); });
-  if (text[prop]) {
-    return text[prop];
-  } else {
-    return texts[0][prop];
-  }
-  };
-});
 
 
 // API HTTP interceptor
