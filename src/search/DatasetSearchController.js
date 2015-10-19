@@ -1,22 +1,20 @@
 'use strict';
-var angular = require('angular');
-/**
- * @ngInject
- */
-var DatasetSearchController = function ($scope, $location, $controller, Dataset) {
+
+// @ngInject
+var DatasetSearchController = function ($scope, $location, $controller, Dataset, npdcAppConfig) {
 
   $controller('NpolarBaseController', { $scope: $scope });
   $scope.resource = Dataset;
-    
-  $scope.query = function() {
-    
+  npdcAppConfig.cardTitle = 'Search results';
+  npdcAppConfig.onSearch = $scope.search;
+
+  let query = function(params) {
     let defaults = { limit: "all", sort: "-updated", fields: 'title,id,updated' };
     let invariants = $scope.security.isAuthenticated() ? {} : { "not-draft": "yes" } ;
-    
-    return angular.extend(defaults, $location.search(), invariants);
+    return Object.assign(defaults, invariants, params);
   };
 
-  $scope.search($scope.query());
+  $scope.search(query());
 
 };
 
