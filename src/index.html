@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="npdcDatasetApp" ng-cloak ng-strict-di>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<base href="/dataset/"/>
-	<title>Dataset</title>
-	<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
-
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/dataset/"/>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="/assets/npdc-common-master-latest.css" rel="stylesheet">
-
-	<script>var VERSION = '<!-- @echo VERSION -->'; console.log("npdc-dataset version:", VERSION)</script>
-
-</head>
-
-<body class="np-body" layout="row" ng-controller="LayoutCtrl">
-  <npdc-md:sidenav class="np-sidenav" sidenav="sidenav">
-  </npdc-md:sidenav>
-  <div layout="column" flex role="main">
-    <npdc:top class="np-header" top="toolbar"></npdc:top>
-    <md-content class="np-content" flex md-scroll-y>
-      <div layout-padding>
-				<npdc:crumbs></npdc:crumbs>
-	  		<div ng-view></div>
-			</div>
-		</md-content>
-	</div>
-	<script src="app.js"></script>
-</body>
+    <link href="/assets/npdc-common-master-latest.css" rel="stylesheet">
+    <title>Datasets</title>
+    
+	<script>
+      var VERSION = '<!-- @echo VERSION -->';
+      console.log("npdc-dataset version:", VERSION)
+    </script>
+  </head>
+  <body>
+	<npdc:app></npdc:app>
+  <script src="app.js"></script>
+	<p xmlns:dct="http://purl.org/dc/terms/" xmlns:cc="http://creativecommons.org/ns#">
+						<!--<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons CC-BY" title="CC-BY" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>-->
+						The <span href="http://purl.org/dc/dcmitype/Dataset" property="dct:title" rel="dct:type">
+						<a href="/dataset">Dataset Catalogue</a></span>
+							is available as machine readable data in the <a href="https://api.npolar.no/dataset" rel="dct:source">Dataset API</a>,
+							and is free to reuse by attributing the <a xmlns:cc="http://creativecommons.org/ns#" href="https://npolar.no" property="cc:attributionName" rel="cc:attributionURL">Norwegian Polar Instittte</a>, under the terms of the <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+							<br />See also the corresponding <a href="https://data.npolar.no/dataset/ae1a945b-6b91-42c0-86e6-4657b4b6ec3c" rel="cc:morePermissions">metadata</a>.				
+						</p>
+	
+  </body>
 </html>
