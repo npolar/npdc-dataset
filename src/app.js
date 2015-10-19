@@ -42,6 +42,7 @@ npdcDatasetApp.config(require('./router')).config(function($mdThemingProvider) {
   $mdThemingProvider.theme('altTheme');
 });
 
+
 // API HTTP interceptor
 npdcDatasetApp.config($httpProvider => {
   $httpProvider.interceptors.push('npolarApiInterceptor');
