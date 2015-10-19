@@ -105,8 +105,12 @@ npdcDatasetApp.config($httpProvider => {
 });
 
 // Inject npolarApiConfig and run
-npdcDatasetApp.run(npolarApiConfig => {
+npdcDatasetApp.run((npolarApiConfig, npdcAppConfig) => {
   var autoconfig = new AutoConfig(environment);
   angular.extend(npolarApiConfig, autoconfig, { resources });
   console.debug("npolarApiConfig", npolarApiConfig);
+  
+  npdcAppConfig.cardTitle = 'Datasets';
+  npdcAppConfig.toolbarTitle = 'Datasets';
+  
 });
