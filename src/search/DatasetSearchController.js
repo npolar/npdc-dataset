@@ -11,7 +11,7 @@ var DatasetSearchController = function ($scope, $location, $controller, Dataset,
 
   let defaults = { limit: "50", sort: "-updated,-released", fields: 'title,id,collection,updated', facets: "topics", score: true };
   let invariants = $scope.security.isAuthenticated() ? {} : { "not-draft": "yes", "not-progress": "planned", "filter-links.rel": "data" };
-  let query = Object.assign(defaults, params, invariants);
+  let query = Object.assign(defaults, invariants);
 
   $scope.search(query);
 
