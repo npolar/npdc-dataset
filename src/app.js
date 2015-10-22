@@ -38,9 +38,7 @@ resources.forEach(service => {
 });
 
 // Routing
-npdcDatasetApp.config(require('./router')).config(function($mdThemingProvider) {
-  $mdThemingProvider.theme('altTheme');
-});
+npdcDatasetApp.config(require('./router'));
 
 
 // API HTTP interceptor
