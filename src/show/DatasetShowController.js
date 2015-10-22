@@ -4,7 +4,8 @@
  *
  * @ngInject
  */
-var DatasetShowController = function ($anchorScroll, $controller, $location, $log, $routeParams, $scope, Dataset, Project, Publication, NpolarApiSecurity) {
+var DatasetShowController = function ($anchorScroll, $controller, $location, $log, $routeParams,
+  $scope, Dataset, Project, Publication, NpolarApiSecurity, npdcAppConfig) {
 
   $controller('NpolarBaseController', {$scope: $scope});
   $scope.resource = Dataset;
@@ -101,7 +102,7 @@ var DatasetShowController = function ($anchorScroll, $controller, $location, $lo
     //console.log("#", $location.hash());
 
     $scope.document = dataset;
-
+    npdcAppConfig.cardTitle = $scope.document.title;
     $scope.citation = citation(dataset);
 
     $scope.published_year = published_year(dataset);

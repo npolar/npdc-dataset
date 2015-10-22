@@ -11,9 +11,7 @@
       </code>
     </md-card-content>
   </md-card>
-
-  <h1 class="md-display-1">
-    <npdc:edit-button></npdc:edit-button>{{document.title}}</h1>
+  <npdc:edit-button class="np-primary-control"></npdc:edit-button>
   <h3 class="md-headline">
     <span ng-repeat="author in authors">
       <md-tooltip>{{ orgName(author.organisation, document.organisations) }}</md-tooltip>{{ author.name }}
