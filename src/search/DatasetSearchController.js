@@ -26,8 +26,12 @@ var DatasetSearchController = function ($scope, $location, $controller, Dataset,
       $scope.options.facets = data.feed.facets;
     });
   };
-  npdcAppConfig.search.callback = search;
+
   search(query);
+
+  $scope.$on('$locationChangeSuccess', (event, data) => {
+    search($location.search());
+  });
 };
 
 module.exports = DatasetSearchController;
