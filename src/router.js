@@ -14,8 +14,9 @@ var router = function ($routeProvider, $locationProvider) {
   template: '<npdc:formula></npdc:formula>',
   controller: 'DatasetEditController'
   }).when('/', {
-  template: '<npdc:search></npdc:search>',
-  controller: 'DatasetSearchController'
+  templateUrl: 'search/search.html',
+  controller: 'DatasetSearchController',
+  reloadOnSearch: false
   });
 };
 

@@ -11,9 +11,9 @@
   "private": true,
   "repository": "https://github.com/npolar/npdc-dataset",
   "dependencies": {
-    "angular": "1.4.5",
+    "angular": "1.4.7",
     "angular-npolar": "npolar/angular-npolar",
-    "angular-route": "1.4.5",
+    "angular-route": "1.4.7",
     "formula": "npolar/formula",
     "lodash": "^3.10.0",
     "npdc-common": "npolar/npdc-common"
