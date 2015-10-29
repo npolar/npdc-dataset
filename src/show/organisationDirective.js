@@ -5,7 +5,7 @@ var organisationDirective = function (){
   return {
       restrict: 'A',
       transclude: false,
-      templateUrl: '/src/show/organisationtemplate.html',
+      templateUrl: 'show/organisationtemplate.html',
       scope: {
           listorganisation: "=",
       },

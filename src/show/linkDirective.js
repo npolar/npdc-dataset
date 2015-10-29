@@ -5,7 +5,7 @@ var linkDirective = function (){
   return {
       restrict: 'A',
       transclude: false,
-      templateUrl: '/src/show/linktemplate.html',
+      templateUrl: 'show/linktemplate.html',
       scope: {
           listlinks: "=",
           listrelated: "="

@@ -5,7 +5,7 @@ var personDirective = function (){
   return {
       restrict: 'A',
       transclude: false,
-      templateUrl: '/src/show/persontemplate.html',
+      templateUrl: 'show/persontemplate.html',
       scope: {
           listperson: "=",
       },
