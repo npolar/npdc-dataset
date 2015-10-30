@@ -1,12 +1,12 @@
 <aside flex>
   <md-card>
-  <md-card-content>
-        <h3>Links</h3>
-        <div ng-repeat="link in listlinks">
-         {{ link.rel }}: <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
-          </div>
+    <md-card-content>
+      <h3>Links</h3>
+      <div ng-repeat="link in listlinks">
+        {{ link.rel }}: <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
+      </div>
 
-            <h3> Related datasets ({{listrelated.datasets.length}}) </h3>
+      <h3> Related datasets ({{listrelated.datasets.length}}) </h3>
       <ol ng-if="listrelated.datasets.length > 0">
         <li ng-if="p._score > 0.5" ng-repeat="p in listrelated.datasets ">
           <a ng-href="{{p.id}}">{{ p.title }}</a>
@@ -26,7 +26,7 @@
           <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ p.title }}</a>
           {{p._score}}</li>
       </ol>
-  <md-card-content>
-  <md-card>
+    </md-card-content>
+  </md-card>
 </aside>
 
