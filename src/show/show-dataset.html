@@ -41,88 +41,84 @@
     <md-card-content>
       <section ng-if="data.length > 0">
 
-
         <h3>Get dataset</h3>
-        <div>
-          <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
-          ({{link.type || 'unknown type' }})</li>
-      </div>
-
-      <p>{{ document.rights }}
-        <br/>
-
-      </p>
-
-      <p>    <div ng-repeat="licences in document.licences">
-          <a ng-href="{{licences}}">{{ licences }}</a>
+        <div ng-repeat="d in data">
+          <a ng-href="{{d.href}}">{{ d.title || d.href }}</a>
+          ({{d.type || 'unknown type' }})
         </div>
 
-        <!-- https://wiki.creativecommons.org/wiki/Marking_Works_Technical -->
+        <p>{{ document.rights }}<br/></p>
 
-        <div ng-if="isCCBy">
-
-          <a href="http://creativecommons.org/licenses/by/4.0/" rel="license"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" style="border-width:0"/></a><br/>is free t under a
-          <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0
-          </a>International Licence.
-
-          <span href="http://purl.org/dc/dcmitype/Dataset" rel="dc:type">Dataset</span>
-          <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license">CC</a>
-          <span property="dc:date">2006</span>.</div>
-
-      </p>
-    </section>
-
-    <section>
-      <h3>Data quality</h3>
-      <div>{{ document.quality }}</div>
-    </section>
-  </md-card-content>
-</md-card>
-
-<!-- <md-card>
-  <md-card-content>
-    <section>
-      <h3>People</h3>
-      <div ng-repeat="person in document.people">
-        <h2 class="md-title">{{ person.first_name }}
-          {{ person.last_name }}</h2>
         <p>
-          <a ng-click="gotoAnchor('organisation-'+person.organisation)">{{ orgName(person.organisation, document.organisations) }}</a>
+          <div ng-repeat="licences in document.licences">
+            <a ng-href="{{licences}}">{{ licences }}</a>
+          </div>
+
+          <!-- https://wiki.creativecommons.org/wiki/Marking_Works_Technical -->
+
+          <div ng-if="isCCBy">
+
+            <a href="http://creativecommons.org/licenses/by/4.0/" rel="license"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" style="border-width:0"/></a><br/>is free t under a
+            <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0</a>International Licence.
+
+            <span href="http://purl.org/dc/dcmitype/Dataset" rel="dc:type">Dataset</span>
+            <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license">CC</a>
+            <span property="dc:date">2006</span>.
+          </div>
         </p>
-        <p>
-          <span ng-repeat="role in person.roles">{{ role }}
-            <span ng-if="!$last">,
-            </span>
-          </span>
-        </p>
-      </div>
-    </section>
-  </md-card-content>
-</md-card> -->
+      </section>
 
-<div person listperson="document.people"></div>
+      <section>
+        <h3>Data quality</h3>
+        <div>{{ document.quality }}</div>
+      </section>
+    </md-card-content>
+  </md-card>
 
-
-
-<!-- <section>
-  <md-card>
+  <!-- <md-card>
     <md-card-content>
-      <h3 class="headline">Organisations</h3>
-      <div ng-repeat="o in document.organisations">
+      <section>
+        <h3>People</h3>
+        <div ng-repeat="person in document.people">
+          <h2 class="md-title">{{ person.first_name }}
+            {{ person.last_name }}</h2>
+          <p>
+            <a ng-click="gotoAnchor('organisation-'+person.organisation)">{{ orgName(person.organisation, document.organisations) }}</a>
+          </p>
+          <p>
+            <span ng-repeat="role in person.roles">{{ role }}
+              <span ng-if="!$last">,
+              </span>
+            </span>
+          </p>
+        </div>
+      </section>
+    </md-card-content>
+  </md-card> -->
 
-        <h2 class="md-title" id="organisation-{{ o.id }}">{{ o.name }}</h2>
-        <p>{{ o.roles.join(" ")}}</p>
-      </md-card-content>
-      <md-chips class="md-actions" layout-align="end center" layout="row" ng-repeat="role in person.roles">
+  <div person listperson="document.people"></div>
 
-        <md-chip>{{ role }}</md-chip>
-      </md-chips>
-    </div>
-  </md-card-content>
-</md-card>
-  </section> -->
 
-  <div organisation listorganisation="document.organisations"></div>
+
+  <!-- <section>
+    <md-card>
+      <md-card-content>
+        <h3 class="headline">Organisations</h3>
+        <div ng-repeat="o in document.organisations">
+
+          <h2 class="md-title" id="organisation-{{ o.id }}">{{ o.name }}</h2>
+          <p>{{ o.roles.join(" ")}}</p>
+        </md-card-content>
+        <md-chips class="md-actions" layout-align="end center" layout="row" ng-repeat="role in person.roles">
+
+          <md-chip>{{ role }}</md-chip>
+        </md-chips>
+      </div>
+    </md-card-content>
+  </md-card>
+</section> -->
+
+<div organisation listorganisation="document.organisations"></div>
 
 
 </article>
