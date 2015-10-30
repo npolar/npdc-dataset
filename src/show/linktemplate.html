@@ -6,25 +6,28 @@
         {{ link.rel }}: <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
       </div>
 
-      <h3> Related datasets ({{listrelated.datasets.length}}) </h3>
+      <h3>Related datasets</h3>
       <ol ng-if="listrelated.datasets.length > 0">
-        <li ng-if="p._score > 0.5" ng-repeat="p in listrelated.datasets ">
+        <li ng-repeat="p in listrelated.datasets" ng-if="p._score > 0.05" >
           <a ng-href="{{p.id}}">{{ p.title }}</a>
-          {{p._score}}</li>
+          {{p._score}}
+        </li>
       </ol>
 
       <h3>Related publications</h3>
       <ol>
-        <li ng-if="p._score > 0.5" ng-repeat="p in listrelated.publications ">
+        <li ng-repeat="p in listrelated.publications" ng-if="p._score > 0.1">
           <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ (p.title) }}</a>
-          {{p._score}}</li>
+          {{p._score}}
+        </li>
       </ol>
 
       <h3>Related projects</h3>
       <ol>
-        <li ng-if="p._score > 0.5" ng-repeat="p in listrelated.projects">
+        <li ng-repeat="p in listrelated.projects" ng-if="p._score > 0.1">
           <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ p.title }}</a>
-          {{p._score}}</li>
+          {{p._score}}
+        </li>
       </ol>
     </md-card-content>
   </md-card>
