@@ -14,10 +14,6 @@ var npdcDatasetApp = angular.module('npdcDatasetApp', ['ngRoute', 'formula', 'np
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
-npdcDatasetApp.directive('citation', require('./show/citationDirective'));
-npdcDatasetApp.directive('organisation', require('./show/organisationDirective'));
-npdcDatasetApp.directive('person', require('./show/personDirective'));
-npdcDatasetApp.directive('link', require('./show/linkDirective'));
 
 
 // Bootstrap ngResource models using NpolarApiResource
