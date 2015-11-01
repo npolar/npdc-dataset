@@ -10,6 +10,9 @@ var DatasetShowController = function ($anchorScroll, $controller, $location, $lo
   $controller('NpolarBaseController', {$scope: $scope});
   $scope.resource = Dataset;
   $scope.security = NpolarApiSecurity;
+  $scope.error = null;
+
+  $scope.docId = $routeParams.id;
 
   $scope.related = {};
 
@@ -143,6 +146,11 @@ var DatasetShowController = function ($anchorScroll, $controller, $location, $lo
 
 
 
+  }).$promise.then(() => {
+    $scope.error = null;
+  }, (data) => {
+    console.log('err', data);
+    $scope.error = data.statusText;
   });
 
   };

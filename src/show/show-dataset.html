@@ -1,161 +1,162 @@
 <!DOCTYPE html>
 <article flex class="layout-padding">
+  <div ng-if="document">
+    <md-card ng-if="document.draft == 'yes'">
+      <md-card-content>
 
-  <md-card ng-if="document.draft == 'yes'">
-    <md-card-content>
+        <code style="background-color: red;">
 
-      <code style="background-color: red;">
+          DRAFT
 
-        DRAFT
-
-      </code>
-    </md-card-content>
-  </md-card>
-  <npdc:edit-button class="np-primary-control"></npdc:edit-button>
-  <h3 class="md-headline">
-    <span ng-repeat="author in authors">
-      <md-tooltip>{{ orgName(author.organisation, document.organisations) }}</md-tooltip>{{ author.name }}
-      <span ng-if="!$last">,
+        </code>
+      </md-card-content>
+    </md-card>
+    <npdc:edit-button class="np-primary-control"></npdc:edit-button>
+    <h3 class="md-headline">
+      <span ng-repeat="author in authors">
+        <md-tooltip>{{ orgName(author.organisation, document.organisations) }}</md-tooltip>{{ author.name }}
+        <span ng-if="!$last">,
+        </span>
       </span>
-    </span>
-  </h3>
+    </h3>
 
-  <div citation></div>
+    <div citation></div>
 
-  <!--<nav>
-    See http://www.nature.com/articles/sdata201544
-  </nav>
-  -->
+    <!--<nav>
+      See http://www.nature.com/articles/sdata201544
+    </nav>
+    -->
 
-  <md-card>
-    <md-card-content>
-      <section>
-        <h3>Abstract</h3>
-        <p style="white-space: pre-wrap;">{{document.summary }}</p>
-      </section>
-    </md-card-content>
-  </md-card>
-
-
-  <md-card>
-    <md-card-content>
-      <section ng-if="data.length > 0">
-
-        <h3>Get dataset</h3>
-        <div ng-repeat="d in data">
-          <a ng-href="{{d.href}}">{{ d.title || d.href }}</a>
-          ({{d.type || 'unknown type' }})
-        </div>
-
-        <p>{{ document.rights }}<br/></p>
-
-        <p>
-          <div ng-repeat="licences in document.licences">
-            <a ng-href="{{licences}}">{{ licences }}</a>
-          </div>
-
-          <!-- https://wiki.creativecommons.org/wiki/Marking_Works_Technical -->
-
-          <div ng-if="isCCBy">
-
-            <a href="http://creativecommons.org/licenses/by/4.0/" rel="license"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" style="border-width:0"/></a><br/>is free t under a
-            <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0</a>International Licence.
-
-            <span href="http://purl.org/dc/dcmitype/Dataset" rel="dc:type">Dataset</span>
-            <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license">CC</a>
-            <span property="dc:date">2006</span>.
-          </div>
-        </p>
-      </section>
-
-      <section>
-        <h3>Data quality</h3>
-        <div>{{ document.quality }}</div>
-      </section>
-    </md-card-content>
-  </md-card>
-
-  <!-- <md-card>
-    <md-card-content>
-      <section>
-        <h3>People</h3>
-        <div ng-repeat="person in document.people">
-          <h2 class="md-title">{{ person.first_name }}
-            {{ person.last_name }}</h2>
-          <p>
-            <a ng-click="gotoAnchor('organisation-'+person.organisation)">{{ orgName(person.organisation, document.organisations) }}</a>
-          </p>
-          <p>
-            <span ng-repeat="role in person.roles">{{ role }}
-              <span ng-if="!$last">,
-              </span>
-            </span>
-          </p>
-        </div>
-      </section>
-    </md-card-content>
-  </md-card> -->
-
-  <div person listperson="document.people"></div>
-
-
-
-  <!-- <section>
     <md-card>
       <md-card-content>
-        <h3 class="headline">Organisations</h3>
-        <div ng-repeat="o in document.organisations">
-
-          <h2 class="md-title" id="organisation-{{ o.id }}">{{ o.name }}</h2>
-          <p>{{ o.roles.join(" ")}}</p>
-        </md-card-content>
-        <md-chips class="md-actions" layout-align="end center" layout="row" ng-repeat="role in person.roles">
-
-          <md-chip>{{ role }}</md-chip>
-        </md-chips>
-      </div>
-    </md-card-content>
-  </md-card>
-</section> -->
-
-<div organisation listorganisation="document.organisations"></div>
+        <section>
+          <h3>Abstract</h3>
+          <p style="white-space: pre-wrap;">{{document.summary }}</p>
+        </section>
+      </md-card-content>
+    </md-card>
 
 
-</article>
+    <md-card>
+      <md-card-content>
+        <section ng-if="data.length > 0">
+
+          <h3>Get dataset</h3>
+          <div ng-repeat="d in data">
+            <a ng-href="{{d.href}}">{{ d.title || d.href }}</a> ({{d.type || 'unknown type' }})
+          </div>
+
+          <p>{{ document.rights }}
+            <br/>
+          </p>
+
+          <p>
+            <div ng-repeat="licences in document.licences">
+              <a ng-href="{{licences}}">{{ licences }}</a>
+            </div>
+
+            <!-- https://wiki.creativecommons.org/wiki/Marking_Works_Technical -->
+
+            <div ng-if="isCCBy">
+
+              <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">
+                <img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" style="border-width:0" />
+              </a>
+              <br/>is free t under a
+              <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0</a>International Licence.
+
+              <span href="http://purl.org/dc/dcmitype/Dataset" rel="dc:type">Dataset</span>
+              <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license">CC</a>
+              <span property="dc:date">2006</span>.
+            </div>
+          </p>
+        </section>
+
+        <section>
+          <h3>Data quality</h3>
+          <div>{{ document.quality }}</div>
+        </section>
+      </md-card-content>
+    </md-card>
+
+    <!-- <md-card>
+      <md-card-content>
+        <section>
+          <h3>People</h3>
+          <div ng-repeat="person in document.people">
+            <h2 class="md-title">{{ person.first_name }}
+              {{ person.last_name }}</h2>
+            <p>
+              <a ng-click="gotoAnchor('organisation-'+person.organisation)">{{ orgName(person.organisation, document.organisations) }}</a>
+            </p>
+            <p>
+              <span ng-repeat="role in person.roles">{{ role }}
+                <span ng-if="!$last">,
+                </span>
+              </span>
+            </p>
+          </div>
+        </section>
+      </md-card-content>
+    </md-card> -->
+
+    <div person listperson="document.people"></div>
+
+
+
+    <!-- <section>
+      <md-card>
+        <md-card-content>
+          <h3 class="headline">Organisations</h3>
+          <div ng-repeat="o in document.organisations">
+
+            <h2 class="md-title" id="organisation-{{ o.id }}">{{ o.name }}</h2>
+            <p>{{ o.roles.join(" ")}}</p>
+          </md-card-content>
+          <md-chips class="md-actions" layout-align="end center" layout="row" ng-repeat="role in person.roles">
+
+            <md-chip>{{ role }}</md-chip>
+          </md-chips>
+        </div>
+      </md-card-content>
+    </md-card>
+  </section> -->
+
+    <div organisation listorganisation="document.organisations"></div>
 
 <!--
-<aside flex>
-  <md-card>
-    <md-card-content>
-      <h3>Links</h3>
-      <div ng-repeat="link in links">
-        {{ link.rel }}: <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
-      </div>
+  <aside flex>
+    <md-card>
+      <md-card-content>
+        <h3>Links</h3>
+        <div ng-repeat="link in links">
+          {{ link.rel }}: <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
+        </div>
 
-      <h3> Related datasets ({{related.datasets.length}}) </h3>
-      <ol ng-if="related.datasets.length > 0">
-        <li ng-if="p._score > 0.5" ng-repeat="p in related.datasets ">
-          <a ng-href="{{p.id}}">{{ p.title }}</a>
-          {{p._score}}</li>
-      </ol>
+        <h3> Related datasets ({{related.datasets.length}}) </h3>
+        <ol ng-if="related.datasets.length > 0">
+          <li ng-if="p._score > 0.5" ng-repeat="p in related.datasets ">
+            <a ng-href="{{p.id}}">{{ p.title }}</a>
+            {{p._score}}</li>
+        </ol>
 
-      <h3>Related publications</h3>
-      <ol>
-        <li ng-if="p._score > 0.5" ng-repeat="p in related.publications ">
-          <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ unescape(p.title) }}</a>
-          {{p._score}}</li>
-      </ol>
+        <h3>Related publications</h3>
+        <ol>
+          <li ng-if="p._score > 0.5" ng-repeat="p in related.publications ">
+            <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ unescape(p.title) }}</a>
+            {{p._score}}</li>
+        </ol>
 
-      <h3>Related projects</h3>
-      <ol>
-        <li ng-if="p._score > 0.5" ng-repeat="p in related.projects">
-          <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ p.title }}</a>
-          {{p._score}}</li>
-      </ol>
+        <h3>Related projects</h3>
+        <ol>
+          <li ng-if="p._score > 0.5" ng-repeat="p in related.projects">
+            <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ p.title }}</a>
+            {{p._score}}</li>
+        </ol>
 
-    </aside>
-  </md-card-content>
-</md-card> -->
+      </aside>
+    </md-card-content>
+  </md-card> -->
 
 <!--lINKS<div link listlinks="['1','2']"></div>  -->
 <div link listlinks="links" listrelated="related"></div>
@@ -181,12 +182,9 @@
     <h4>NASA GCMD Science Keywords</h4>
 
     <div ng-repeat="k in document.gcmd.sciencekeywords">
-      <a href="?q=&filter-gcmd.sciencekeywords={{ k.Category}}">{{ k.Category}}</a>
-      &gt;
-      <a href="">{{ k.Topic}}</a>
-      &gt;
-      <a href="">{{ k.Term }}</a>
-      &gt;
+      <a href="?q=&filter-gcmd.sciencekeywords={{ k.Category}}">{{ k.Category}}</a> &gt;
+      <a href="">{{ k.Topic}}</a> &gt;
+      <a href="">{{ k.Term }}</a> &gt;
       <a href="">{{ k.Variable_Level_1}}</a>
     </div>
 
@@ -204,8 +202,8 @@
       <h3>Fieldwork</h3>
       {{ activity.substr(0,16) }}
       <!--     <div ng-repeat="a in document.activity">
-        {{ a  }}
-      </div> -->
+          {{ a  }}
+        </div> -->
     </section>
 
     <section>
@@ -217,29 +215,22 @@
     <section>
       <h3>Metadata in alternative machine readable formats</h3>
       <div ng-repeat="link in alternate">
-        <a ng-href="{{link.href}}">{{ link.title || link.href }}</a>
-        ({{link.type}})</div>
+        <a ng-href="{{link.href}}">{{ link.title || link.href }}</a> ({{link.type}})
+      </div>
     </section>
     <section>
       <h3>Document properties</h3>
-      Created
-      {{document.created.substr(0,10) }}, updated to revision
-      {{ document._rev.split('-')[0] }}
-      on
-      {{ document.updated.substr(0,10) }}
+      Created {{document.created.substr(0,10) }}, updated to revision {{ document._rev.split('-')[0] }} on {{ document.updated.substr(0,10) }}
 
-      <a ng-href="{{uri}}">{{uri}}</a>
-      {{ document._rev }}
-      {{ document.edits | json }}
+      <a ng-href="{{uri}}">{{uri}}</a> {{ document._rev }} {{ document.edits | json }}
     </section>
 
   </md-card-content>
 </md-card>
-
-
-<aside>
-
-</aside>
-
+</div>
+<div ng-if="error">
+  Sorry, couldn't find document "{{docId}}"
+</div>
+</article>
 
 <!--</div>-->
