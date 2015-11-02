@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<md-card layout-padding>
-  <md-card-content>
-    <div ng-if="document" class="np-doc">
-      <npdc:edit-button class="np-primary-control"></npdc:edit-button>
+<npdc:edit-button class="np-primary-control"></npdc:edit-button>
+
+<div class="np-padding">
+  <div ng-if="document" class="np-doc">
 
       <npdc:document-meta></npdc:document-meta>
-
       <npdc:authors authors="authors"></npdc:authors>
       <npdc:citation citation="citation"></npdc:citation>
 
