@@ -1,150 +1,146 @@
 <!DOCTYPE html>
-<md-card layout-padding>
-  <md-card-content>
-    <div ng-if="document" class="np-doc">
-      <npdc:edit-button class="np-primary-control"></npdc:edit-button>
+<npdc:edit-button class="np-primary-control"></npdc:edit-button>
 
-      <npdc:document-meta></npdc:document-meta>
+<div class="np-padding">
+  <div ng-if="document" class="np-doc">
 
-      <!-- <h3 class="md-headline">
-        <span ng-repeat="author in authors">
-          <md-tooltip>{{ orgName(author.organisation, document.organisations) }}</md-tooltip>{{ author.name }}
-          <span ng-if="!$last">,
-          </span>
+    <npdc:document-meta></npdc:document-meta>
+    <npdc:authors></npdc:authors>
+    <npdc:citation citation="citation"></npdc:citation>
+
+    <!-- <h3 class="md-headline">
+      <span ng-repeat="author in authors">
+        <md-tooltip>{{ orgName(author.organisation, document.organisations) }}</md-tooltip>{{ author.name }}
+        <span ng-if="!$last">,
         </span>
-      </h3> -->
-      <npdc:authors></npdc:authors>
+      </span>
+    </h3> -->
 
-      <npdc:citation citation="citation"></npdc:citation>
+    <!-- See http://www.nature.com/articles/sdata201544 -->
+    <section>
+      <h3>Abstract</h3>
+      <md-divider></md-divider>
+      <p marked="document.summary"></p>
+    </section>
 
-      <!-- See http://www.nature.com/articles/sdata201544 -->
-      <section>
-        <h3>Abstract</h3>
-        <md-divider></md-divider>
-        <p marked="document.summary"></p>
-      </section>
+    <section ng-if="data.length > 0">
 
-      <section ng-if="data.length > 0">
+      <h3>Get dataset</h3>
+      <md-divider></md-divider>
+      <p ng-repeat="d in data">
+        <a ng-href="{{d.href}}">{{ d.title || d.href }}</a> {{d.type ? '('+d.type+')':''}}
+      </p>
 
-        <h3>Get dataset</h3>
-        <md-divider></md-divider>
-        <p ng-repeat="d in data">
-          <a ng-href="{{d.href}}">{{ d.title || d.href }}</a> {{d.type ? '('+d.type+')':''}}
-        </p>
+      <p>{{ document.rights }}</p>
 
-        <p>{{ document.rights }}</p>
+      <div ng-repeat="licences in document.licences">
+        <a ng-href="{{licences}}">{{ licences }}</a>
+      </div>
 
-          <div ng-repeat="licences in document.licences">
-            <a ng-href="{{licences}}">{{ licences }}</a>
-          </div>
+      <!-- https://wiki.creativecommons.org/wiki/Marking_Works_Technical -->
+      <div ng-if="isCCBy">
 
-          <!-- https://wiki.creativecommons.org/wiki/Marking_Works_Technical -->
-          <div ng-if="isCCBy">
+        <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">
+          <img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" style="border-width:0" />
+        </a>
+        <br/>is free t under a
+        <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0</a>International Licence.
 
-            <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">
-              <img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" style="border-width:0" />
-            </a>
-            <br/>is free t under a
-            <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0</a>International Licence.
+        <span href="http://purl.org/dc/dcmitype/Dataset" rel="dc:type">Dataset</span>
+        <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license">CC</a>
+        <span property="dc:date">2006</span>.
+      </div>
+    </section>
 
-            <span href="http://purl.org/dc/dcmitype/Dataset" rel="dc:type">Dataset</span>
-            <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license">CC</a>
-            <span property="dc:date">2006</span>.
-          </div>
-      </section>
+    <section ng-if="document.quality">
+      <h3>Data quality</h3>
+      <md-divider></md-divider>
+      <p>{{ document.quality }}</p>
+    </section>
 
-      <section ng-if="document.quality">
-        <h3>Data quality</h3>
-        <md-divider></md-divider>
-        <p>{{ document.quality }}</p>
-      </section>
+    <npdc:person person="document.people"></npdc:person>
+    <npdc:organisation organisation="document.organisations"></npdc:organisation>
+    <npdc:link links="links" related="related"></npdc:link>
 
-      <npdc:person person="document.people"></npdc:person>
-      <npdc:organisation organisation="document.organisations"></npdc:organisation>
-      <npdc:link links="links" related="related"></npdc:link>
-
-      <section>
-        <h3>Classification</h3>
-        <md-divider></md-divider>
-        <div ng-if="document.topics">
-          <h4>Topics</h4>
-          <p>
-            <div ng-repeat="topic in document.topics">
-              <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>
-            </div>
-          </p>
-        </div>
-
-        <div ng-if="document.iso_topics">
-          <h4>ISO Topics</h4>
-          <p>
-            <div ng-repeat="iso_topic in document.iso_topics">
-              <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>
-            </div>
-          </p>
-        </div>
-
-        <div ng-if="document.tags">
-          <h4>Tags</h4>
-          <p>
-            <div ng-repeat="tag in document.tags">
-              <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>
-            </div>
-          </p>
-        </div>
-
-
-        <div ng-if="document.gcmd.sciencekeywords">
-          <h4>NASA GCMD Science Keywords</h4>
-          <p>
-            <div ng-repeat="k in document.gcmd.sciencekeywords">
-              <a href="?q=&filter-gcmd.sciencekeywords={{ k.Category}}">{{ k.Category}}</a> &gt;
-              <a href="">{{ k.Topic}}</a> &gt;
-              <a href="">{{ k.Term }}</a> &gt;
-              <a href="">{{ k.Variable_Level_1}}</a>
-            </div>
-          </p>
-        </div>
-      </section>
-
-      <section ng-if="coverage">
-        <h3>Coverage</h3>
-        <md-divider></md-divider>
-        <p>{{ coverage }}</p>
-      </section>
-
-      <section ng-if="activity">
-        <h3>Fieldwork</h3>
-        <md-divider></md-divider>
-        <p>{{ activity.substr(0,16) }}</p>
-        <!--     <div ng-repeat="a in document.activity">
-            {{ a  }}
-          </div> -->
-      </section>
-
-      <section ng-if="document.placenames">
-        <h3>Placenames</h3>
-        <md-divider></md-divider>
+    <section>
+      <h3>Classification</h3>
+      <md-divider></md-divider>
+      <div ng-if="document.topics">
+        <h4>Topics</h4>
         <p>
-          <div ng-repeat="p in document.placenames">
-            placenames: {{ p.placename }}
+          <div ng-repeat="topic in document.topics">
+            <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>
           </div>
         </p>
-      </section>
+      </div>
 
-      <section ng-if="alternate">
-        <h3>Metadata in alternative machine readable formats</h3>
-        <md-divider></md-divider>
+      <div ng-if="document.iso_topics">
+        <h4>ISO Topics</h4>
         <p>
-          <div ng-repeat="link in alternate">
-            <a ng-href="{{link.href}}">{{ link.title || link.href }}</a> ({{link.type}})
+          <div ng-repeat="iso_topic in document.iso_topics">
+            <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>
           </div>
         </p>
-      </section>
-    </div>
+      </div>
 
-    <div ng-if="error">
-      Sorry, couldn't find document "{{docId}}"
-    </div>
-  </md-card-content>
-</md-card>
+      <div ng-if="document.tags">
+        <h4>Tags</h4>
+        <p>
+          <div ng-repeat="tag in document.tags">
+            <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>
+          </div>
+        </p>
+      </div>
+
+
+      <div ng-if="document.gcmd.sciencekeywords">
+        <h4>NASA GCMD Science Keywords</h4>
+        <p>
+          <div ng-repeat="k in document.gcmd.sciencekeywords">
+            <a href="?q=&filter-gcmd.sciencekeywords={{ k.Category}}">{{ k.Category}}</a> &gt;
+            <a href="">{{ k.Topic}}</a> &gt;
+            <a href="">{{ k.Term }}</a> &gt;
+            <a href="">{{ k.Variable_Level_1}}</a>
+          </div>
+        </p>
+      </div>
+    </section>
+
+    <section ng-if="coverage">
+      <h3>Coverage</h3>
+      <md-divider></md-divider>
+      <p>{{ coverage }}</p>
+    </section>
+
+    <section ng-if="activity">
+      <h3>Fieldwork</h3>
+      <md-divider></md-divider>
+      <p>{{ activity.substr(0,16) }}</p>
+      <!--     <div ng-repeat="a in document.activity">
+        {{ a  }}
+      </div> -->
+    </section>
+
+    <section ng-if="document.placenames">
+      <h3>Placenames</h3>
+      <md-divider></md-divider>
+      <p>
+        <div ng-repeat="p in document.placenames">
+          placenames: {{ p.placename }}
+        </div>
+      </p>
+    </section>
+
+    <section ng-if="alternate">
+      <h3>Metadata in alternative machine readable formats</h3>
+      <md-divider></md-divider>
+      <p>
+        <div ng-repeat="link in alternate">
+          <a ng-href="{{link.href}}">{{ link.title || link.href }}</a> ({{link.type}})
+        </div>
+      </p>
+    </section>
+
+    <div ng-if="error">Sorry, couldn't find document "{{docId}}"</div>
+  </div>
+</div>
