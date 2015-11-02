@@ -6,15 +6,7 @@
 
       <npdc:document-meta></npdc:document-meta>
 
-      <!-- <h3 class="md-headline">
-        <span ng-repeat="author in authors">
-          <md-tooltip>{{ orgName(author.organisation, document.organisations) }}</md-tooltip>{{ author.name }}
-          <span ng-if="!$last">,
-          </span>
-        </span>
-      </h3> -->
-      <npdc:authors></npdc:authors>
-
+      <npdc:authors authors="authors"></npdc:authors>
       <npdc:citation citation="citation"></npdc:citation>
 
       <!-- See http://www.nature.com/articles/sdata201544 -->
@@ -24,34 +16,7 @@
         <p marked="document.summary"></p>
       </section>
 
-      <section ng-if="data.length > 0">
-
-        <h3>Get dataset</h3>
-        <md-divider></md-divider>
-        <p ng-repeat="d in data">
-          <a ng-href="{{d.href}}">{{ d.title || d.href }}</a> {{d.type ? '('+d.type+')':''}}
-        </p>
-
-        <p>{{ document.rights }}</p>
-
-          <div ng-repeat="licences in document.licences">
-            <a ng-href="{{licences}}">{{ licences }}</a>
-          </div>
-
-          <!-- https://wiki.creativecommons.org/wiki/Marking_Works_Technical -->
-          <div ng-if="isCCBy">
-
-            <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">
-              <img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" style="border-width:0" />
-            </a>
-            <br/>is free t under a
-            <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0</a>International Licence.
-
-            <span href="http://purl.org/dc/dcmitype/Dataset" rel="dc:type">Dataset</span>
-            <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license">CC</a>
-            <span property="dc:date">2006</span>.
-          </div>
-      </section>
+      <npdc:data data="data" licenses="document.licences" rights="document.rights"></npdc:data>
 
       <section ng-if="document.quality">
         <h3>Data quality</h3>
@@ -59,9 +24,9 @@
         <p>{{ document.quality }}</p>
       </section>
 
-      <npdc:person person="document.people"></npdc:person>
+      <npdc:persons></npdc:persons>
       <npdc:organisation organisation="document.organisations"></npdc:organisation>
-      <npdc:link links="links" related="related"></npdc:link>
+      <npdc:links links="links" related="related"></npdc:links>
 
       <section>
         <h3>Classification</h3>
@@ -113,21 +78,12 @@
         <p>{{ coverage }}</p>
       </section>
 
-      <section ng-if="activity">
-        <h3>Fieldwork</h3>
-        <md-divider></md-divider>
-        <p>{{ activity.substr(0,16) }}</p>
-        <!--     <div ng-repeat="a in document.activity">
-            {{ a  }}
-          </div> -->
-      </section>
-
       <section ng-if="document.placenames">
         <h3>Placenames</h3>
         <md-divider></md-divider>
         <p>
           <div ng-repeat="p in document.placenames">
-            placenames: {{ p.placename }}
+            {{ p.placename }}
           </div>
         </p>
       </section>
