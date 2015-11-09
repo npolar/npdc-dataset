@@ -7,7 +7,7 @@ var DatasetSearchController = function ($scope, $location, $controller, Dataset,
   $scope.resource = Dataset;
   npdcAppConfig.cardTitle = 'Search';
   npdcAppConfig.search.local.results.detail = function (entry) {
-    return "Released: " + entry.released.split('T')[0];
+    return "Released: " + (entry.released ? entry.released.split('T')[0] : '-');
   };
 
   let defaults = { limit: "50", sort: "-updated,-released", fields: 'title,id,collection,updated,released', facets: "topics", score: true };
