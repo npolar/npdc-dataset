@@ -25,7 +25,6 @@
 
       <npdc:persons></npdc:persons>
       <npdc:organisation organisation="document.organisations"></npdc:organisation>
-      <npdc:links links="links" related="related"></npdc:links>
 
       <section>
         <h3>Classification</h3>
@@ -33,27 +32,27 @@
         <div ng-if="document.topics">
           <h4>Topics</h4>
           <p>
-            <div ng-repeat="topic in document.topics">
-              <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>
-            </div>
+            <span ng-repeat="topic in document.topics">
+              <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>{{!$last ? ' / ':''}}
+            </span>
           </p>
         </div>
 
         <div ng-if="document.iso_topics">
           <h4>ISO Topics</h4>
           <p>
-            <div ng-repeat="iso_topic in document.iso_topics">
-              <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>
-            </div>
+            <span ng-repeat="iso_topic in document.iso_topics">
+              <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>{{!$last ? ' / ':''}}
+            </span>
           </p>
         </div>
 
         <div ng-if="document.tags">
           <h4>Tags</h4>
           <p>
-            <div ng-repeat="tag in document.tags">
-              <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>
-            </div>
+            <span ng-repeat="tag in document.tags">
+              <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>{{!$last ? ' / ':''}}
+            </span>
           </p>
         </div>
 
@@ -96,6 +95,8 @@
           </div>
         </p>
       </section>
+
+      <npdc:links links="links" related="related"></npdc:links>
     </div>
 
     <div ng-if="error">
