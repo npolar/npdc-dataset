@@ -5,15 +5,12 @@
  * @ngInject
  */
 var DatasetShowController = function($controller, $routeParams,
-  $scope, $q, Dataset, Project, Publication, NpolarApiSecurity, npdcAppConfig) {
+  $scope, $q, Dataset, Project, Publication, npdcAppConfig) {
 
   $controller('NpolarBaseController', {
     $scope: $scope
   });
   $scope.resource = Dataset;
-  $scope.security = NpolarApiSecurity;
-  $scope.error = null;
-  $scope.docId = $routeParams.id;
 
   let authors = (dataset) => {
 
@@ -136,8 +133,6 @@ var DatasetShowController = function($controller, $routeParams,
         $scope.related = related.reduce((a, b) => a.concat(b), []).sort((a, b) => b._score - a._score);
       });
 
-    }, (errorData) => {
-      $scope.error = errorData.statusText;
     });
 
   };

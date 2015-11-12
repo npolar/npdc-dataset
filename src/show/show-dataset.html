@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <npdc:edit-button class="np-primary-control"></npdc:edit-button>
-
+<npdc:loader ng-if="!document"></npdc:loader>
 <div class="np-padding">
   <div ng-if="document" class="np-doc">
 
@@ -24,7 +24,7 @@
       </section>
 
       <npdc:persons></npdc:persons>
-      <npdc:organisation organisation="document.organisations"></npdc:organisation>
+      <npdc:organisations></npdc:organisations>
 
       <section>
         <h3>Classification</h3>
@@ -76,15 +76,7 @@
         <p>{{ coverage }}</p>
       </section>
 
-      <section ng-if="document.placenames">
-        <h3>Placenames</h3>
-        <md-divider></md-divider>
-        <p>
-          <div ng-repeat="p in document.placenames">
-            {{ p.placename }}
-          </div>
-        </p>
-      </section>
+      <npdc:placenames></npdc:placenames>
 
       <section ng-if="alternate">
         <h3>Metadata in alternative machine readable formats</h3>
@@ -97,9 +89,5 @@
       </section>
 
       <npdc:links links="links" related="related"></npdc:links>
-    </div>
-
-    <div ng-if="error">
-      Sorry, couldn't find document "{{docId}}"
     </div>
 </div>
