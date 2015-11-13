@@ -5,7 +5,7 @@ var DatasetSearchController = function ($scope, $location, $controller, Dataset,
 
   $controller('NpolarBaseController', { $scope: $scope });
   $scope.resource = Dataset;
-  npdcAppConfig.cardTitle = 'Search';
+  npdcAppConfig.cardTitle = 'Datasets';
   npdcAppConfig.search.local.results.detail = function (entry) {
     return "Released: " + (entry.released ? entry.released.split('T')[0] : '-');
   };
