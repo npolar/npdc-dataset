@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <npdc:edit-button class="np-primary-control"></npdc:edit-button>
 <npdc:loader ng-if="!document"></npdc:loader>
+<leaflet ng-if="document && mapOptions.coverage" options="mapOptions"></leaflet>
 <div class="np-padding">
   <div ng-if="document" class="np-doc">
 
@@ -9,7 +10,7 @@
       <npdc:citation citation="citation"></npdc:citation>
 
       <!-- See http://www.nature.com/articles/sdata201544 -->
-      <section>
+      <section ng-if="document.summary">
         <h3>Abstract</h3>
         <md-divider></md-divider>
         <p marked="document.summary"></p>
@@ -68,12 +69,6 @@
             </div>
           </p>
         </div>
-      </section>
-
-      <section ng-if="coverage">
-        <h3>Coverage</h3>
-        <md-divider></md-divider>
-        <p>{{ coverage }}</p>
       </section>
 
       <npdc:placenames></npdc:placenames>
