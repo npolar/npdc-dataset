@@ -15,7 +15,7 @@ var DatasetSearchController = function ($scope, $location, $controller, Dataset,
   let query = Object.assign({}, defaults, invariants);
 
   let search = function (q) {
-    $scope.search(Object.assign({}, query, q));
+    $scope.search(Object.assign({}, q, query));
   };
 
   search(query);
