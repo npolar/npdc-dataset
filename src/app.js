@@ -5,11 +5,8 @@ var npdcCommon = require('npdc-common');
 var AutoConfig = npdcCommon.AutoConfig;
 
 var angular = require('angular');
-require('formula');
-require('angular-route');
-require('angular-npolar');
 
-var npdcDatasetApp = angular.module('npdcDatasetApp', ['ngRoute', 'formula', 'npolarApi', 'npolarUi', 'npdcUi', 'templates']);
+var npdcDatasetApp = angular.module('npdcDatasetApp', ['npdcUi']);
 
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
@@ -35,7 +32,6 @@ resources.forEach(service => {
 
 // Routing
 npdcDatasetApp.config(require('./router'));
-
 
 // API HTTP interceptor
 npdcDatasetApp.config($httpProvider => {
