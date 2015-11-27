@@ -33,7 +33,7 @@
         <div ng-if="document.topics">
           <h4>Topics</h4>
           <p>
-            <span ng-repeat="topic in document.topics">
+            <md-icon>label_outline</md-icon><span ng-repeat="topic in document.topics">
               <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>{{!$last ? ' / ':''}}
             </span>
           </p>
@@ -42,7 +42,7 @@
         <div ng-if="document.iso_topics">
           <h4>ISO Topics</h4>
           <p>
-            <span ng-repeat="iso_topic in document.iso_topics">
+            <md-icon>label_outline</md-icon><span ng-repeat="iso_topic in document.iso_topics">
               <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>{{!$last ? ' / ':''}}
             </span>
           </p>
@@ -51,7 +51,7 @@
         <div ng-if="document.tags">
           <h4>Tags</h4>
           <p>
-            <span ng-repeat="tag in document.tags">
+            <md-icon>label_outline</md-icon><span ng-repeat="tag in document.tags">
               <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>{{!$last ? ' / ':''}}
             </span>
           </p>
@@ -62,6 +62,7 @@
           <h4>NASA GCMD Science Keywords</h4>
           <p>
             <div ng-repeat="k in document.gcmd.sciencekeywords">
+              <md-icon>label_outline</md-icon>
               <a href="?q=&filter-gcmd.sciencekeywords={{ k.Category}}">{{ k.Category}}</a> &gt;
               <a href="">{{ k.Topic}}</a> &gt;
               <a href="">{{ k.Term }}</a> &gt;
