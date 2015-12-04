@@ -8,29 +8,65 @@
     },
     "progress",
     "draft",
-    "licences",
-    "released"
+    {
+      "id": "licences",
+      "title": "chose a licence"
+    }
     ]
   },
   {
     "title": "Texts",
     "fields": [
     {
+      "id": "released",
+      "title": "release date"
+    },
+    {
       "id": "summary",
       "type": "textarea"
     },
     "rights",
     "restrictions",
-    "quality",
+    {
+       "id": "quality",
+       "title": "data quality"
+    },
     "citation",
-    "comment"
+    "comment",
+    {
+       "id": "changes",
+       "title": "changes for major updates"
+    }
     ]
   },
   {
     "title": "Links",
     "fields": [
     {
-      "id": "links"
+      "id": "links",
+     "fields": [
+          {
+           "id": "href",
+           "title": "link"
+          },
+              "title",
+          {
+           "id": "rel",
+           "title": "relation to dataset"
+          },
+          {
+           "id": "hreflang",
+           "title": "language used in link"
+          },
+          {
+           "id": "type",
+            "hidden": true
+          },
+          {
+           "id": "modified",
+            "hidden": true
+          }
+        ]
     }
     ]
   },
@@ -48,25 +84,34 @@
   {
     "title": "Coverage",
     "fields": [
-    "activity",
+    {
+      "id": "activity",
+      "title":"data collection period"
+    },
     "coverage",
     "placenames"
     ]
   },
-  {
+   {
     "title": "People",
-    "fields": [
-    {
-      "id": "people"
-    }
+     "fields": [
+     {
+          "id": "people",
+     "fields": [
+     {
+          "id": "first_name",
+          "title": "first name"
+      },
+      {
+          "id": "last_name",
+          "title": "last name"
+      },
+      "email",
+      "organisation",
+      "roles",
+      "homepage"
     ]
-  },
-  {
-    "title": "Organisations",
-    "fields": [
-    {
-      "id": "organisations"
-    }
+      }
     ]
   },
   {
