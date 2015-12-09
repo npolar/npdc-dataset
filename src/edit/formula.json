@@ -6,12 +6,13 @@
     {
       "id": "title"
     },
-    "progress",
-    "draft",
     {
-      "id": "licences",
-      "title": "chose a licence"
-    }
+    "id":"summary",
+    "title":"summary",
+    "type":"textarea"
+    },
+    "progress",
+    "draft"
     ]
   },
   {
@@ -22,8 +23,8 @@
       "title": "release date"
     },
     {
-      "id": "summary",
-      "type": "textarea"
+      "id": "licences",
+      "title": "chose a licence"
     },
     "rights",
     "restrictions",
@@ -31,12 +32,18 @@
        "id": "quality",
        "title": "data quality"
     },
-    "citation",
-    "comment",
+    "citation"
+    ]
+  },
+  {
+    "title": "Classification",
+    "fields": [
     {
-       "id": "changes",
-       "title": "changes for major updates"
-    }
+      "id": "topics"
+    },
+    "iso_topics",
+    "sets",
+    "tags"
     ]
   },
   {
@@ -44,16 +51,17 @@
     "fields": [
     {
       "id": "links",
-     "fields": [
+      "fields": [
+        "title",
+        {
+           "id": "rel",
+           "title": "relation to dataset"
+          },
           {
            "id": "href",
            "title": "link"
           },
-              "title",
-          {
-           "id": "rel",
-           "title": "relation to dataset"
-          },
+          "title",
           {
            "id": "hreflang",
            "title": "language used in link"
@@ -66,19 +74,8 @@
            "id": "modified",
             "hidden": true
           }
-        ]
-    }
     ]
-  },
-  {
-    "title": "Classification",
-    "fields": [
-    "sets",
-    {
-      "id": "topics"
-    },
-    "iso_topics",
-    "tags"
+    }
     ]
   },
   {
@@ -114,6 +111,28 @@
       }
     ]
   },
+   {
+    "title": "Organisations",
+     "fields": [
+     {
+          "id": "organisations",
+     "fields": [
+     {
+          "id": "first_name",
+          "title": "first name"
+      },
+      {
+          "id": "last_name",
+          "title": "last name"
+      },
+      "email",
+      "organisation",
+      "roles",
+      "homepage"
+    ]
+      }
+    ]
+  },
   {
     "title": "External",
     "fields": [
@@ -129,7 +148,11 @@
     "created_by",
     "updated",
     "updated_by",
-    "changes"
+    "comment",
+    {
+       "id": "changes",
+       "title": "changes for major updates"
+    }
     ]
   }
   ]
