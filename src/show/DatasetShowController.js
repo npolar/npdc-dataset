@@ -130,8 +130,8 @@ var DatasetShowController = function($controller, $routeParams,
         limit: 5
       }).$promise;
 
-      $q.all([relatedDatasets, relatedPublications, relatedProjects]).then((related) => {
-        $scope.related = related.reduce((a, b) => a.concat(b), []).sort((a, b) => b._score - a._score);
+      $q.all([relatedDatasets, relatedPublications, relatedProjects]).then(related => {
+        $scope.related = related;
       });
 
     });
