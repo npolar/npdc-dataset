@@ -115,23 +115,27 @@ var DatasetShowController = function($controller, $routeParams,
         fields: 'id,title,collection',
         score: true,
         limit: 5,
-        'not-id': dataset.id
+        'not-id': dataset.id,
+        op: 'OR'
       }).$promise;
       let relatedPublications = Publication.array({
         q: dataset.title,
         fields: 'id,title,published_sort,collection',
         score: true,
-        limit: 5
+        limit: 5,
+        op: 'OR'
       }).$promise;
       let relatedProjects = Project.array({
         q: dataset.title,
         fields: 'id,title,collection',
         score: true,
-        limit: 5
+        limit: 5,
+        op: 'OR'
       }).$promise;
 
       $q.all([relatedDatasets, relatedPublications, relatedProjects]).then(related => {
         $scope.related = related;
+        console.log('related', related);
       });
 
     });

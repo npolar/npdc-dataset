@@ -29,6 +29,8 @@ module.exports = DatasetEditController;
   // "label": "EARTH SCIENCE" => e9f67a66-e9fc-435c-b720-ae32a2c3d8f5
 
 //gcmd.sciencekeywords.Topic =>  http://api.npolar.no/gcmd/concept/?q=&filter-concept=sciencekeywords&filter-cardinality=2
+//
+// &parent=
 
 //gcmd.sciencekeywords.Term => http://api.npolar.no/gcmd/concept/?q=&filter-concept=sciencekeywords&filter-cardinality=3
 
