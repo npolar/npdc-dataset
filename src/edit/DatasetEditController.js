@@ -15,6 +15,18 @@ var DatasetEditController = function ($scope, $controller, $routeParams, Dataset
   $scope.formula.schema = '//api.npolar.no/schema/dataset';
   $scope.formula.form = 'edit/formula.json';
   $scope.formula.template = 'material';
+  $scope.formula.templates = [
+    {
+      match(field) {
+        if (field.parents.length === 1 && field.parents[0].id === "links") {
+          return field.fields.some(subField =>
+            subField.id === "rel" && ["alternate", "edit", "via"].includes(subField.value)
+          );
+        }
+      },
+      hidden: true
+    }
+  ];
   //$scope.formula.saveHidden = false;
   // edit (or new) action
   $scope.edit();

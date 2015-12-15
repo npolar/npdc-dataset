@@ -55,7 +55,17 @@
         "title",
         {
            "id": "rel",
-           "title": "relation to dataset"
+           "title": "relation to dataset",
+           "enum": ["related",
+                    "service",
+                    "metadata",
+                    "project",
+                    "publication",
+                    "datacentre",
+                    "parent",
+                    "internal",
+                    "doi",
+                    "data"]
           },
           {
            "id": "href",
