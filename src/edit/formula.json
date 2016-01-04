@@ -1,169 +1,138 @@
 {
-  "fieldsets": [
-  {
+  "fieldsets": [{
     "title": "Dataset",
-    "fields": [
-    {
-      "id": "title"
-    },
-    {
-    "id":"summary",
-    "title":"summary",
-    "type":"textarea"
-    },
-    "progress",
-    "draft"
+    "fields": [{
+        "id": "title"
+      }, {
+        "id": "summary",
+        "title": "summary",
+        "type": "textarea"
+      },
+      "progress",
+      "draft"
     ]
-  },
-  {
+  }, {
     "title": "Texts",
-    "fields": [
-    {
-      "id": "released",
-      "title": "release date"
-    },
-    {
-      "id": "licences",
-      "title": "chose a licence"
-    },
-    "rights",
-    "restrictions",
-    {
-       "id": "quality",
-       "title": "data quality"
-    },
-    "citation"
+    "fields": [{
+        "id": "released",
+        "title": "release date"
+      }, {
+        "id": "licences",
+        "title": "chose a licence"
+      },
+      "rights",
+      "restrictions", {
+        "id": "quality",
+        "title": "data quality"
+      },
+      "citation"
     ]
-  },
-  {
+  }, {
     "title": "Classification",
-    "fields": [
-    {
-      "id": "topics"
-    },
-    "iso_topics",
-    "sets",
-    "tags"
+    "fields": [{
+        "id": "topics"
+      },
+      "iso_topics",
+      "sets",
+      "tags"
     ]
-  },
-  {
+  }, {
     "title": "Links",
-    "fields": [
-    {
+    "fields": [{
       "id": "links",
       "fields": [
-        "title",
         {
-           "id": "rel",
-           "title": "relation to dataset",
-           "enum": ["related",
-                    "service",
-                    "metadata",
-                    "project",
-                    "publication",
-                    "datacentre",
-                    "parent",
-                    "internal",
-                    "doi",
-                    "data"]
-          },
-          {
-           "id": "href",
-           "title": "link"
-          },
-          "title",
-          {
-           "id": "hreflang",
-           "title": "language used in link"
-          },
-          {
-           "id": "type",
-            "hidden": true
-          },
-          {
-           "id": "modified",
-            "hidden": true
-          }
-    ]
-    }
-    ]
-  },
-  {
+          "id": "rel",
+          "title": "relation to dataset",
+          "enum": ["related",
+            "service",
+            "metadata",
+            "project",
+            "publication",
+            "datacentre",
+            "parent",
+            "internal",
+            "doi",
+            "data"
+          ]
+        }, {
+          "id": "href",
+          "title": "link"
+        }, {
+          "id": "hreflang",
+          "title": "language used in link"
+        },
+        "!acccessed",
+        "!length",
+        "!etag",
+        "!type",
+        "!modified"
+      ]
+    }]
+  }, {
     "title": "Coverage",
-    "fields": [
-    {
-      "id": "activity",
-      "title":"data collection period"
-    },
-    "coverage",
-    "placenames"
+    "fields": [{
+        "id": "activity",
+        "title": "data collection period"
+      },
+      "coverage",
+      "placenames"
     ]
-  },
-   {
+  }, {
     "title": "People",
-     "fields": [
-     {
-          "id": "people",
-     "fields": [
-     {
+    "fields": [{
+      "id": "people",
+      "fields": [{
           "id": "first_name",
-          "title": "first name"
-      },
-      {
+          "title": "first name",
+          "autocomplete": {
+            "source": "http://api.npolar.no/person/?q=&fields=first_name,last_name,organisation&format=json&variant=array",
+            "callback": "npdcFirstName"
+          }
+        }, {
           "id": "last_name",
-          "title": "last name"
-      },
-      "email",
-      "organisation",
-      "roles",
-      "homepage"
-    ]
-      }
-    ]
-  },
-   {
+          "title": "last name",
+          "autocomplete": {
+            "source": "http://api.npolar.no/person/?q=&fields=first_name,last_name,organisation&format=json&variant=array",
+            "callback": "npdcLastName"
+          }
+        },
+        "!id"
+      ]
+    }]
+  }, {
     "title": "Organisations",
-     "fields": [
-     {
-          "id": "organisations",
-     "fields": [
-     {
+    "fields": [{
+      "id": "organisations",
+      "fields": [{
           "id": "first_name",
           "title": "first name"
-      },
-      {
+        }, {
           "id": "last_name",
           "title": "last name"
-      },
-      "email",
-      "organisation",
-      "roles",
-      "homepage"
-    ]
-      }
-    ]
-  },
-  {
+        },
+        "email",
+        "organisation",
+        "roles",
+        "homepage"
+      ]
+    }]
+  }, {
     "title": "External",
-    "fields": [
-    {
+    "fields": [{
       "id": "gcmd"
-    }
-    ]
-  },
-  {
+    }]
+  }, {
     "title": "Edits",
     "fields": [
-    "created",
-    "created_by",
-    "updated",
-    "updated_by",
-    "comment",
-    {
-       "id": "changes",
-       "title": "changes for major updates"
-    }
+      "created",
+      "created_by",
+      "updated",
+      "updated_by",
+      "comment", {
+        "id": "changes",
+        "title": "changes for major updates"
+      }
     ]
-  }
-  ]
+  }]
 }

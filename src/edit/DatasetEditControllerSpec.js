@@ -18,7 +18,7 @@ describe('DatasetEditController', function () {
       // jshint unused:false
       var datasetEditController = new DatasetEditController($scope, $controller, $routeParams, Dataset);
       var expected = {
-        schema: '//api.npolar.no/schema/dataset',
+        schema: '//api.npolar.no/schema/dataset-1',
       };
       $scope.formula.schema.should.eql(expected.schema);
     });

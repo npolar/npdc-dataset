@@ -12,7 +12,7 @@ var DatasetEditController = function ($scope, $controller, $routeParams, Dataset
   $scope.resource = Dataset;
 
   // Formula ($scope.formula is set by parent)
-  $scope.formula.schema = '//api.npolar.no/schema/dataset';
+  $scope.formula.schema = '//api.npolar.no/schema/dataset-1';
   $scope.formula.form = 'edit/formula.json';
   $scope.formula.template = 'material';
   $scope.formula.templates = [
@@ -47,3 +47,8 @@ module.exports = DatasetEditController;
 //gcmd.sciencekeywords.Term => http://api.npolar.no/gcmd/concept/?q=&filter-concept=sciencekeywords&filter-cardinality=3
 
 // <Detailed_Variable>text</Detailed_Variable> => free text
+
+
+// FIXME
+//
+// Document not vaild ["#/organisations/organisations_object/email (silent)", "#/organisations/organisations_object/email (Valida…rmat validation failed (RCF 3696 e-mail address))"]0: "#/organisations/organisations_object/email (silent)"1: "#/organisations/organisations_object/email (ValidationError: Format validation failed (RCF 3696 e-mail address))"length: 2__proto__: Array[0]
