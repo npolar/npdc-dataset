@@ -135,7 +135,6 @@ var DatasetShowController = function($controller, $routeParams,
 
       $q.all([relatedDatasets, relatedPublications, relatedProjects]).then(related => {
         $scope.related = related;
-        console.log('related', related);
       });
 
     });

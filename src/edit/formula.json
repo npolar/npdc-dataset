@@ -85,17 +85,11 @@
       "fields": [{
           "id": "first_name",
           "title": "first name",
-          "autocomplete": {
-            "source": "http://api.npolar.no/person/?q=&fields=first_name,last_name,organisation&format=json&variant=array",
-            "callback": "npdcFirstName"
-          }
+          "autocomplete": "http://api.npolar.no/person/?fields=first_name,last_name,organisation&format=json&variant=array"
         }, {
           "id": "last_name",
           "title": "last name",
-          "autocomplete": {
-            "source": "http://api.npolar.no/person/?q=&fields=first_name,last_name,organisation&format=json&variant=array",
-            "callback": "npdcLastName"
-          }
+          "autocomplete": "http://api.npolar.no/person/?fields=first_name,last_name,organisation&format=json&variant=array"
         },
         "!id"
       ]

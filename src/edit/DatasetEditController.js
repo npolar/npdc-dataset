@@ -25,12 +25,16 @@ var DatasetEditController = function ($scope, $controller, $routeParams, Dataset
         }
       },
       hidden: true
+    },
+    {
+      match(field) {
+        return field.id === "people_object";
+      },
+      template: '<npdc:formula-person></npdc:formula-person>'
     }
   ];
-  //$scope.formula.saveHidden = false;
-  // edit (or new) action
-  $scope.edit();
 
+  $scope.edit();
 };
 
 module.exports = DatasetEditController;
@@ -47,8 +51,3 @@ module.exports = DatasetEditController;
 //gcmd.sciencekeywords.Term => http://api.npolar.no/gcmd/concept/?q=&filter-concept=sciencekeywords&filter-cardinality=3
 
 // <Detailed_Variable>text</Detailed_Variable> => free text
-
-
-// FIXME
-//
-// Document not vaild ["#/organisations/organisations_object/email (silent)", "#/organisations/organisations_object/email (Valida…rmat validation failed (RCF 3696 e-mail address))"]0: "#/organisations/organisations_object/email (silent)"1: "#/organisations/organisations_object/email (ValidationError: Format validation failed (RCF 3696 e-mail address))"length: 2__proto__: Array[0]
