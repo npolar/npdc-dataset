@@ -33,8 +33,14 @@
         "id": "topics"
       },
       "iso_topics",
-      "sets",
-      "tags"
+      {
+        "id": "sets",
+        "title": "choose a set"
+      },
+       {
+        "id": "tags",
+        "title": "choose tags"
+      }
     ]
   }, {
     "title": "Links",
@@ -58,10 +64,8 @@
         }, {
           "id": "href",
           "title": "link"
-        }, {
-          "id": "hreflang",
-          "title": "language used in link"
         },
+        "!hreflang",
         "!acccessed",
         "!length",
         "!etag",
@@ -98,7 +102,9 @@
     "title": "Organisations",
     "fields": [{
       "id": "organisations",
-      "fields": [{
+      "fields": [
+      "!id",
+      {
           "id": "first_name",
           "title": "first name"
         }, {
