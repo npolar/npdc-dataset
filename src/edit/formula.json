@@ -39,7 +39,9 @@
       },
        {
         "id": "tags",
-        "title": "choose tags"
+        "title": "choose tags",
+        "multiple": true,
+        "autocomplete": true
       }
     ]
   }, {
@@ -67,9 +69,9 @@
         },
         "!hreflang",
         "!acccessed",
-        "!length",
+        "length",
         "!etag",
-        "!type",
+        { "id": "type", "autocomplete": true },
         "!modified"
       ]
     }]
@@ -112,7 +114,10 @@
           "title": "last name"
         },
         "email",
-        "organisation",
+        { "id": "organisation", "fields": [
+            {"id": "gcmd_short_name", "autocomplete": true }
+          ]
+        },
         "roles",
         "homepage"
       ]
