@@ -18,7 +18,8 @@
         "title": "release date"
       }, {
         "id": "licences",
-        "title": "chose a licence"
+        "title": "chose a licence",
+        "enum": ["http://data.norge.no/nlod/no/1.0", "http://creativecommons.org/licenses/by/3.0/no/", "http://opendatacommons.org/licenses/by/1.0/", "http://lovdata.no/dokument/NL/lov/1961-05-12-2", "http://creativecommons.org/publicdomain/zero/1.0/"]
       },
       "rights",
       "restrictions", {
@@ -35,7 +36,8 @@
       "iso_topics",
       {
         "id": "sets",
-        "title": "choose a set"
+        "title": "choose a set",
+        "enum": ["arctic", "antarctic", "gcmd.nasa.gov", "cryoclim.net", "ipy.org","docipy"]
       },
        {
         "id": "tags",
@@ -69,9 +71,12 @@
         },
         "!hreflang",
         "!acccessed",
-        "length",
+        "!length",
         "!etag",
-        { "id": "type", "autocomplete": true },
+         {"id": "type",
+         "title": "type",
+        "autocomplete": true
+        },
         "!modified"
       ]
     }]
@@ -114,27 +119,82 @@
           "title": "last name"
         },
         "email",
-        { "id": "organisation", "fields": [
-            {"id": "gcmd_short_name", "autocomplete": true }
-          ]
+        {"id": "gcmd_short_name",
+         "title": "GCMD short name",
+        "autocomplete": true
         },
         "roles",
         "homepage"
       ]
     }]
-  }, {
+  },
+  {
     "title": "External",
     "fields": [{
-      "id": "gcmd"
+      "id": "gcmd",
+      "fields": [
+      "!locations",
+      "!projects",
+      "!resolutions",
+      "!disciplines",
+      "!idn_nodes",
+      "!paleo_temporal_coverage",
+      "!instruments",
+      "!references",
+      "!extended",
+      "!citation",
+      {
+        "id": "sciencekeywords",
+        "title": "science keywords",
+        "fields": [
+             {
+            "id": "Category",
+            "title": "category"
+            },
+            {
+            "id": "Topic",
+            "title": "topic"
+            },
+            {
+            "id": "Term",
+            "title": "term"
+            },
+            {
+            "id": "Variable_Level_1",
+            "title": "variable level 1"
+            },
+            {
+            "id": "Variable_Level_2",
+            "title": "variable level 2"
+            },
+            {
+            "id": "Variable_Level_3",
+            "title": "variable level 3"
+            },
+            {
+            "id": "Detailed_Variable",
+            "title": "detailed variable"
+            }
+        ]
+      }
+      ]
     }]
-  }, {
+  },
+  {
     "title": "Edits",
     "fields": [
       "created",
-      "created_by",
+       {
+        "id": "created_by",
+        "title": "created by"
+      },
       "updated",
-      "updated_by",
-      "comment", {
+      {
+        "id": "updated_by",
+        "title": "updated by"
+      },
+      "comment",
+      {
         "id": "changes",
         "title": "changes for major updates"
       }
