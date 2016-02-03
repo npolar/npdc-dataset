@@ -17,21 +17,22 @@ var DatasetEditController = function($scope, $controller, $routeParams, Dataset,
     form: 'edit/formula.json',
     templates: npdcAppConfig.formula.templates.concat([{
       match(field) {
-          return ["alternate", "edit", "via"].includes(field.value.rel);
-        },
-        hidden: true
+        return ["alternate", "edit", "via"].includes(field.value.rel);
+      },
+      hidden: true
     }, {
-      match(field) {
-          return field.id === "people_object";
-        },
-        template: '<npdc:formula-person></npdc:formula-person>'
+      match: "people_item",
+      template: '<npdc:formula-person></npdc:formula-person>'
     }, {
       match: "gcmd",
       template: '<npdc:formula-gcmd></npdc:formula-gcmd>'
     }, {
-      match: "sciencekeywords_object",
+      match: "sciencekeywords_item",
       template: '<npdc:formula-gcmd-keyword></npdc:formula-gcmd-keyword>'
-    }, ])
+    }, {
+      match: "coverage_item",
+      template: "<dataset:coverage></dataset:coverage>"
+    }])
   };
 
   $scope.formula = formula.getInstance(formulaOptions);

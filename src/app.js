@@ -5,13 +5,14 @@ var npdcCommon = require('npdc-common');
 var AutoConfig = npdcCommon.AutoConfig;
 
 var angular = require('angular');
+require('npdc-common/src/wrappers/leaflet');
 
-var npdcDatasetApp = angular.module('npdcDatasetApp', ['npdcCommon']);
+var npdcDatasetApp = angular.module('npdcDatasetApp', ['npdcCommon', 'leaflet']);
 
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
-npdcDatasetApp.directive('leaflet', require('npdc-common/src/wrappers/leaflet'));
+npdcDatasetApp.directive('datasetCoverage', require('./edit/coverage/coverageDirective'));
 
 // Bootstrap ngResource models using NpolarApiResource
 var resources = [

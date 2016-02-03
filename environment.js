@@ -1,3 +1,3 @@
 'use strict';
-let environment = "test"; // development | test |  production
+let environment = "production"; // development | test |  production
 module.exports = environment;
