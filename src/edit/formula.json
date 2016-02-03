@@ -32,12 +32,10 @@
     "fields": [{
         "id": "topics"
       },
-      "iso_topics",
-      {
+      "iso_topics", {
         "id": "sets",
         "title": "choose a set"
-      },
-       {
+      }, {
         "id": "tags",
         "title": "choose tags"
       },
@@ -47,8 +45,7 @@
     "title": "Links",
     "fields": [{
       "id": "links",
-      "fields": [
-        {
+      "fields": [{
           "id": "rel",
           "title": "relation to dataset",
           "enum": ["related",
@@ -69,8 +66,11 @@
         "!hreflang",
         "!acccessed",
         "!length",
-        "!etag",
-        "!type",
+        "!etag", {
+          "id": "type",
+          "title": "type",
+          "autocomplete": true
+        },
         "!modified"
       ]
     }]
@@ -89,12 +89,10 @@
       "id": "people",
       "fields": [{
           "id": "first_name",
-          "title": "first name",
-          "autocomplete": "//api.npolar.no/person/?fields=first_name,last_name,organisation,email&format=json&variant=array"
+          "title": "first name"
         }, {
           "id": "last_name",
-          "title": "last name",
-          "autocomplete": "//api.npolar.no/person/?fields=first_name,last_name,organisation,email&format=json&variant=array"
+          "title": "last name"
         },
         "!id"
       ]
@@ -104,28 +102,30 @@
     "fields": [{
       "id": "organisations",
       "fields": [
-      "!id",
-      {
-          "id": "first_name",
-          "title": "first name"
-        }, {
-          "id": "last_name",
-          "title": "last name"
+        "!id",
+        "email", {
+          "id": "gcmd_short_name",
+          "title": "GCMD short name"
         },
-        "email",
-        "organisation",
         "roles",
         "homepage"
       ]
     }]
-  },
-  {
+  }, {
     "title": "Edits",
-    "fields": [
-      { "id": "created", "disabled": true },
-      { "id": "created_by", "disabled": true },
-      { "id": "updated", "disabled": true },
-      { "id": "updated_by", "disabled": true },
+    "fields": [{
+        "id": "created",
+        "disabled": true
+      }, {
+        "id": "created_by",
+        "disabled": true
+      }, {
+        "id": "updated",
+        "disabled": true
+      }, {
+        "id": "updated_by",
+        "disabled": true
+      },
       "comment", {
         "id": "changes",
         "title": "changes for major updates"

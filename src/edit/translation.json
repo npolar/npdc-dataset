@@ -1,0 +1,47 @@
+{
+	"iso639-3": "eng",
+
+
+	"fields": {
+		"iso_topics": {
+			"title": "ISO topics category",
+			"values": [
+				"biota",
+				"boundaries",
+				"climatology/meterology/atmosphere",
+				"economy",
+				"elevation",
+				"environment",
+				"farming",
+				"geoscientific information",
+				"health",
+				"imagery/base maps/earth cover",
+				"inland/waters",
+				"intelligence/military",
+				"location",
+				"oceans",
+				"planning/cadastre",
+				"society",
+				"structure",
+				"transportation",
+				"utilities/communication"
+			]
+		},
+		"people": {
+			"title": "people",
+			"description": "people",
+			"fields": {
+				"roles": {
+					"title": "roles",
+					"values": [
+						"author",
+						"principal investigator",
+						"processor",
+						"point of contact",
+						"editor"
+					]
+				}
+			}
+		}
+	}
+}
