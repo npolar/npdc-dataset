@@ -40,7 +40,8 @@
        {
         "id": "tags",
         "title": "choose tags"
-      }
+      },
+      "gcmd"
     ]
   }, {
     "title": "Links",
@@ -117,18 +118,14 @@
         "homepage"
       ]
     }]
-  }, {
-    "title": "External",
-    "fields": [{
-      "id": "gcmd"
-    }]
-  }, {
+  },
+  {
     "title": "Edits",
     "fields": [
-      "created",
-      "created_by",
-      "updated",
-      "updated_by",
+      { "id": "created", "disabled": true },
+      { "id": "created_by", "disabled": true },
+      { "id": "updated", "disabled": true },
+      { "id": "updated_by", "disabled": true },
       "comment", {
         "id": "changes",
         "title": "changes for major updates"

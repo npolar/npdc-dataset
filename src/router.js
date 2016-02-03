@@ -1,9 +1,7 @@
 'use strict';
 
-/**
- * @ngInject
- */
 var router = function($routeProvider, $locationProvider) {
+  'ngInject';
 
   $locationProvider.html5Mode(true).hashPrefix('!');
 

@@ -1,7 +1,7 @@
 'use strict';
 
-// @ngInject
 var DatasetSearchController = function ($scope, $location, $controller, Dataset, npdcAppConfig) {
+  'ngInject';
 
   $controller('NpolarBaseController', { $scope: $scope });
   $scope.resource = Dataset;

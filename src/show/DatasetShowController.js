@@ -1,11 +1,9 @@
 'use strict';
-/**
- *
- *
- * @ngInject
- */
+
 var DatasetShowController = function($controller, $routeParams,
   $scope, $q, Dataset, Project, Publication, npdcAppConfig) {
+    'ngInject';
+
 
   $controller('NpolarBaseController', {
     $scope: $scope
