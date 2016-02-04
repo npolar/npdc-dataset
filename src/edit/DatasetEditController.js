@@ -36,7 +36,8 @@ var DatasetEditController = function($scope, $controller, $routeParams, Dataset,
   };
 
   $scope.formula = formula.getInstance(formulaOptions);
-  formulaAutoCompleteService.optionsFromFacets(['organisations.gcmd_short_name', 'links.type'], Dataset, $scope.formula);
+  formulaAutoCompleteService.optionsFromFacets(['organisations.name', 'organisations.email',
+    'organisations.homepage', 'organisations.gcmd_short_name', 'links.type'], Dataset, $scope.formula);
 
 
   $scope.edit();
