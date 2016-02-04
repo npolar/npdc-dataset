@@ -32,6 +32,9 @@ var DatasetEditController = function($scope, $controller, $routeParams, Dataset,
     }, {
       match: "coverage_item",
       template: "<dataset:coverage></dataset:coverage>"
+    }, {
+      match: "placenames_item",
+      template: '<npdc:formula-placename></npdc:formula-placename>'
     }])
   };
 
