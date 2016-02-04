@@ -40,10 +40,16 @@ npdcDatasetApp.config($httpProvider => {
 });
 
 // Inject npolarApiConfig and run
-npdcDatasetApp.run((npolarApiConfig, npdcAppConfig) => {
+npdcDatasetApp.run(($http, npolarApiConfig, npdcAppConfig, NpolarTranslate, NpolarLang) => {
   var autoconfig = new AutoConfig(environment);
   angular.extend(npolarApiConfig, autoconfig, { resources });
-  npdcAppConfig.cardTitle = '';
+
+  // i18n
+  $http.get('//api.npolar.no/text/?q=&filter-bundle=npdc-dataset&format=json&variant=array&limit=all').then(response => {
+    NpolarTranslate.appendToDictionary(response.data);
+    NpolarLang.setLanguagesFromDictionaryUse({ min: 0.50, force: ['en', 'nb'], dictionary: response.data});
+  });
+
   npdcAppConfig.toolbarTitle = 'Datasets';
   console.debug("npolarApiConfig", npolarApiConfig);
 });

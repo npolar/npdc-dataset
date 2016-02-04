@@ -1,11 +1,11 @@
 'use strict';
 
-var DatasetSearchController = function ($scope, $location, $controller, Dataset, npdcAppConfig) {
+var DatasetSearchController = function ($scope, $location, $controller, Dataset, npdcAppConfig, NpolarTranslate) {
   'ngInject';
 
   $controller('NpolarBaseController', { $scope: $scope });
   $scope.resource = Dataset;
-  npdcAppConfig.cardTitle = 'Datasets';
+  npdcAppConfig.cardTitle = 'npdc.app.Title';
   npdcAppConfig.search.local.results.detail = function (entry) {
     return "Released: " + (entry.released ? entry.released.split('T')[0] : '-');
   };
