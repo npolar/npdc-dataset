@@ -1,5 +1,5 @@
-node_modules
-.tags
-dist
-environment.js
-coverage
+/node_modules
+/.tags
+/dist
+/environment.js
+/coverage

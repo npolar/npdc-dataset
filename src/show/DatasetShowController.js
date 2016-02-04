@@ -93,7 +93,12 @@ var DatasetShowController = function($controller, $routeParams,
       $scope.links = dataset.links.filter(l => (l.rel !== "alternate" && l.rel !== "edit") && l.rel !== "data");
       $scope.data = dataset.links.filter(l => l.rel === "data");
       $scope.alternate = dataset.links.filter(l => ((l.rel === "alternate" && l.type !== "text/html") || l.rel === "edit"));
-      $scope.mapOptions = { coverage: dataset.coverage };
+      $scope.mapOptions = {};
+
+      if (dataset.coverage) {
+        let bounds = dataset.coverage.map(cov => [[cov.south, cov.west], [cov.north, cov.east]]);
+        $scope.mapOptions.coverage = bounds;
+      }
 
       $scope.authors = authors(dataset).map(a => {
         if (!a.name && a.first_name) {
