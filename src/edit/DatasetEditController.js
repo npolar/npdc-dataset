@@ -1,7 +1,7 @@
 'use strict';
 
 var DatasetEditController = function($scope, $controller, $routeParams, Dataset, formula,
-  formulaAutoCompleteService, npdcAppConfig) {
+  formulaAutoCompleteService, npdcAppConfig, chronopicService) {
   'ngInject';
 
   // EditController -> NpolarEditController
@@ -40,8 +40,13 @@ var DatasetEditController = function($scope, $controller, $routeParams, Dataset,
   };
 
   $scope.formula = formula.getInstance(formulaOptions);
-  formulaAutoCompleteService.optionsFromFacets(['organisations.name', 'organisations.email',
-    'organisations.homepage', 'organisations.gcmd_short_name', 'links.type'], Dataset, $scope.formula);
+  formulaAutoCompleteService.autocompleteFacets(['organisations.name', 'organisations.email',
+    'organisations.homepage', 'organisations.gcmd_short_name', 'links.type', 'sets', 'tags'], Dataset, $scope.formula);
+
+  chronopicService.defineOptions({ match: 'released', format: '{date}'});
+  chronopicService.defineOptions({ match(field) {
+    return field.path.match(/^#\/activity\/\d+\/.+/);
+  }, format: '{date}'});
 
 
   $scope.edit();

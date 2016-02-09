@@ -47,7 +47,7 @@ npdcDatasetApp.run(($http, npolarApiConfig, npdcAppConfig, NpolarTranslate, Npol
   // i18n
   $http.get('//api.npolar.no/text/?q=&filter-bundle=npdc-dataset&format=json&variant=array&limit=all').then(response => {
     NpolarTranslate.appendToDictionary(response.data);
-    NpolarLang.setLanguagesFromDictionaryUse({ min: 0.50, force: ['en', 'nb'], dictionary: response.data});
+    NpolarLang.setLanguages(npdcAppConfig.i18n.languages);
   });
 
   npdcAppConfig.toolbarTitle = 'Datasets';
