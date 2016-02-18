@@ -36,7 +36,10 @@ var DatasetEditController = function($scope, $controller, $routeParams, Dataset,
       match: "placenames_item",
       template: '<npdc:formula-placename></npdc:formula-placename>'
     }]),
-    languages: npdcAppConfig.formula.languages
+    languages: npdcAppConfig.formula.languages.concat([{
+      map: require('./en.json'),
+      code: 'en'
+    }])
   };
 
   $scope.formula = formula.getInstance(formulaOptions);
