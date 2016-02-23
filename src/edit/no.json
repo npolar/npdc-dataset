@@ -1,0 +1,71 @@
+{
+  "fieldsets" : [
+    "Datasett",
+    "Data",
+    "Klassifisering",
+    "Lenker",
+    "Dekning",
+    "Personer",
+    "Organisasjoner",
+    "Endringer"
+  ],
+  "fields": {
+    "iso_topics": {
+      "title": "ISO topics category",
+      "values": [
+        "biota",
+        "boundaries",
+        "climatology/meterology/atmosphere",
+        "economy",
+        "elevation",
+        "environment",
+        "farming",
+        "geoscientific information",
+        "health",
+        "imagery/base maps/earth cover",
+        "inland/waters",
+        "intelligence/military",
+        "location",
+        "oceans",
+        "planning/cadastre",
+        "society",
+        "structure",
+        "transportation",
+        "utilities/communication"
+      ]
+    },
+    "people": {
+      "title": "personer",
+      "fields": {
+        "fields": {
+          "roles": {
+            "values": [
+              "author",
+              "principal investigator",
+              "processor",
+              "point of contact",
+              "editor"
+            ]
+          }
+        }
+      }
+    },
+    "organisations": {
+      "fields": {
+        "fields": {
+          "roles": {
+            "values": [
+              "author",
+              "originator",
+              "owner",
+              "point of contact",
+              "publisher",
+              "principal investigator",
+              "resource provider"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

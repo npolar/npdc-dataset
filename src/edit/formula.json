@@ -12,8 +12,14 @@
       "draft"
     ]
   }, {
-    "title": "Texts",
-    "fields": [{
+    "title": "Data",
+    "fields": [
+      {
+        "id": "links",
+        "title": "data links",
+        "instance": "data"
+      },
+      {
         "id": "released",
         "title": "release date"
       }, {
