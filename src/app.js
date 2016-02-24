@@ -1,6 +1,4 @@
 'use strict';
-
-var environment = require('../environment');
 var npdcCommon = require('npdc-common');
 var AutoConfig = npdcCommon.AutoConfig;
 
@@ -41,7 +39,7 @@ npdcDatasetApp.config($httpProvider => {
 
 // Inject npolarApiConfig and run
 npdcDatasetApp.run(($http, npolarApiConfig, npdcAppConfig, NpolarTranslate, NpolarLang) => {
-  var autoconfig = new AutoConfig(environment);
+  var autoconfig = new AutoConfig("test");
   angular.extend(npolarApiConfig, autoconfig, { resources });
 
   // i18n

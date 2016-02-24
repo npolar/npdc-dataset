@@ -27,7 +27,8 @@
         "title": "chose a licence"
       },
       "rights",
-      "restrictions", {
+      "restrictions",
+      {
         "id": "quality",
         "title": "data quality"
       },
@@ -35,16 +36,11 @@
     ]
   }, {
     "title": "Classification",
-    "fields": [{
-        "id": "topics"
-      },
-      "iso_topics", {
-        "id": "sets",
-        "title": "choose a set"
-      }, {
-        "id": "tags",
-        "title": "choose tags"
-      },
+    "fields": [
+      "topics",
+      "iso_topics",
+      "sets",
+      "tags",
       "gcmd"
     ]
   }, {
