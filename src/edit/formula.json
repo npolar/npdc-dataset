@@ -13,13 +13,11 @@
     ]
   }, {
     "title": "Data",
-    "fields": [
-      {
+    "fields": [{
         "id": "links",
         "title": "data links",
         "instance": "data"
-      },
-      {
+      }, {
         "id": "released",
         "title": "release date"
       }, {
@@ -27,8 +25,7 @@
         "title": "chose a licence"
       },
       "rights",
-      "restrictions",
-      {
+      "restrictions", {
         "id": "quality",
         "title": "data quality"
       },
@@ -47,34 +44,36 @@
     "title": "Links",
     "fields": [{
       "id": "links",
-      "fields": [{
-          "id": "rel",
-          "title": "relation to dataset",
-          "enum": ["related",
-            "service",
-            "metadata",
-            "project",
-            "publication",
-            "datacentre",
-            "parent",
-            "internal",
-            "doi",
-            "data"
-          ]
-        }, {
-          "id": "href",
-          "title": "link"
-        },
-        "!hreflang",
-        "!acccessed",
-        "!length",
-        "!etag", {
-          "id": "type",
-          "title": "type",
-          "autocomplete": true
-        },
-        "!modified"
-      ]
+      "items": {
+        "fields": [{
+            "id": "rel",
+            "title": "relation to dataset",
+            "enum": ["related",
+              "service",
+              "metadata",
+              "project",
+              "publication",
+              "datacentre",
+              "parent",
+              "internal",
+              "doi",
+              "data"
+            ]
+          }, {
+            "id": "href",
+            "title": "link"
+          },
+          "!hreflang",
+          "!acccessed",
+          "!length",
+          "!etag", {
+            "id": "type",
+            "title": "type",
+            "autocomplete": true
+          },
+          "!modified"
+        ]
+      }
     }]
   }, {
     "title": "Coverage",
@@ -89,29 +88,33 @@
     "title": "People",
     "fields": [{
       "id": "people",
-      "fields": [{
-          "id": "first_name",
-          "title": "first name"
-        }, {
-          "id": "last_name",
-          "title": "last name"
-        },
-        "!id"
-      ]
+      "items": {
+        "fields": [{
+            "id": "first_name",
+            "title": "first name"
+          }, {
+            "id": "last_name",
+            "title": "last name"
+          },
+          "!id"
+        ]
+      }
     }]
   }, {
     "title": "Organisations",
     "fields": [{
       "id": "organisations",
-      "fields": [
-        "!id",
-        "email", {
-          "id": "gcmd_short_name",
-          "title": "GCMD short name"
-        },
-        "roles",
-        "homepage"
-      ]
+      "items": {
+        "fields": [
+          "!id",
+          "email", {
+            "id": "gcmd_short_name",
+            "title": "GCMD short name"
+          },
+          "roles",
+          "homepage"
+        ]
+      }
     }]
   }, {
     "title": "Edits",

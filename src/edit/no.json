@@ -36,7 +36,7 @@
     },
     "licences": {
       "title": "lisenser",
-      "fields": {
+      "items": {
         "title": "lisens"
       }
     },
@@ -108,7 +108,7 @@
       "fields": {
         "sciencekeywords": {
           "title": "GCMD søkeord",
-          "fields": {
+          "items": {
             "fields": {
               "Category": {
                 "title": "kategori"
@@ -138,7 +138,7 @@
     },
     "links": {
       "title": "lenker",
-      "fields": {
+      "items": {
         "fields": {
           "rel": {
             "title": "relasjon"
@@ -151,7 +151,7 @@
     },
     "activity": {
       "title": "datainnsamling periode",
-      "fields": {
+      "items": {
         "fields": {
           "stop": {
             "title": "stopp"
@@ -161,7 +161,7 @@
     },
     "coverage": {
       "title": "dekning",
-      "fields": {
+      "items": {
         "fields": {
           "north": {
             "title": "nord"
@@ -180,7 +180,7 @@
     },
     "placenames": {
       "title": "stedsnavn",
-      "fields": {
+      "items": {
         "fields": {
           "placename": {
             "title": "stedsnavn"
@@ -196,7 +196,7 @@
     },
     "people": {
       "title": "personer",
-      "fields": {
+      "items": {
         "fields": {
           "first_name": {
             "title": "fornavn"
@@ -225,7 +225,7 @@
     },
     "organisations": {
       "title": "organisasjoner",
-      "fields": {
+      "items": {
         "fields": {
           "name": {
             "title": "navn"
@@ -271,18 +271,24 @@
     },
     "changes": {
       "title": "kommentarer til store endringer",
-      "fields": {
-        "datetime": {
-          "title": "dato"
-        },
-        "name": {
-          "title": "navn"
-        },
-        "email": {
-          "title": "e-post"
-        },
-        "comment": "kommentar",
-        "rev": "revisjon"
+      "items": {
+        "fields": {
+          "datetime": {
+            "title": "dato"
+          },
+          "name": {
+            "title": "navn"
+          },
+          "email": {
+            "title": "e-post"
+          },
+          "comment": {
+            "title": "kommentar"
+            },
+          "rev": {
+            "title": "revisjon"
+          }
+        }
       }
     }
   }

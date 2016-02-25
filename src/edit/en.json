@@ -25,7 +25,7 @@
       ]
     },
     "people": {
-      "fields": {
+      "items": {
         "fields": {
           "roles": {
             "values": [
@@ -40,7 +40,7 @@
       }
     },
     "organisations": {
-      "fields": {
+      "items": {
         "fields": {
           "roles": {
             "values": [
