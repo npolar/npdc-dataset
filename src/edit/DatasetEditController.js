@@ -64,7 +64,7 @@ var DatasetEditController = function($scope, $controller, $routeParams, Dataset,
       href: file.url,
       title: file.filename,
       length: file.file_size,
-      hash: file.md5sum,
+      hash: [file.md5sum],
       type: file.content_type
     };
   };
