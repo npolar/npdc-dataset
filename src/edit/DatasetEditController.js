@@ -58,26 +58,36 @@ var DatasetEditController = function($scope, $controller, $routeParams, Dataset,
   }, format: '{date}'});
 
 
-  let dataLinkSuccess = function (file) {
+  let fileToValueMapper = function (file) {
     return {
       rel: 'data',
       href: file.url,
       title: file.filename,
       length: file.file_size,
-      hash: file.md5sum,
+      hash: [file.md5sum],
       type: file.content_type
     };
   };
+
+  let valueToFileMapper = function (value) {
+    if (value.rel !== 'data') {
+      return null;
+    }
+    return {
+      filename: value.title,
+      file_size: value.length,
+      url: value.href
+    };
+  };
+
 
   fileFunnelService.fileUploader({
     match(field) {
        return field.id === "links" && field.instance === "data";
     },
     server: 'https://apptest.data.npolar.no:3000/dataset/:id/_file/',
-    successCallback: dataLinkSuccess,
-    filterValues: function (value) {
-      return value.rel === 'data';
-    },
+    fileToValueMapper,
+    valueToFileMapper,
     restricted: false
   }, $scope.formula);
 
