@@ -14,10 +14,6 @@
   }, {
     "title": "Data",
     "fields": [{
-        "id": "links",
-        "title": "data links",
-        "instance": "data"
-      }, {
         "id": "released",
         "title": "release date"
       }, {

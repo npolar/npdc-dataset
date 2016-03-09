@@ -57,41 +57,7 @@ var DatasetEditController = function($scope, $controller, $routeParams, Dataset,
     return field.path.match(/^#\/activity\/\d+\/.+/);
   }, format: '{date}'});
 
-
-  let fileToValueMapper = function (file) {
-    return {
-      rel: 'data',
-      href: file.url,
-      title: file.filename,
-      length: file.file_size,
-      hash: [file.md5sum],
-      type: file.content_type
-    };
-  };
-
-  let valueToFileMapper = function (value) {
-    if (value.rel !== 'data') {
-      return null;
-    }
-    return {
-      filename: value.title,
-      file_size: value.length,
-      url: value.href
-    };
-  };
-
-
-  fileFunnelService.fileUploader({
-    match(field) {
-       return field.id === "links" && field.instance === "data";
-    },
-    server: 'https://apptest.data.npolar.no:3000/dataset/:id/_file/',
-    fileToValueMapper,
-    valueToFileMapper,
-    restricted: false
-  }, $scope.formula);
-
-  $scope.edit(/* generateUUID */ true);
+  $scope.edit();
 };
 
 module.exports = DatasetEditController;
