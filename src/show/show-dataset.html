@@ -4,8 +4,11 @@
 <leaflet ng-if="document && mapOptions.coverage" options="mapOptions"></leaflet>
 <div class="np-padding">
   <div ng-if="document" class="np-doc">
-
-      <npdc:document-meta></npdc:document-meta>
+    
+    <h3>dataset <span ng-if="document.draft == 'yes'">{{ 'draft' | t  }}</span>| {{document.licences[0]  }}</h3>
+       
+    <h1 class="md-display-2">{{ document.title }}</h1>
+    
       <npdc:authors authors="authors"></npdc:authors>
       <npdc:citation citation="citation"></npdc:citation>
 
@@ -17,7 +20,9 @@
       </section>
 
       <npdc:data data="data" licenses="document.licences" rights="document.rights"></npdc:data>
-
+      
+      <npdc:links links="links" related="related"></npdc:links>
+      
       <section ng-if="document.quality">
         <h3>Data quality</h3>
         <md-divider></md-divider>
@@ -28,8 +33,9 @@
       <npdc:organisations></npdc:organisations>
 
       <section>
-        <h3>Classification</h3>
         <md-divider></md-divider>
+        <h3>Classification</h3>
+        
         <div ng-if="document.topics">
           <h4>Topics</h4>
           <p>
@@ -57,7 +63,6 @@
           </p>
         </div>
 
-
         <div ng-if="document.gcmd.sciencekeywords">
           <h4>NASA GCMD Science Keywords</h4>
           <p>
@@ -75,15 +80,20 @@
       <npdc:placenames></npdc:placenames>
 
       <section ng-if="alternate">
-        <h3>Metadata in alternative machine readable formats</h3>
         <md-divider></md-divider>
+        <h3>Machine-readable metadata</h3>
+        <!-- @todo CC0 for metadata? <p></p> -->
         <p>
           <div ng-repeat="link in alternate">
-            <a ng-href="{{link.href}}">{{ link.title || link.href }}</a> ({{link.type}})
-          </div>
+            <a ng-href="{{link.href}}" title="{{link.type}}">{{ link.title || link.href }}</a>
+            </div>
         </p>
       </section>
-
-      <npdc:links links="links" related="related"></npdc:links>
+      
+      <section>
+        <npdc:document-meta></npdc:document-meta>
+      </section>
+      
     </div>
 </div>
+
