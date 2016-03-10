@@ -92,7 +92,13 @@ var DatasetShowController = function($controller, $routeParams,
       $scope.published_year = published_year(dataset);
       $scope.links = dataset.links.filter(l => (l.rel !== "alternate" && l.rel !== "edit") && l.rel !== "data");
       $scope.data = dataset.links.filter(l => l.rel === "data");
-      $scope.alternate = dataset.links.filter(l => ((l.rel === "alternate" && l.type !== "text/html") || l.rel === "edit"));
+      $scope.alternate = dataset.links.filter(l => ((l.rel === "alternate" && l.type !== "text/html") || l.rel === "edit")).concat({
+        href: `http://api.npolar.no/dataset/?q=&filter-id=${dataset.id}&format=json&variant=ld`,
+        title: "DCAT (JSON-LD)",
+        type: "application/ld+json"
+      });
+          
+      
       $scope.mapOptions = {};
 
       if (dataset.coverage) {
