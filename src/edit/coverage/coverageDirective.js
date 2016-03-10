@@ -5,7 +5,7 @@ let coverageDirective = function () {
 
   return {
     template: require('./coverage.html'),
-    controller($scope) {
+    controller($scope, $timeout) {
       "ngInject";
 
       let rectLayer;
@@ -54,6 +54,7 @@ let coverageDirective = function () {
         $scope.south.value = Math.round(layer._latlngs[0].lat * 100) / 100;
         $scope.west.value = Math.round(layer._latlngs[0].lng * 100) / 100;
         rectLayer = layer;
+        $timeout();
       });
     }
   };
