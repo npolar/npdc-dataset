@@ -57,7 +57,8 @@ var DatasetEditController = function($scope, $controller, $routeParams, Dataset,
     return field.path.match(/^#\/activity\/\d+\/.+/);
   }, format: '{date}'});
 
-  $scope.edit();
+  let doc = $scope.edit();
+  console.log('doc', doc);
 };
 
 module.exports = DatasetEditController;

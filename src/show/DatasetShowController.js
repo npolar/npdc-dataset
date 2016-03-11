@@ -86,7 +86,6 @@ var DatasetShowController = function($controller, $routeParams,
 
   let show = function() {
     $scope.show().$promise.then((dataset) => {
-      npdcAppConfig.cardTitle = $scope.document.title;
       $scope.citation = citation(dataset);
 
       $scope.published_year = published_year(dataset);
@@ -97,8 +96,8 @@ var DatasetShowController = function($controller, $routeParams,
         title: "DCAT (JSON-LD)",
         type: "application/ld+json"
       });
-          
-      
+
+
       $scope.mapOptions = {};
 
       if (dataset.coverage) {

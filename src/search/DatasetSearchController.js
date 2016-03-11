@@ -7,7 +7,7 @@ var DatasetSearchController = function($scope, $location, $controller, $filter, 
     $scope: $scope
   });
   $scope.resource = Dataset;
-  npdcAppConfig.cardTitle = 'npdc.app.Title';
+
   npdcAppConfig.search.local.results.detail = function(entry) {
     return NpolarTranslate.translate("Released: ") + (entry.released ? $filter('date')(entry.released.split('T')[0]) : '-');
   };
