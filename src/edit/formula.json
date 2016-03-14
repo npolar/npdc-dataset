@@ -9,10 +9,9 @@
         "type": "textarea"
       },
       "progress",
-      "draft"
     ]
   }, {
-    "title": "Data",
+    "title": "?",
     "fields": [{
         "id": "released",
         "title": "release date"
@@ -44,7 +43,8 @@
         "fields": [{
             "id": "rel",
             "title": "relation to dataset",
-            "enum": ["related",
+            "enum": ["data",
+              "related",
               "service",
               "metadata",
               "project",
@@ -52,8 +52,7 @@
               "datacentre",
               "parent",
               "internal",
-              "doi",
-              "data"
+              "doi"
             ]
           }, {
             "id": "href",
@@ -64,8 +63,7 @@
           "!length",
           "!etag", {
             "id": "type",
-            "title": "type",
-            "autocomplete": true
+            "title": "type"
           },
           "!modified"
         ]
