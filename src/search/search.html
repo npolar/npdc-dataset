@@ -1,3 +1,11 @@
 <!DOCTYPE html>
 <npdc:search-input feed="feed"></npdc:search-input>
-<npdc:search feed="feed"></npdc:search>
+<npdc:tabs tabs="tabs"></npdc:tabs>
+<div class="np-tabs">
+  <div class="np-tab">
+    <leaflet class="map-search" options="mapOptions" ng-if="tabs[0].active"></leaflet>
+  </div>
+  <div class="np-tab">
+    <npdc:search feed="feed"></npdc:search>
+  </div>
+</div>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <npdc:edit-button class="np-primary-control"></npdc:edit-button>
 <npdc:loader ng-if="!document"></npdc:loader>
-<leaflet ng-if="document && mapOptions.coverage" options="mapOptions"></leaflet>
+<leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map"></leaflet>
 <div class="np-padding">
   <div ng-if="document" class="np-doc">
-    
+
     <h3>dataset <span ng-if="document.draft == 'yes'">{{ 'draft' | t  }}</span>| {{document.licences[0]  }}</h3>
-       
+
     <h1 class="md-display-2">{{ document.title }}</h1>
-    
+
       <npdc:authors authors="authors"></npdc:authors>
       <npdc:citation citation="citation"></npdc:citation>
 
@@ -20,9 +20,9 @@
       </section>
 
       <npdc:data data="data" licenses="document.licences" rights="document.rights"></npdc:data>
-      
+
       <npdc:links links="links" related="related"></npdc:links>
-      
+
       <section ng-if="document.quality">
         <h3>Data quality</h3>
         <md-divider></md-divider>
@@ -35,7 +35,7 @@
       <section>
         <md-divider></md-divider>
         <h3>Classification</h3>
-        
+
         <div ng-if="document.topics">
           <h4>Topics</h4>
           <p>
@@ -89,11 +89,10 @@
             </div>
         </p>
       </section>
-      
+
       <section>
         <npdc:document-meta></npdc:document-meta>
       </section>
-      
+
     </div>
 </div>
-

@@ -7,6 +7,7 @@ require('npdc-common/src/wrappers/leaflet');
 
 var npdcDatasetApp = angular.module('npdcDatasetApp', ['npdcCommon', 'leaflet']);
 
+npdcDatasetApp.factory('Dataset', require('./Dataset'));
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
@@ -16,7 +17,7 @@ npdcDatasetApp.directive('datasetCoverage', require('./edit/coverage/coverageDir
 var resources = [
   {'path': '/', 'resource': 'NpolarApi'},
   {'path': '/user', 'resource': 'User'},
-  {'path': '/dataset', 'resource': 'Dataset' },
+  {'path': '/dataset', 'resource': 'DatasetResource' },
   {'path': '/publication', 'resource': 'Publication' },
   {'path': '/project', 'resource': 'Project' }
 
