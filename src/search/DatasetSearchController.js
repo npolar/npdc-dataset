@@ -4,6 +4,7 @@ var DatasetSearchController = function($scope, $controller, $filter, Dataset, np
     NpdcSearchService, NpolarTranslate) {
   'ngInject';
 
+  let mapBounds;
   $controller('NpolarBaseController', {
     $scope: $scope
   });
@@ -18,7 +19,17 @@ var DatasetSearchController = function($scope, $controller, $filter, Dataset, np
     }
   ];
 
-  let mapBounds;
+  let setPoints = function(bounds) {
+    Dataset.geoQuery(bounds).then(points => {
+      $scope.mapOptions.points = points;
+    });
+  };
+
+  $scope.tabActivate = function (tab) {
+    if ($scope.tabs[0].active && mapBounds) {
+      setPoints(mapBounds);
+    }
+  };
 
   npdcAppConfig.search.local.results.detail = function(entry) {
     return NpolarTranslate.translate("Released: ") + (entry.released ? $filter('date')(entry.released.split('T')[0]) : '-');
@@ -44,19 +55,15 @@ var DatasetSearchController = function($scope, $controller, $filter, Dataset, np
 
   $scope.$on('$locationChangeSuccess', (event, data) => {
     $scope.search(query());
-    if ($scope.tabs[0].active) {
-      Dataset.geoQuery(mapBounds).then(points => {
-        $scope.mapOptions.points = points;
-      });
+    if ($scope.tabs[0].active && mapBounds) {
+      setPoints(mapBounds);
     }
   });
 
   $scope.mapOptions = {};
   $scope.$on('map:move', (e, bounds) => {
     mapBounds = bounds;
-    Dataset.geoQuery(bounds).then(points => {
-      $scope.mapOptions.points = points;
-    });
+    setPoints(bounds);
   });
 };
 
