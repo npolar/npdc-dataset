@@ -4,9 +4,11 @@
 <leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map"></leaflet>
 <div class="np-padding">
   <div ng-if="document" class="np-doc">
-
-    <h3>dataset <span ng-if="document.draft == 'yes'">{{ 'draft' | t  }}</span>| {{document.licences[0]  }}</h3>
-
+    <div layout>
+      <npdc:collection collection="'dataset'"></npdc:collection>
+      <npdc:licences licences="document.licences"></npdc:licences>
+    </div>
+    
     <h1 class="md-display-2">{{ document.title }}</h1>
 
       <npdc:authors authors="authors"></npdc:authors>
