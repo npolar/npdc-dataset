@@ -5,14 +5,16 @@
         "id": "title"
       }, {
         "id": "summary",
-        "title": "summary",
-        "type": "textarea"
+        "title": "summary"
       },
       "progress"
     ]
   }, {
-    "title": "?",
-    "fields": [{
+    "title": "Data",
+    "fields": [
+               {"id": "links",
+                "instance": "data"
+                },{
         "id": "released",
         "title": "release date"
       }, {
@@ -39,6 +41,7 @@
     "title": "Links",
     "fields": [{
       "id": "links",
+      "instance": "links",
       "items": {
         "fields": [{
             "id": "rel",

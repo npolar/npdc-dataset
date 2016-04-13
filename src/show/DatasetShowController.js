@@ -4,7 +4,6 @@ var DatasetShowController = function($controller, $routeParams,
   $scope, $q, Dataset, Project, Publication, npdcAppConfig) {
     'ngInject';
 
-
   $controller('NpolarBaseController', {
     $scope: $scope
   });
@@ -91,6 +90,11 @@ var DatasetShowController = function($controller, $routeParams,
       $scope.published_year = published_year(dataset);
       $scope.links = dataset.links.filter(l => (l.rel !== "alternate" && l.rel !== "edit") && l.rel !== "data");
       $scope.data = dataset.links.filter(l => l.rel === "data");
+      $scope.images = dataset.links.filter(l => {
+        return (/^image\/.*/).test(l.type);
+      });
+      // or in files
+      
       $scope.alternate = dataset.links.filter(l => ((l.rel === "alternate" && l.type !== "text/html") || l.rel === "edit")).concat({
         href: `http://api.npolar.no/dataset/?q=&filter-id=${dataset.id}&format=json&variant=ld`,
         title: "DCAT (JSON-LD)",
@@ -103,8 +107,11 @@ var DatasetShowController = function($controller, $routeParams,
       if (dataset.coverage) {
         let bounds = dataset.coverage.map(cov => [[cov.south, cov.west], [cov.north, cov.east]]);
         $scope.mapOptions.coverage = bounds;
+        $scope.mapOptions.geojson = "geojson";
       }
-
+      $scope.mapOptions.geometries = dataset.links.filter(l => l.type === "application/vnd.geo+json").map(l => l.href);
+      
+      
       $scope.authors = authors(dataset).map(a => {
         if (!a.name && a.first_name) {
           a.name = `${a.first_name} ${a.last_name}`;

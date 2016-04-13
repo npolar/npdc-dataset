@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <npdc:search-input feed="feed"></npdc:search-input>
-<npdc:tabs tabs="tabs" tabactivate="tabActivate"></npdc:tabs>
-<div class="np-tabs">
-  <div class="np-tab">
-    <leaflet class="map-search" options="mapOptions"></leaflet>
-  </div>
-  <div class="np-tab">
-    <npdc:search feed="feed"></npdc:search>
-  </div>
-</div>
+<md-content layout-padding>
+  {{ 'Quick_filters'|t}}: <a ng-href="?filter-links.rel=data">
+  {{ 'dataset.Released'| t }}</a>
+  | <a ng-href="?not-links.rel=data">{{ 'dataset.Only_metadata'|t}}</a>
+  | <a ng-href="?not-released=0..">{{ 'dataset.Release_date_missing'|t}}</a>
+</md-content>
+
+<npdc:search feed="feed"></npdc:search>

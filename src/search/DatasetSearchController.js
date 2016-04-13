@@ -9,61 +9,29 @@ var DatasetSearchController = function($scope, $controller, $filter, Dataset, np
     $scope: $scope
   });
   $scope.resource = Dataset;
-  $scope.tabs = [
-    {
-      title: 'Map',
-      active: true,
-    },
-    {
-      title: 'List'
-    }
-  ];
-
-  let setPoints = function(bounds) {
-    Dataset.geoQuery(bounds).then(points => {
-      $scope.mapOptions.points = points;
-    });
-  };
-
-  $scope.tabActivate = function (tab) {
-    if ($scope.tabs[0].active && mapBounds) {
-      setPoints(mapBounds);
-    }
-  };
-
+  
   npdcAppConfig.search.local.results.detail = function(entry) {
-    return NpolarTranslate.translate("Released: ") + (entry.released ? $filter('date')(entry.released.split('T')[0]) : '-');
+    let releasedText = NpolarTranslate.translate('dataset.Released');
+    let updatedText = NpolarTranslate.translate("Updated");
+    let metadataUpdated = NpolarTranslate.translate("Metadata") +' '+ updatedText;
+    
+    let r = releasedText +': '+ (entry.released ? $filter('date')(entry.released.split('T')[0]) : '-');
+    return r+` . Metadata ${updatedText} ${$filter('date')(entry.updated)}`;
   };
 
   let query = function() {
-    let defaults = {
+    return {
       limit: "50",
       sort: "-updated,-released",
-      fields: 'title,id,collection,updated,released',
-      facets: "topics,tags,people.email,organisation.name",
+      fields: 'title,id,collection,updated,released,links.rel',
+      facets: "sets,topics,tags,links.rel,people.email,organisation.name",
       score: true
     };
-    let invariants = $scope.security.isAuthenticated() ? {} : {
-      "not-draft": "yes",
-      "not-progress": "planned",
-      "filter-links.rel": "data"
-    };
-    return Object.assign({}, defaults, invariants);
   };
-
   $scope.search(query());
 
   $scope.$on('$locationChangeSuccess', (event, data) => {
     $scope.search(query());
-    if ($scope.tabs[0].active && mapBounds) {
-      setPoints(mapBounds);
-    }
-  });
-
-  $scope.mapOptions = {};
-  $scope.$on('map:move', (e, bounds) => {
-    mapBounds = bounds;
-    setPoints(bounds);
   });
 };
 

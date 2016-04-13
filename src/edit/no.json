@@ -7,7 +7,8 @@
     "Dekning",
     "Personer",
     "Organisasjoner",
-    "Endringer"
+    "Endringer",
+    "Filopplasting"
   ],
   "fields": {
     "title": {
@@ -160,7 +161,7 @@
       }
     },
     "coverage": {
-      "title": "dekning",
+      "title": "dekker",
       "items": {
         "fields": {
           "north": {
@@ -207,12 +208,12 @@
           "email": {
             "title": "e-post"
           },
-          "roles": {
+          "BAD-roles": {
             "title": "roller",
             "values": [
               "forfatter",
               "prosjektleder",
-              "prosessor",
+              "databehandler",
               "kontaktperson",
               "redaktør"
             ]
@@ -233,7 +234,7 @@
           "gcmd_short_name": {
             "title": "GCMD navn"
           },
-          "roles": {
+          "BAD-roles": {
             "title": "roller",
             "values": [
               "forfatter",
@@ -268,6 +269,9 @@
     },
     "comment": {
       "title": "kommentar"
+    },
+    "files": {
+      "title": "filer"
     },
     "changes": {
       "title": "kommentarer til store endringer",

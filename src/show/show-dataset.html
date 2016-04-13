@@ -13,6 +13,8 @@
 
       <npdc:authors authors="authors"></npdc:authors>
       <npdc:citation citation="citation"></npdc:citation>
+      
+
 
       <!-- See http://www.nature.com/articles/sdata201544 -->
       <section ng-if="document.summary">
@@ -21,7 +23,32 @@
         <p marked="document.summary"></p>
       </section>
 
-      <npdc:data data="data" licenses="document.licences" rights="document.rights"></npdc:data>
+     
+      
+      
+                    <div ng-if="images" layout-padding class="np-layout-grid">
+<!--            <md-grid-list
+              md-cols="1"
+              md-cols-md="2"
+              md-cols-gt-md="4"
+              md-row-height="1:1"
+              md-gutter="8px">-->
+              <md-grid-tile ng-repeat="i in images">
+                <div style="width: 95%;">
+                  <img alt="{{ i.title}}" title="{{ i.title }}" ng-src="{{ i.href }}" width="50%">
+                </div>
+  <!--              <md-grid-tile-footer>
+                  <h3>{{ img.title(map) }}</h3>
+                </md-grid-tile-footer>-->
+              </md-grid-tile>
+           <!-- </md-grid-list>-->
+  
+        </div>
+      
+              
+
+     <npdc:data data="data" licenses="document.licences" rights="document.rights"></npdc:data>
+
 
       <npdc:links links="links" related="related"></npdc:links>
 

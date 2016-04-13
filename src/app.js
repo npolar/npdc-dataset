@@ -11,6 +11,7 @@ npdcDatasetApp.factory('Dataset', require('./Dataset'));
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
+//npdcDatasetApp.controller('DatasetFormulaController', require('./edit/FormulaController'));
 npdcDatasetApp.directive('datasetCoverage', require('./edit/coverage/coverageDirective'));
 
 // Bootstrap ngResource models using NpolarApiResource
@@ -29,6 +30,11 @@ resources.forEach(service => {
   return NpolarApiResource.resource(service);
   }]);
 });
+
+npdcDatasetApp.factory('L', function() {
+  return window.L; // assumes Leaflet has already been loaded on the page
+});
+
 
 // Routing
 npdcDatasetApp.config(require('./router'));
