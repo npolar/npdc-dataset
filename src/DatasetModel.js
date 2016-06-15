@@ -15,7 +15,7 @@ function DatasetModel($location, NpolarTranslate) {
       ];
     } else {
       return [
-        {'@language': 'en', '@value': 'Datasets'},
+        {'@language': 'en', '@value': 'Dataset catalogue'},
         {'@language': 'no', '@value': 'Datasett'}
       ];
     }

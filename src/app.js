@@ -1,11 +1,11 @@
 'use strict';
-var npdcCommon = require('npdc-common');
-var AutoConfig = npdcCommon.AutoConfig;
+let npdcCommon = require('npdc-common');
+let AutoConfig = npdcCommon.AutoConfig;
 
-var angular = require('angular');
+let angular = require('angular');
 require('npdc-common/src/wrappers/leaflet');
 
-var npdcDatasetApp = angular.module('npdcDatasetApp', ['npdcCommon', 'leaflet']);
+let npdcDatasetApp = angular.module('npdcDatasetApp', ['npdcCommon', 'leaflet']);
 
 npdcDatasetApp.service('DatasetModel', require('./DatasetModel'));
 npdcDatasetApp.factory('Dataset', require('./Dataset'));
@@ -34,7 +34,7 @@ npdcDatasetApp.service('DatasetFactoryService', ($location, DatasetModel, Datase
 
 
 // Bootstrap ngResource models using NpolarApiResource
-var resources = [
+let resources = [
   {'path': '/', 'resource': 'NpolarApi'},
   {'path': '/user', 'resource': 'User'},
   {'path': '/dataset', 'resource': 'DatasetResource' },

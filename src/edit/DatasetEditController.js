@@ -2,7 +2,7 @@
 
 function DatasetEditController($scope, $controller, $routeParams, $http, $timeout,
   formula, formulaAutoCompleteService, npdcAppConfig, chronopicService, fileFunnelService,
-  NpolarMessage, NpolarApiSecurity, NpolarLang,
+  NpolarMessage, NpolarApiSecurity, NpolarLang, NpolarTranslate,
   Dataset, DatasetModel, DatasetFactoryService) {
   
   'ngInject';
@@ -100,9 +100,9 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     init();
      // edit (or new) action
     $scope.edit().$promise.then(dataset => {
-      
+      NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();  
       if (DatasetModel.isNyÅlesund()) {
-        // noop
+        //noop
       } else {
       
         // Grab attachments and force update attachments and links
