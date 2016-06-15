@@ -1,137 +1,143 @@
 {
-  "fieldsets": [{
-    "title": "Dataset",
-    "fields": [{
-        "id": "title"
-      }, {
-        "id": "summary",
-        "title": "summary"
-      },
-      "progress"
-    ]
-  }, {
-    "title": "Data",
-    "fields": [
-               {"id": "links",
-                "instance": "data"
-                },{
-        "id": "released",
-        "title": "release date"
-      }, {
-        "id": "licences",
-        "title": "chose a licence"
-      },
-      "rights",
-      "restrictions", {
-        "id": "quality",
-        "title": "data quality"
-      },
-      "citation"
-    ]
-  }, {
-    "title": "Classification",
-    "fields": [
-      "topics",
-      "iso_topics",
-      "sets",
-      "tags",
-      "gcmd"
-    ]
-  }, {
-    "title": "Links",
-    "fields": [{
-      "id": "links",
-      "instance": "links",
-      "items": {
-        "fields": [{
-            "id": "rel",
-            "title": "relation to dataset",
-            "enum": ["data",
-              "related",
-              "service",
-              "metadata",
-              "project",
-              "publication",
-              "datacentre",
-              "parent",
-              "internal",
-              "doi"
-            ]
-          }, {
-            "id": "href",
-            "title": "link"
-          },
-          "!hreflang",
-          "!acccessed",
-          "!length",
-          "!etag", {
-            "id": "type",
-            "title": "type"
-          },
-          "!modified"
-        ]
-      }
-    }]
-  }, {
-    "title": "Coverage",
-    "fields": [{
-        "id": "activity",
-        "title": "data collection period"
-      },
-      "coverage",
-      "placenames"
-    ]
-  }, {
-    "title": "People",
-    "fields": [{
-      "id": "people",
-      "items": {
-        "fields": [{
-            "id": "first_name",
-            "title": "first name"
-          }, {
-            "id": "last_name",
-            "title": "last name"
-          },
-          "!id"
-        ]
-      }
-    }]
-  }, {
-    "title": "Organisations",
-    "fields": [{
-      "id": "organisations",
-      "items": {
-        "fields": [
-          "!id",
-          "email", {
-            "id": "gcmd_short_name",
-            "title": "GCMD short name"
-          },
-          "roles",
-          "homepage"
-        ]
-      }
-    }]
-  }, {
-    "title": "Edits",
-    "fields": [{
-        "id": "created",
-        "disabled": true
-      }, {
-        "id": "created_by",
-        "disabled": true
-      }, {
-        "id": "updated",
-        "disabled": true
-      }, {
-        "id": "updated_by",
-        "disabled": true
-      },
-      "comment", {
-        "id": "changes",
-        "title": "changes for major updates"
-      }
-    ]
-  }]
+	"fieldsets": [{
+			"title": "Title",
+			"fields": [{
+					"id": "title"
+				}
+			]
+		}, 
+		 {
+			"title": "Links",
+			"fields": [{
+				"id": "links",
+				"instance": "links",
+				"items": {
+					"fields": [{
+							"id": "rel",
+							"title": "relation to dataset",
+							"enum": ["data",
+								"related",
+								"service",
+								"metadata",
+								"project",
+								"publication",
+								"datacentre",
+								"parent",
+								"internal",
+								"doi"
+							]
+						}, {
+							"id": "href",
+							"title": "link"
+						},
+						"!hreflang",
+						"!hash",
+						"!license",
+						"!length",
+						"!etag", {
+							"id": "type",
+							"title": "type"
+						},
+						"!modified"
+					]
+				}
+			}]
+		},
+
+
+		{
+			"title": "Rights",
+			"fields": [
+								 {
+					"id": "licences",
+					"title": "Licence for linked data"
+				},
+				{ "id": "rights", "type": "textarea" },
+				"restrictions", {
+					"id": "quality",
+					"title": "data quality"
+				},
+				"citation"
+			]
+		},
+		{
+			"title": "Dates",
+			"fields": [
+				{
+					"id": "activity",
+					"title": "data collection periods"
+				},
+				"released"
+			]
+		},
+		{
+			"title": "Geographic coverage",
+			"fields": [
+				"coverage",
+				"placenames"
+			]
+		}, {
+			"title": "People",
+			"fields": [{
+				"id": "people",
+				"items": {
+					"fields": [{
+							"id": "first_name",
+							"title": "first name"
+						}, {
+							"id": "last_name",
+							"title": "last name"
+						},
+						"id"
+					]
+				}
+			}]
+		}, {
+			"title": "Organisations",
+			"fields": [{
+				"id": "organisations",
+				"items": {
+					"fields": [
+						"!id",
+						"email", {
+							"id": "gcmd_short_name",
+							"title": "GCMD short name"
+						},
+						"roles",
+						"homepage"
+					]
+				}
+			}]
+		}, {
+			"title": "Texts",
+			"fields": [{
+					"id": "summary",
+					"type": "textarea"
+				},
+		{
+					"id": "quality",
+					"type": "textarea"
+				},
+				"comment", {
+					"id": "changes",
+					"title": "Comment major updates"
+				}
+			]
+		}, {
+			"title": "Classification",
+			"fields": [
+				"topics",
+				"iso_topics",
+				"sets",
+				"tags",
+				"gcmd",
+				"progress",
+				"version",
+				"draft"
+			]
+		},{
+			"title": "File upload",
+			"fields": [{ "id": "attachments"}]
+		}
+	]
 }

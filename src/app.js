@@ -7,21 +7,40 @@ require('npdc-common/src/wrappers/leaflet');
 
 var npdcDatasetApp = angular.module('npdcDatasetApp', ['npdcCommon', 'leaflet']);
 
+npdcDatasetApp.service('DatasetModel', require('./DatasetModel'));
 npdcDatasetApp.factory('Dataset', require('./Dataset'));
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
+
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
-//npdcDatasetApp.controller('DatasetFormulaController', require('./edit/FormulaController'));
 npdcDatasetApp.directive('datasetCoverage', require('./edit/coverage/coverageDirective'));
+
+npdcDatasetApp.service('DatasetFactoryService', ($location, DatasetModel, Dataset, NyAlesundDataset, NpolarTranslate) => {
+  'ngInject';
+  
+  return {
+    
+    resourceFactory: function() {
+      if (DatasetModel.isNyÅlesund()) {
+        return NyAlesundDataset; 
+      } else {
+        return Dataset;
+      }
+    }
+  };
+  
+});
+
+
 
 // Bootstrap ngResource models using NpolarApiResource
 var resources = [
   {'path': '/', 'resource': 'NpolarApi'},
   {'path': '/user', 'resource': 'User'},
   {'path': '/dataset', 'resource': 'DatasetResource' },
+  {'path': '/dataset/ny-alesund', 'resource': 'NyAlesundDataset', 'uiBase': '/dataset/ny-ålesund' },
   {'path': '/publication', 'resource': 'Publication' },
   {'path': '/project', 'resource': 'Project' }
-
 ];
 
 resources.forEach(service => {
@@ -40,7 +59,8 @@ npdcDatasetApp.factory('L', function() {
 npdcDatasetApp.config(require('./router'));
 
 npdcDatasetApp.config(($httpProvider, npolarApiConfig) => {
-  var autoconfig = new AutoConfig("production");
+  
+  let autoconfig = new AutoConfig("production");
   angular.extend(npolarApiConfig, autoconfig, { resources });
   console.debug("npolarApiConfig", npolarApiConfig);
 
@@ -48,6 +68,5 @@ npdcDatasetApp.config(($httpProvider, npolarApiConfig) => {
 });
 
 npdcDatasetApp.run(($http, npdcAppConfig, NpolarTranslate, NpolarLang) => {
-  NpolarTranslate.loadBundles('npdc-dataset');
-  npdcAppConfig.toolbarTitle = 'Datasets';
+  NpolarTranslate.loadBundles('npdc-dataset');  
 });

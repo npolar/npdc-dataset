@@ -1,9 +1,11 @@
 'use strict';
 
-function Dataset($location, $q, DatasetResource, NpolarApiSecurity) {
+function Dataset($location, $q, DatasetResource, DatasetModel, NpolarApiSecurity) {
   'ngInject';
   
-  const schema = 'http://api.npolar.no/schema/publication-1';
+  const schema = 'http://api.npolar.no/schema/dataset-1';
+  
+  const license = 'http://creativecommons.org/licenses/by/4.0/';
 
   DatasetResource.geoQuery = function(bounds) {
     let deferred = $q.defer();
@@ -35,6 +37,8 @@ function Dataset($location, $q, DatasetResource, NpolarApiSecurity) {
   };
   
   DatasetResource.schema = schema;
+  
+  DatasetResource.license = license;
     
   DatasetResource.create = function() {
 
@@ -44,49 +48,48 @@ function Dataset($location, $q, DatasetResource, NpolarApiSecurity) {
       let [first_name,last_name] = user.name.split(' ');
       let organisation = user.email.split('@')[1];
       
-      user = { id, roles: ['author'], first_name, last_name, email, organisation};
-      let collection = 'publication';
-      let publication_type = 'other';
+      user = { id, roles: ['editor', 'pointOfContact'], first_name, last_name, email, organisation};
+      let collection = 'dataset';
       let topics = ['other'];
-      let title = `Publication created by ${user.email} ${new Date().toISOString()}`;
+      let title = `Dataset created by ${user.email} ${new Date().toISOString()}`;
       let people = [user];
-      let locations = [{ country: 'NO'}];
-      
-    
-      //let id = PublicationResource.randomUUID();
-      let p = { title, collection, schema, people, publication_type, topics, locations,
-        state:'published', draft:'no'
-      };
-      console.debug(p);
-      return p;
-      
+      let sets = []; 
+      //let locations = [{ country: 'NO'}];
+
+      if (DatasetModel.isNyÅlesund()) {
+        sets.push('Ny-Ålesund');
+      }
+
+      return { title, collection, schema, people, topics, draft:'no', sets };
     };
     
     // The hashi (v0) file object should be object with keys filename, url, [file_size, icon, extras].
-    DatasetResource.hashiObject = function(link) {
-      console.debug('hashiObject', link);
-      // Ignore links that are not data 
-      if (link.rel !== 'data') {
-        return null;
-      }
+    DatasetResource.hashiObject = function(attachment) {
+      //console.debug('hashiObject()', 'attachment:', attachment);
       return {
-        url: link.href,
-        filename: link.title,
-        file_size: link.length,
-        md5sum: (link.hash||'md5:').split('md5:')[1],
-        content_type: link.type
+        url: attachment.href,
+        filename: attachment.filename,
+        content_type: attachment.type
       };
     };
   
-    DatasetResource.linkObject = function(hashi) {
-      console.debug('linkObject', hashi);
+    DatasetResource.attachmentObject = function(hashi) {
+      //console.debug('attachmentObject()', 'hashi:', hashi);
+      return {
+        href: hashi.url,
+        filename: hashi.filename,
+        type: hashi.content_type,
+      };
+    };
+    
+    DatasetResource.linkObject = function(hashi, license) {
       return {
         rel: 'data',
         href: hashi.url,
         title: hashi.filename,
-        length: hashi.file_size,
+        type: hashi.content_type,
         hash: 'md5:'+hashi.md5sum,
-        type: hashi.content_type
+        license
       };
     };
 
