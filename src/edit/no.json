@@ -1,13 +1,14 @@
 {
   "fieldsets" : [
-    "Datasett",
-    "Data",
-    "Klassifisering",
+    "Tittel",
     "Lenker",
-    "Dekning",
+    "Rettigheter",
+    "Tidsrom",
+    "Geografisk Dekning",
     "Personer",
     "Organisasjoner",
-    "Endringer",
+    "Beskrivelse",
+    "Klassifisering",
     "Filopplasting"
   ],
   "fields": {
@@ -15,7 +16,7 @@
       "title": "tittel"
     },
     "summary": {
-      "title": "sammendrag"
+      "title": "beskrivelse"
     },
     "progress": {
       "title": "status",
@@ -48,7 +49,7 @@
       "title": "restriksjoner"
     },
     "quality": {
-      "title": "data kvalitet"
+      "title": "datakvalitet"
     },
     "citation": {
       "title": "sitering"
@@ -142,7 +143,10 @@
       "items": {
         "fields": {
           "rel": {
-            "title": "relasjon"
+            "title": "peker til"
+          },
+          "uri": {
+            "title":"lenke"
           },
           "title": {
             "title": "tittel"
@@ -151,7 +155,7 @@
       }
     },
     "activity": {
-      "title": "datainnsamling periode",
+      "title": "tidsrom for datainnsamling",
       "items": {
         "fields": {
           "stop": {
@@ -161,7 +165,7 @@
       }
     },
     "coverage": {
-      "title": "dekker",
+      "title": "område for datainnsamling",
       "items": {
         "fields": {
           "north": {
@@ -207,6 +211,9 @@
           },
           "email": {
             "title": "e-post"
+          },
+          "roles": {
+            "title": "roller"
           },
           "BAD-roles": {
             "title": "roller",
@@ -272,6 +279,9 @@
     },
     "files": {
       "title": "filer"
+    },
+    "attachments":{
+      "title": "filvedlegg"
     },
     "changes": {
       "title": "kommentarer til store endringer",
