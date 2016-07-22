@@ -3,142 +3,148 @@
 <npdc:loader ng-if="!document"></npdc:loader>
 <leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map"></leaflet>
 <div class="np-padding">
-  <div ng-if="document" class="np-doc">
-    <div layout>
-      <npdc:collection collection="'dataset'"></npdc:collection>
-      <npdc:licences licences="document.licences"></npdc:licences>
-    </div>
-    
-    <h1 class="md-display-3">{{ document.title }}</h1>
+    <div ng-if="document" class="np-doc">
+        <div layout>
+            <npdc:collection collection="'dataset'"></npdc:collection>
+            <npdc:licences licences="document.licences"></npdc:licences>
+        </div>
 
-      <h2 class="md-display-1"><npdc:authors authors="authors"></npdc:authors></h2>
-      
-      <h2 class="md-display-1">
-        <!-- <a title="publisher" ng-href="{{publisher.homepage}}">{{ publisher.name }}</a>: -->
-        <a ng-href="{{ uri }}" title="identifier">{{ uri }}</a>
-      </h2>
-            
-      <npdc:citation citation="citation"></npdc:citation>
-      
-      <!-- See http://www.nature.com/articles/sdata201544 -->
-      <section ng-if="document.summary">
-        <md-divider></md-divider>
-        <h3>Abstract</h3>
-        
-        <p marked="document.summary"></p>
-        
-        Events {{ document.activity | json}}
-        
-      </section>
+        <h1 class="md-display-3">{{ document.title }}</h1>
 
-     
-      
-      
-                    <div ng-if="images" layout-padding class="np-layout-grid">
-<!--            <md-grid-list
-              md-cols="1"
-              md-cols-md="2"
-              md-cols-gt-md="4"
-              md-row-height="1:1"
-              md-gutter="8px">-->
-              <md-grid-tile ng-repeat="i in images">
-                <div style="width: 95%;">
-                  <a ng-href="{{ i.href }}"><img alt="{{ i.title}}" title="{{ i.title }}" ng-src="{{ i.href }}" width="50%"></a>
+        <h2 class="md-display-1"><npdc:authors authors="authors"></npdc:authors></h2>
+
+        <h2 class="md-display-1">
+            <!-- <a title="publisher" ng-href="{{publisher.homepage}}">{{ publisher.name }}</a>: -->
+            <a ng-href="{{ uri }}" title="identifier">{{ uri }}</a>
+        </h2>
+
+        <npdc:citation citation="citation"></npdc:citation>
+
+        <!-- See http://www.nature.com/articles/sdata201544 -->
+        <section ng-if="document.summary">
+            <md-divider></md-divider>
+            <h3>Abstract</h3>
+
+            <p marked="document.summary"></p>
+        </section>
+
+        <section ng-if="document.activity">
+            <md-divider></md-divider>
+            <h3>Temporal Extent</h3>
+
+            <ul>
+                <li ng-repeat="e in document.activity">
+                    <b>From:&nbsp;</b>{{ e.start }}<b>&nbsp;To:&nbsp;</b>{{ e.stop || "ongoing" }}
+                </li>
+            </ul>
+        </section>
+
+
+        <div ng-if="images" layout-padding class="np-layout-grid">
+            <!--            <md-grid-list
+                md-cols="1"
+                md-cols-md="2"
+                md-cols-gt-md="4"
+                md-row-height="1:1"
+                md-gutter="8px">-->
+                <md-grid-tile ng-repeat="i in images">
+                    <div style="width: 95%;">
+                        <a ng-href="{{ i.href }}"><img alt="{{ i.title}}" title="{{ i.title }}" ng-src="{{ i.href }}" width="50%"></a>
+                    </div>
+                    <!--              <md-grid-tile-footer>
+                        <h3>{{ img.title(map) }}</h3>
+                    </md-grid-tile-footer>-->
+                </md-grid-tile>
+                <!-- </md-grid-list>-->
+
+        </div>
+
+
+
+        <npdc:data data="data" licenses="document.licences" rights="document.rights"></npdc:data>
+
+
+        <npdc:links ng-if="related" links="links" related="related"></npdc:links>
+
+        <section ng-if="document.quality">
+            <h3>Data quality</h3>
+            <md-divider></md-divider>
+            <p marked="document.quality"></p>
+        </section>
+
+        <npdc:persons></npdc:persons>
+        <npdc:organisations></npdc:organisations>
+
+        <section ng-if="document.topics || document.iso_topics || document.sets || document.tags || document.gcmd.sciencekeywords">
+            <md-divider></md-divider>
+            <h3>Classification</h3>
+
+            <div ng-if="document.topics">
+                <h4>Topics</h4>
+                <p>
+                    <md-icon>label_outline</md-icon><span ng-repeat="topic in document.topics">
+                        <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>{{!$last ? ' / ':''}}
+                    </span>
+                </p>
+            </div>
+
+            <div ng-if="document.iso_topics">
+                <h4>ISO Topics</h4>
+                <p>
+                    <md-icon>label_outline</md-icon><span ng-repeat="iso_topic in document.iso_topics">
+                        <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>{{!$last ? ' / ':''}}
+                    </span>
+                </p>
+            </div>
+
+            <div ng-if="document.sets">
+                <h4>Sets (data collections)</h4>
+                <p>
+                    <md-icon>label_outline</md-icon><span ng-repeat="set in document.sets">
+                        <a ng-href="{{resource.uiBase}}?q=&filter-sets={{set}}">{{ set }}</a>{{!$last ? ' / ':''}}
+                    </span>
+                </p>
+            </div>
+
+            <div ng-if="document.tags">
+                <h4>Tags</h4>
+                <p>
+                    <md-icon>label_outline</md-icon><span ng-repeat="tag in document.tags">
+                        <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>{{!$last ? ' / ':''}}
+                    </span>
+                </p>
+            </div>
+
+            <div ng-if="document.gcmd.sciencekeywords">
+                <h4>NASA GCMD Science Keywords</h4>
+                <p>
+                    <div ng-repeat="k in document.gcmd.sciencekeywords">
+                        <md-icon>label_outline</md-icon>
+                        <a href="?q={{ k.Category}}">{{ k.Category}}</a> &gt;
+                        <a href="?q={{ k.Topic}}">{{ k.Topic}}</a> &gt;
+                        <a href="?q={{ k.Term }}">{{ k.Term }}</a> &gt;
+                        <a href="?q={{ k.Variable_Level_1}}">{{ k.Variable_Level_1}}</a>
+                    </div>
+                </p>
+            </div>
+        </section>
+
+        <npdc:placenames></npdc:placenames>
+
+        <section ng-if="alternate">
+            <md-divider></md-divider>
+            <h3>Machine-readable metadata</h3>
+            <!-- @todo CC0 for metadata? <p></p> -->
+            <p>
+                <div ng-repeat="link in alternate">
+                    <a ng-href="{{link.href}}" title="{{link.type}}">{{ link.title || link.href }}</a>
                 </div>
-  <!--              <md-grid-tile-footer>
-                  <h3>{{ img.title(map) }}</h3>
-                </md-grid-tile-footer>-->
-              </md-grid-tile>
-           <!-- </md-grid-list>-->
-  
-        </div>
-      
-              
+            </p>
+        </section>
 
-     <npdc:data data="data" licenses="document.licences" rights="document.rights"></npdc:data>
-
-      
-     <npdc:links ng-if="related" links="links" related="related"></npdc:links>
-
-      <section ng-if="document.quality">
-        <h3>Data quality</h3>
-        <md-divider></md-divider>
-        <p marked="document.quality"></p>
-      </section>
-
-      <npdc:persons></npdc:persons>
-      <npdc:organisations></npdc:organisations>
-
-      <section ng-if="document.topics || document.iso_topics || document.sets || document.tags || document.gcmd.sciencekeywords">
-        <md-divider></md-divider>
-        <h3>Classification</h3>
-
-        <div ng-if="document.topics">
-          <h4>Topics</h4>
-          <p>
-            <md-icon>label_outline</md-icon><span ng-repeat="topic in document.topics">
-              <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>{{!$last ? ' / ':''}}
-            </span>
-          </p>
-        </div>
-
-        <div ng-if="document.iso_topics">
-          <h4>ISO Topics</h4>
-          <p>
-            <md-icon>label_outline</md-icon><span ng-repeat="iso_topic in document.iso_topics">
-              <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>{{!$last ? ' / ':''}}
-            </span>
-          </p>
-        </div>
-        
-        <div ng-if="document.sets">
-          <h4>Sets (data collections)</h4>
-          <p>
-            <md-icon>label_outline</md-icon><span ng-repeat="set in document.sets">
-              <a ng-href="{{resource.uiBase}}?q=&filter-sets={{set}}">{{ set }}</a>{{!$last ? ' / ':''}}
-            </span>
-          </p>
-        </div>
-
-        <div ng-if="document.tags">
-          <h4>Tags</h4>
-          <p>
-            <md-icon>label_outline</md-icon><span ng-repeat="tag in document.tags">
-              <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>{{!$last ? ' / ':''}}
-            </span>
-          </p>
-        </div>
-
-        <div ng-if="document.gcmd.sciencekeywords">
-          <h4>NASA GCMD Science Keywords</h4>
-          <p>
-            <div ng-repeat="k in document.gcmd.sciencekeywords">
-              <md-icon>label_outline</md-icon>
-              <a href="?q={{ k.Category}}">{{ k.Category}}</a> &gt;
-              <a href="?q={{ k.Topic}}">{{ k.Topic}}</a> &gt;
-              <a href="?q={{ k.Term }}">{{ k.Term }}</a> &gt;
-              <a href="?q={{ k.Variable_Level_1}}">{{ k.Variable_Level_1}}</a>
-            </div>
-          </p>
-        </div>
-      </section>
-
-      <npdc:placenames></npdc:placenames>
-
-      <section ng-if="alternate">
-        <md-divider></md-divider>
-        <h3>Machine-readable metadata</h3>
-        <!-- @todo CC0 for metadata? <p></p> -->
-        <p>
-          <div ng-repeat="link in alternate">
-            <a ng-href="{{link.href}}" title="{{link.type}}">{{ link.title || link.href }}</a>
-            </div>
-        </p>
-      </section>
-
-      <section>
-        <npdc:document-meta></npdc:document-meta>
-      </section>
+        <section>
+            <npdc:document-meta></npdc:document-meta>
+        </section>
 
     </div>
 </div>
