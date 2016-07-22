@@ -34,7 +34,7 @@
 
             <ul>
                 <li ng-repeat="e in document.activity">
-                    <b>From:&nbsp;</b>{{ e.start }}<b>&nbsp;To:&nbsp;</b>{{ e.stop || "ongoing" }}
+                    <b>From:&nbsp;</b>{{ e.start.split("T")[0] }}<b>&nbsp;To:&nbsp;</b>{{ e.stop.split("T")[0] || "ongoing" }}
                 </li>
             </ul>
         </section>
