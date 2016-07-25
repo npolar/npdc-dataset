@@ -28,16 +28,7 @@
             <p marked="document.summary"></p>
         </section>
 
-        <section ng-if="document.activity">
-            <md-divider></md-divider>
-            <h3>Temporal Extent</h3>
 
-            <ul>
-                <li ng-repeat="e in document.activity">
-                    <b>From:&nbsp;</b>{{ e.start.split("T")[0] }}<b>&nbsp;To:&nbsp;</b>{{ e.stop.split("T")[0] || "ongoing" }}
-                </li>
-            </ul>
-        </section>
 
 
         <div ng-if="images" layout-padding class="np-layout-grid">
@@ -114,6 +105,16 @@
                     </span>
                 </p>
             </div>
+
+            <section ng-if="document.activity">
+                <h4>Temporal Extent</h4>
+
+                <ul>
+                    <li ng-repeat="e in document.activity">
+                        <b>From:&nbsp;</b>{{ e.start.split("T")[0] }}<b>&nbsp;To:&nbsp;</b>{{ e.stop.split("T")[0] || "ongoing" }}
+                    </li>
+                </ul>
+            </section>
 
             <div ng-if="document.gcmd.sciencekeywords">
                 <h4>NASA GCMD Science Keywords</h4>
