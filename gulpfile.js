@@ -1,5 +1,5 @@
 var gulp = require('gulp');
 var npdcGulp = require('npdc-gulp');
 var config = npdcGulp.baseConfig;
-config.COMMON_VERSION = '4.3.1';
+config.COMMON_VERSION = '4.4.2';
 npdcGulp.loadAppTasks(gulp, config);
