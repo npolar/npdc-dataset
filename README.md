@@ -1,6 +1,6 @@
 # npdc-dataset
 
-NPDC dataset catalogue
+Dataset catalogue
 https://data.npolar.no/dataset/
 
 Ny-Ålesund monitoring datasets
