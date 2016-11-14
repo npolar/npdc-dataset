@@ -8,8 +8,8 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
   'ngInject';
   
   const schema = '//api.npolar.no/schema/dataset-1';
-  //let schema = NpolarApiSecurity.canonicalUri(Dataset.schema());
-  
+  //const schema = NpolarApiSecurity.canonicalUri(Dataset.schema());
+  //const schema = "edit/dataset-1.json";
   $scope.resource = DatasetFactoryService.resourceFactory();
   
   function isHiddenLink(rel) {
@@ -55,14 +55,16 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
         match: "placenames_item",
         template: '<npdc:formula-placename></npdc:formula-placename>'
       }
-    ]),
-      languages: npdcAppConfig.formula.languages.concat([{
-        map: require('./en.json'),
-        code: 'en'
-      }, {
-        map: require('./no.json'),
-        code: 'nb_NO',
-      }])
+    ])
+      // Disabled until https://github.com/npolar/formula/issues/30 is fixed
+      //,
+      //languages: npdcAppConfig.formula.languages.concat([{
+      //  map: require('./en.json'),
+      //  code: 'en'
+      //}, {
+      //  map: require('./no.json'),
+      //  code: 'nb_NO',
+      //}])
     };
   
     $scope.formula = formula.getInstance(formulaOptions);
@@ -74,10 +76,11 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     formulaAutoCompleteService.autocompleteFacets(['organisations.name', 'organisations.email',
       'organisations.homepage', 'organisations.gcmd_short_name', 'links.type', 'tags', 'sets', 'licenses_item'], $scope.resource, $scope.formula);
       
-    chronopicService.defineOptions({ match: 'released', format: '{date}'});
+    // Disabled bacause of UI/usability problems 
+    /*chronopicService.defineOptions({ match: 'released', format: '{date}'});
     chronopicService.defineOptions({ match(field) {
       return field.path.match(/^#\/activity\/\d+\/.+/);
-    }, format: '{date}'});
+    }, format: '{date}'}); */
   }
    
   function initFileUpload(formula) {
@@ -101,36 +104,33 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
      // edit (or new) action
     $scope.edit().$promise.then(dataset => {
       NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();  
-      if (DatasetModel.isNyÅlesund()) {
-        //noop
-      } else {
+
+      // Grab attachments and force update attachments and links
+      let fileUri = `${NpolarApiSecurity.canonicalUri($scope.resource.path)}/${dataset.id}/_file`;
       
-        // Grab attachments and force update attachments and links
-        let fileUri = `${NpolarApiSecurity.canonicalUri($scope.resource.path)}/${dataset.id}/_file`;
-        
-        $http.get(fileUri).then(r => {
-          if (r && r.data && r.data.files && r.data.files.length > 0) {
-            let dataset = $scope.formula.getModel();
-            let files = r.data.files;
+      $http.get(fileUri).then(r => {
+        if (r && r.data && r.data.files && r.data.files.length > 0) {
+          let dataset = $scope.formula.getModel();
+          let files = r.data.files;
+          
+          let attachments = files.map(hashi => Dataset.attachmentObject(hashi));
+          dataset.attachments = attachments;
+          
+          r.data.files.forEach(f => {
+            let link = dataset.links.find(l => l.href === f.url);
             
-            let attachments = files.map(hashi => Dataset.attachmentObject(hashi));
-            dataset.attachments = attachments;
-            
-            r.data.files.forEach(f => {
-              let link = dataset.links.find(l => l.href === f.url);
-              
-              if (!link) {
-                let license = dataset.licences[0] || Dataset.license;
-                link = Dataset.linkObject(f, license);
-                dataset.links.push(link);
-              }
-              // else findIndex & objhect.assign?
-            });
-            $scope.formula.setModel(dataset);
-          }
-        });
+            if (!link) {
+              let license = dataset.licences[0] || Dataset.license;
+              link = Dataset.linkObject(f, license);
+              dataset.links.push(link);
+            }
+            // else findIndex & objhect.assign?
+          });
+          $scope.formula.setModel(dataset);
+        }
+      });
       
-      }
+      
       
     });
     
