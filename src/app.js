@@ -8,6 +8,8 @@ require('npdc-common/src/wrappers/leaflet');
 let npdcDatasetApp = angular.module('npdcDatasetApp', ['npdcCommon', 'leaflet']);
 
 npdcDatasetApp.service('DatasetModel', require('./DatasetModel'));
+npdcDatasetApp.service('DatasetCitation', require('./DatasetCitation'));
+
 npdcDatasetApp.factory('Dataset', require('./Dataset'));
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
@@ -15,7 +17,7 @@ npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSe
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
 npdcDatasetApp.directive('datasetCoverage', require('./edit/coverage/coverageDirective'));
 
-npdcDatasetApp.service('DatasetFactoryService', ($location, DatasetModel, Dataset, NyAlesundDataset, NpolarTranslate) => {
+npdcDatasetApp.service('DatasetFactoryService', ($location, DatasetModel, Dataset, NyAlesundDataset) => {
   'ngInject';
   
   return {
@@ -30,8 +32,6 @@ npdcDatasetApp.service('DatasetFactoryService', ($location, DatasetModel, Datase
   };
   
 });
-
-
 
 // Bootstrap ngResource models using NpolarApiResource
 let resources = [
