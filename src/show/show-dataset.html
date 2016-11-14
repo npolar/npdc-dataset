@@ -1,61 +1,152 @@
 <!DOCTYPE html>
 <npdc:edit-button class="np-primary-control"></npdc:edit-button>
 <npdc:loader ng-if="!document"></npdc:loader>
-<leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map"></leaflet>
-<div class="np-padding">
-    <div ng-if="document" class="np-doc">
-        <div layout>
-            <npdc:collection collection="'dataset'"></npdc:collection>
-            <npdc:licences licences="document.licences"></npdc:licences>
-        </div>
 
-        <h1 class="md-display-3">{{ document.title }}</h1>
+<md-card ng-show="document" ng-if="warnings.length > 0">
+    <md-card-header>
+    <md-card-avatar>
+      <md-icon>warning</md-icon>
+    </md-card-avatar>
+    <md-card-header-text>
+      <span class="md-headline">Warning</span>
+      <span class="md-subhead">
+        This dataset has issues
+      </span>
+    </md-card-header-text>
+    </md-card-header>
+    <md-card-content>
+      <ul>
+        <li ng-repeat="warn in warnings">
+          {{warn}}
+        </li>
+      </ul>
+      <span ng-if="document.released">Release date: {{ document.released.split('T')[0] }}</span>
+    </md-card-content>
+  </md-card>
+        
+<leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map"></leaflet>  
 
-        <h2 class="md-display-1"><npdc:authors authors="authors"></npdc:authors></h2>
+<div ng-show="document" class="np-padding">
+    
+  <div layout>
+      <npdc:collection collection="'dataset'"></npdc:collection>
+  </div>
+  
+  <h1 class="md-display-3">{{ document.title }}</h1>
+  
+  <h2 class="md-display-1"><npdc:authors authors="authors"></npdc:authors></h2>
+  
+  <span ng-if="publisher">Published {{ document.released.split('T')[0] }} by
+          <a title="publisher" ng-href="{{publisher.homepage}}">{{ publisher.name }}</a>
+          <a ng-href="{{ uri }}" title="identifier">{{ uri }}</a>
+  </span>
+  
+  <md-card ng-if="isReleased && data.length > 0">
+    <md-card-header>
+    <md-card-avatar>
+      <md-icon>file_download</md-icon>
+    </md-card-avatar>
+    <md-card-header-text>
+      <span class="md-headline">Data</span>
+      <span class="md-subhead">Downloads and data services</span>
+    </md-card-header-text>
+    </md-card-header>
+    <md-card-content>
+    <table><tr ng-repeat="link in data">
+      <td><span><code><a target="_blank" rel="nofollow" title="{{ link.title }} ({{ link.type}})" ng-href="{{link.href}}">{{ link.filename || link.title || link.href }}</a></code></span></td>
+      <td><code title="{{ link.type }}">{{ link.length | bytes }}</code></td> 
+     </tr>
+    </table>
+    <npdc:licences licences="document.licences"></npdc:licences> <!-- {{ document.licences[0] | json }}  -->
+    </md-card-content>
+  </md-card>
+        
+      <!-- Citation -->
+      <md-card>
+        <md-card-header>
+          <md-card-avatar>
+            <md-icon>“”</md-icon>
+          </md-card-avatar>
+          <md-card-header-text>
+            <span class="md-headline">Citation</span>
+            <span class="md-subhead">
+             
+              
+              Formats: <span ng-repeat="link in citations">
+                <a ng-click="citationClicked(link)" href="" title="{{link.type}}"><span ng-show="link.title != citation.title" >{{ link.title || link.href }}</span></a>
+                <b ng-show="link.title == citation.title" >{{ link.title || link.href }}</b>
 
-        <h2 class="md-display-1">
-            <!-- <a title="publisher" ng-href="{{publisher.homepage}}">{{ publisher.name }}</a>: -->
-            <a ng-href="{{ uri }}" title="identifier">{{ uri }}</a>
-        </h2>
+                <span ng-if="!$last">|</span>
+              </span>
+              
+            </span>
+          </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+          <code class="np-citation">{{ citation.text }}</code>
+          <!-- @todo maybe universal citation tool? <p ng-if="document.doi && citationLink.href">Download: <a ng-href="{{ citationLink.href }}">{{ citationLink.title }}</a> (courtesy of <a href="//datacite.org">Datacite</a>)</p> -->
+        </md-card-content>
+      </md-card>
 
-        <npdc:citation citation="citation"></npdc:citation>
 
-        <!-- See http://www.nature.com/articles/sdata201544 -->
+
         <section ng-if="document.summary">
-            <md-divider></md-divider>
-            <h3>Abstract</h3>
-
+          <span class="md-headline">Summary</span>
             <p marked="document.summary"></p>
         </section>
+        
+        <p marked="document.comment"></p>
 
 
 
 
         <div ng-if="images" layout-padding class="np-layout-grid">
-            <!--            <md-grid-list
+       <!--     <md-grid-list
                 md-cols="1"
-                md-cols-md="2"
-                md-cols-gt-md="4"
+                md-cols-md="1"
+                md-cols-gt-md="1"
                 md-row-height="1:1"
                 md-gutter="8px">-->
                 <md-grid-tile ng-repeat="i in images">
-                    <div style="width: 95%;">
-                        <a ng-href="{{ i.href }}"><img alt="{{ i.title}}" title="{{ i.title }}" ng-src="{{ i.href }}" width="50%"></a>
+                    <div>
+                        <a ng-href="{{ i.href }}"><img alt="{{ i.title}}" title="{{ i.title }}" ng-src="{{ i.href }}" width="95%"></a>
                     </div>
-                    <!--              <md-grid-tile-footer>
+                    <md-grid-tile-footer>
                         <h3>{{ img.title(map) }}</h3>
-                    </md-grid-tile-footer>-->
+                    </md-grid-tile-footer>
                 </md-grid-tile>
-                <!-- </md-grid-list>-->
+             <!-- </md-grid-list>-->
 
         </div>
+        
 
 
 
-        <npdc:data data="data" licenses="document.licences" rights="document.rights"></npdc:data>
-
-
-        <npdc:links ng-if="related" links="links" related="related"></npdc:links>
+       
+        
+        <!--<md-card>
+        <md-card-header>
+          <md-card-avatar>
+            <md-icon>subdirectory_arrow_right</md-icon>
+          </md-card-avatar>
+          <md-card-header-text>
+            <span class="md-headline">Relations</span>
+            <span class="md-subhead">
+              Metadata: <span ng-repeat="link in model.relations(document)">
+                <a target="_blank" ng-href="{{link.href}}" title="{{link.type}}">{{ link.title || link.href }}</a>
+                <span ng-if="!$last">|</span>
+              </span>
+            </span>
+          </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+          <span class="md-subhead">
+            <p>See the  <a target="_top" href="https://data.npolar.no/dataset/ae1a945b-6b91-42c0-86e6-4657b4b6ec3c">dataset catalogue</a> for details on accessing and reusing metadata.</p>
+            <p>This document was created {{document.created.substr(0,10)}} by {{ document.created_by}}, and updated {{document.updated.substr(0,10)}} to revison {{ document._rev.split('-')[0]}} by {{ document.updated_by}}.</p>
+          </span>
+        </md-card-content>
+      </md-card>-->
+        
 
         <section ng-if="document.quality">
             <h3>Data quality</h3>
@@ -64,88 +155,120 @@
         </section>
 
         <npdc:persons></npdc:persons>
-        <npdc:organisations></npdc:organisations>
+        
+      <md-card>
+        <md-card-header>
+          <md-card-avatar>
+            <md-icon>business</md-icon>
+          </md-card-avatar>
+          <md-card-header-text>
+            <span class="md-headline">{{'Organisations' | t}}</span>
+            <span class="md-subhead"></span>
+          </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+          <span class="md-subhead">
+          <md-list>
+            <md-list-item class="md-2-line" ng-repeat="o in document.organisations">
+             
+              <div class="md-list-item-text">
+                <h3><a ng-href="{{resource.uiBase}}?q={{ (o.id || o.name|t) }}">{{ (o.name || o.id) | t }}</a></h3>
+                <p ng-if="o.role">{{o.role | t }}</p>
+                <p><span ng-repeat="r in o.roles">{{ r }}<span ng-if="!$last">, </span></span></p>
+                <a ng-href="{{o.homepage}}">{{o.homepage}}</a>
+              </div>
+            </md-list-item>
+          </md-list>
+          </span>
+        </md-card-content>
+      </md-card>
 
-        <section ng-if="document.topics || document.iso_topics || document.sets || document.tags || document.gcmd.sciencekeywords">
-            <md-divider></md-divider>
-            <h3>Classification</h3>
-
-            <div ng-if="document.topics">
-                <h4>Topics</h4>
-                <p>
-                    <md-icon>label_outline</md-icon><span ng-repeat="topic in document.topics">
-                        <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>{{!$last ? ' / ':''}}
-                    </span>
-                </p>
-            </div>
-
-            <div ng-if="document.iso_topics">
-                <h4>ISO Topics</h4>
-                <p>
-                    <md-icon>label_outline</md-icon><span ng-repeat="iso_topic in document.iso_topics">
-                        <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>{{!$last ? ' / ':''}}
-                    </span>
-                </p>
-            </div>
-
-            <div ng-if="document.sets">
-                <h4>Sets (data collections)</h4>
-                <p>
-                    <md-icon>label_outline</md-icon><span ng-repeat="set in document.sets">
-                        <a ng-href="{{resource.uiBase}}?q=&filter-sets={{set}}">{{ set }}</a>{{!$last ? ' / ':''}}
-                    </span>
-                </p>
-            </div>
-
-            <div ng-if="document.tags">
-                <h4>Tags</h4>
-                <p>
-                    <md-icon>label_outline</md-icon><span ng-repeat="tag in document.tags">
-                        <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>{{!$last ? ' / ':''}}
-                    </span>
-                </p>
-            </div>
-
-            <section ng-if="document.activity">
-                <h4>Temporal Extent</h4>
-
-                <ul>
-                    <li ng-repeat="e in document.activity">
-                        <b>From:&nbsp;</b>{{ e.start.split("T")[0] }}<b>&nbsp;To:&nbsp;</b>{{ e.stop.split("T")[0] || "ongoing" }}
-                    </li>
-                </ul>
-            </section>
-
-            <div ng-if="document.gcmd.sciencekeywords">
-                <h4>NASA GCMD Science Keywords</h4>
-                <p>
-                    <div ng-repeat="k in document.gcmd.sciencekeywords">
-                        <md-icon>label_outline</md-icon>
-                        <a href="?q={{ k.Category}}">{{ k.Category}}</a> &gt;
-                        <a href="?q={{ k.Topic}}">{{ k.Topic}}</a> &gt;
-                        <a href="?q={{ k.Term }}">{{ k.Term }}</a> &gt;
-                        <a href="?q={{ k.Variable_Level_1}}">{{ k.Variable_Level_1}}</a>
-                    </div>
-                </p>
-            </div>
-        </section>
-
-        <npdc:placenames></npdc:placenames>
-
-        <section ng-if="alternate">
-            <md-divider></md-divider>
-            <h3>Machine-readable metadata</h3>
-            <!-- @todo CC0 for metadata? <p></p> -->
-            <p>
-                <div ng-repeat="link in alternate">
-                    <a ng-href="{{link.href}}" title="{{link.type}}">{{ link.title || link.href }}</a>
-                </div>
+     
+        <md-card ng-if="document.coverage">
+          <md-card-header>
+            <md-card-avatar>
+              <md-icon>language</md-icon>
+            </md-card-avatar>
+            <md-card-header-text>
+              <span class="md-headline">Coverage</span>
+              <span class="md-subhead">
+                Geographic and temporal extent
+              </span>
+            </md-card-header-text>
+          </md-card-header>    
+          <md-card-content>
+            <p ng-if="bboxes" class="md-subhead">Bbox: <span ng-repeat="bbox in bboxes">{{ bbox|json }}</span></p>
+            <p ng-if="timespans.length" class="md-subhead">Timespan: <span ng-repeat="t in timespans">{{ t[0] }} to {{t[1]}} | </span></p>
+            <p ng-if="document.placenames" class="md-subhead">
+              Placenames:
+              <span ng-repeat="p in document.placenames">
+                <a ng-href="http://placenames.npolar.no/stadnamn/?q={{ p.placename || p.area }}">{{ p.placename || p.area }}</a>
+                <span ng-if="!$last">|</span>
+              </span>
             </p>
-        </section>
+          </md-card-content>
+        </md-card>
+          
+        <md-card ng-if="document.topics || document.iso_topics || document.sets || document.tags || document.gcmd.sciencekeywords">
+          <md-card-header>
+            <md-card-avatar>
+              <md-icon>label_outline</md-icon>
+            </md-card-avatar>
+            <md-card-header-text>
+              <span class="md-headline">Classification</span>
+              <span class="md-subhead">
+              </span>
+            </md-card-header-text>
+          </md-card-header>
+          <md-card-content>
+            <span ng-repeat="set in document.sets">
+                  <a ng-href="{{resource.uiBase}}?q=&filter-sets={{set}}">{{ set }}</a>{{!$last ? '':''}}
+                </span>
+                <span ng-repeat="topic in document.topics">
+                  <a ng-href="?q=&filter-topics={{topic}}">{{ topic }}</a>{{!$last ? '':''}}
+                </span>
+                <span ng-repeat="iso_topic in document.iso_topics">
+                  <a ng-href="?q=&filter-iso_topics={{iso_topic}}">{{ iso_topic }}</a>{{!$last ? '':''}}
+                </span>
+                <span ng-repeat="tag in document.tags">
+                  <a ng-href="?q=&filter-tags={{tag}}">{{ tag }}</a>{{!$last ? '':''}}
+                </span>
+              
+              <!--<span class="md-headline">NASA GCMD Science Keywords</span>-->
+                <span ng-if="document.gcmd.sciencekeywords" class="md-subhead">
+                  <span ng-repeat="k in document.gcmd.sciencekeywords">
+                    <!--<md-icon>label_outline</md-icon>-->
+                    <!--<a href="?q={{ k.Category}}">{{ k.Category}}</a> &gt;
+                    <a href="?q={{ k.Topic}}">{{ k.Topic}}</a> &gt;
+                    <a href="?q={{ k.Term }}">{{ k.Term }}</a> &gt; -->
+                    <a href="?q={{ k.Variable_Level_1}}">{{ k.Variable_Level_1}}</a>
+                  </span>
+                </span>
+          </md-card-content>
+        </md-card>
 
-        <section>
-            <npdc:document-meta></npdc:document-meta>
-        </section>
+      <npdc:links ng-if="related" links="links" related="related"></npdc:links>
 
-    </div>
+      <md-card>
+        <md-card-header>
+          <md-card-avatar>
+            <md-icon><img src="/dataset/show/json-ld-data-48.png"></md-icon>
+          </md-card-avatar>
+          <md-card-header-text>
+            <span class="md-headline">Machine-readable metadata</span>
+            <span class="md-subhead">
+              Metadata: <span ng-repeat="link in alternate">
+                <a target="_blank" ng-href="{{link.href}}" title="{{link.type}}">{{ link.title || link.href }}</a>
+                <span ng-if="!$last">|</span>
+              </span>
+            </span>
+          </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+          <span class="md-subhead">
+            <p>See the  <a target="_top" href="https://data.npolar.no/dataset/ae1a945b-6b91-42c0-86e6-4657b4b6ec3c">dataset catalogue</a> for details on accessing and reusing metadata.</p>
+            <p>This document was created {{document.created.substr(0,10)}} by {{ document.created_by}}, and updated {{document.updated.substr(0,10)}} to revison {{ document._rev.split('-')[0]}} by {{ document.updated_by}}.</p>
+          </span>
+        </md-card-content>
+      </md-card>
 </div>
