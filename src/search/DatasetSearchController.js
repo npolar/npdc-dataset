@@ -30,11 +30,8 @@ var DatasetSearchController = function($scope, $controller, $filter,
     
     npdcAppConfig.search.local.results.detail = function(entry) {
       let releasedText = NpolarTranslate.translate('dataset.Released');
-      let updatedText = NpolarTranslate.translate("Updated");
-      //let metadataUpdated = NpolarTranslate.translate("Metadata") +' '+ updatedText;
-      
       let r = releasedText +': '+ (entry.released ? $filter('date')(entry.released.split('T')[0]) : '-');
-      return r+` . Metadata ${updatedText} ${$filter('date')(entry.updated)}`;
+      return r+``;
     };
     
     $scope.$on('$locationChangeSuccess', (event, data) => {
