@@ -17,12 +17,12 @@ var router = function($routeProvider, $locationProvider) {
     reloadOnSearch: false,
   }).when('/ny-alesund/', {
     redirectTo: '/ny-ålesund',
-  }).when('/:id', {
-    templateUrl: 'show/show-dataset.html',
-    controller: 'DatasetShowController'
   }).when('/:id/edit', {
     template: '<npdc:formula></npdc:formula>',
     controller: 'DatasetEditController'
+  }).when('/:id/:suffix?', {
+    templateUrl: 'show/show-dataset.html',
+    controller: 'DatasetShowController'
   }).when('/', {
     templateUrl: 'search/search.html',
     controller: 'DatasetSearchController',
