@@ -7,10 +7,9 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
   
   'ngInject';
   
-  const schema = '//api.npolar.no/schema/dataset-1';
-  //const schema = NpolarApiSecurity.canonicalUri(Dataset.schema());
-  //const schema = "edit/dataset-1.json";
+  const schema = DatasetModel.schema;
   $scope.resource = DatasetFactoryService.resourceFactory();
+  $scope.model = DatasetModel;
   
   function isHiddenLink(rel) {
     if (rel.rel) {
@@ -42,7 +41,7 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       },{
         match: "people_item",
         template: '<npdc:formula-person></npdc:formula-person>'
-      }, {
+      },{
         match: "gcmd",
         template: '<npdc:formula-gcmd></npdc:formula-gcmd>'
       }, {
@@ -95,7 +94,7 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       restricted: false,
       fileToValueMapper: $scope.resource.attachmentObject,
       valueToFileMapper: $scope.resource.hashiObject,
-      fields: ['href', 'filename', 'type']
+      fields: ['href']
     }, formula);  
   }
  
@@ -103,8 +102,10 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     init();
      // edit (or new) action
     $scope.edit().$promise.then(dataset => {
-      NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();  
-
+      NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
+      
+      $scope.warnings = false;
+     
       // Grab attachments and force update attachments and links
       let fileUri = `${NpolarApiSecurity.canonicalUri($scope.resource.path)}/${dataset.id}/_file`;
       
@@ -122,11 +123,11 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
             if (!link) {
               let license = dataset.licences[0] || Dataset.license;
               link = Dataset.linkObject(f, license);
-              dataset.links.push(link);
+              //dataset.links.push(link);
             }
             // else findIndex & objhect.assign?
           });
-          $scope.formula.setModel(dataset);
+          //$scope.formula.setModel(dataset);
         }
       });
       
