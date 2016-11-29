@@ -1,8 +1,10 @@
 'use strict';
+let NpolarApiRequest = XMLHttpRequest;
 
-var DatasetShowController = function($controller, $routeParams, $scope, $http, $q, $location,
+var DatasetShowController = function($controller, $routeParams, $scope, $http, $q, $location, $mdDialog,
   NpolarTranslate, NpolarMessage, NpolarApiSecurity,
   npdcAppConfig,
+  //NpdcWarningsService,
   DatasetFactoryService, DatasetModel, Project, Publication ) {
     'ngInject';
 
@@ -12,78 +14,46 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     
   $scope.resource = DatasetFactoryService.resourceFactory();
   $scope.model = DatasetModel;
-  $scope.warning = false;  
-  $scope.authors = [];
+  $scope.warnings = false;  
+  $scope.notices = false;
+  $scope.dataset = null;
   
-  $scope.citationClicked = function(link) {
-    
-    if (link.text) {
-      $scope.citation = link;
-    } else if (link.href) {
-      $scope.citation = link;
-        $http.get(link.href).then(r => {
-          $scope.citation.text = r.data;  
-      });
-    }
+  $scope.isPointOfContact = (person) => {
+    if (!person || !person.roles.length) { return; }
+    return person.roles.includes('pointOfContact');
   };
   
-  // @todo find inbound links ie publications linking to this dataset
+  
+
+  
+
   let showDataset = function(dataset) {
     NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
     
-    $scope.warnings = DatasetModel.warnings(dataset);
+    //NpdcWarningsService.warnings[dataset.id] = DatasetModel.warnings(dataset);
+    //NpdcWarningsService.notices[dataset.id] = DatasetModel.notices(dataset);
     
-    if (!dataset.links) {
-      dataset.links = [];
-    }
-    $scope.citations = DatasetModel.citationList(dataset);
-    $scope.citation = $scope.citations[0];
+    $scope.uri = DatasetModel.uri(dataset);
     
     $scope.authors = DatasetModel.authors(dataset);
-    $scope.publisher = dataset.organisations.find(o => o.roles.includes('publisher'));
+    $scope.publisher = (dataset.organisations||[]).find(o => (o.roles||[]).includes('publisher'));
     $scope.published_year = DatasetModel.published_year(dataset);
-    
+    $scope.citations = DatasetModel.citationList(dataset);
+  
     $scope.isReleased = (/[0-9]{4}/.test($scope.published_year));
     
-    $scope.bboxes = (dataset.coverage||[]).map(c => [c.west, c.south, c.east, c.north]);
-    $scope.timespans = (dataset.activity||[]).map(c => {
-      let ts = [];
-        ts[0] = (/T/).test(c.start) ? c.start.split('T')[0] : '' ;
-        ts[1] = (/T/).test(c.stop) ? c.stop.split('T')[0] : '' ;
-        return ts;
-      }
-    );
+    $scope.bboxes = DatasetModel.bboxes(dataset);
+    $scope.datespans = DatasetModel.datespans(dataset);
+    $scope.relations = DatasetModel.relations(dataset); 
+    $scope.related = DatasetModel.relations(dataset, ['related']);
+    $scope.data = DatasetModel.relations(dataset, ['data','service']);
     
-    $scope.links = dataset.links.filter(l => (l.rel !== "alternate" && l.rel !== "edit") && l.rel !== "data" && l.rel !== "via");
-    $scope.data = dataset.links.filter(l => ['data','service'].includes(l.rel));
-    
-    $scope.alternate = dataset.links.filter(l => (l.rel === "alternate" || l.rel === "edit") && l.type !== 'text/html').map(l => {
-      if (l.rel === 'edit') {
-        l.title = "JSON";
-      }
-      return l;
-    });
-    
-    if (!DatasetModel.isNyÅlesund(dataset)) {
-      $scope.alternate.push({
-        href: `//api.npolar.no/dataset/?q=&filter-id=${dataset.id}&format=json&variant=ld`,
-        title: 'DCAT (JSON-LD)',
-        type: 'application/ld+json'
-      });
-      if (DatasetModel.isDoi(dataset.doi)) {
-        $scope.alternate.push({
-          href: `//data.datacite.org/application/vnd.datacite.datacite+xml/${dataset.doi}`,
-          title: 'Datacite XML',
-          type: 'vnd.datacite.datacite+xml'
-        });
-      }
-    }
     
     // Grab Content-Length for stuff in the file API
     $scope.data.forEach((l,idx) => {
-      if ((!l.length || !l.filename) && (/^https:\/\/api\.npolar\.no\/.+\/\/_file\//).test(l.href)) {
-        let request = new XMLHttpRequest();
-        request.addEventListener('load', response => {
+      if ((!l.length || !l.filename) && ((/^http(s)?:\/\//).test(l.href) && !(/[?&]q=/).test(l.href) && (/_file\/.+/).test(l.href))) {
+        let request = new NpolarApiRequest(); //NpolarApiRequest.factory();
+        request.head(request, l.href, (response) => {
           if (200 === request.status && response.lengthComputable) {  
             $scope.$apply(()=>{
               l.length = response.total; // same as parseInt(request.getResponseHeader('Content-Length');
@@ -91,17 +61,12 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
             });
           }
         });
-        request.open('HEAD', l.href);
-        request.setRequestHeader('Authorization', NpolarApiSecurity.authorization());
-        request.send();    
       }
     });
     
     $scope.images = dataset.links.filter(l => { // @todo images in files ?
       return (/^image\/.*/).test(l.type);
     });
-    
-    $scope.citationList = DatasetModel.citationList(dataset);
     
     $scope.mapOptions = {};
 
@@ -112,19 +77,14 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     }
     //$scope.mapOptions.geometries = dataset.links.filter(l => (/application/(vnd[.])?geo\+json/).test(l.type)).map(l => l.href);
     
-    if (dataset.coverage) {
-      $scope.coverage = (JSON.stringify(dataset.coverage)).replace(/[{"\[\]}]/g, '');
-    }
-
-    $scope.uri = DatasetModel.uri(dataset); // URI to doi.org | data.npolar.no
-    
+    $scope.metadata = DatasetModel.metadata(dataset, $scope.resource);
     
     // Find related documents
     if (!DatasetModel.isNyÅlesund()) {
-      DatasetModel.findRelated(dataset, $scope.resource).then(related => {
-        $scope.related = related;
+      DatasetModel.suggestions(dataset, $scope.resource).then(suggestions => {
+        $scope.suggestions = suggestions;
       });
-    }
+    }    
   };
 
   let showAction = function() {
