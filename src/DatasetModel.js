@@ -1,6 +1,8 @@
 'use strict';
 
-function DatasetModel($location, $q, $http, NpolarTranslate, npolarPeople,
+let npolarPeople = [];
+
+function DatasetModel($location, $q, $http, NpolarTranslate,
   DatasetCitation, Publication, Project) {
   'ngInject';
   
@@ -8,7 +10,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate, npolarPeople,
   
   this.schema = '//api.npolar.no/schema/dataset-1';
   
-  function name(email) {
+  function name(email,people=npolarPeople) {
   
     let p = npolarPeople.find(p => (p.email === email || (p.alias||[]).includes(email)));
     if (p) {
@@ -44,99 +46,47 @@ function DatasetModel($location, $q, $http, NpolarTranslate, npolarPeople,
     
   };
   
-  this.suggestions = (dataset, resource) => {
+  this.suggestions = (dataset, resource, param= { title: dataset.title,
+      id: dataset.id,
+      limit: 100,
+      min_score: 0.45,
+      fields: 'id,title,collection,updated',
+      prune: (title) => {
+        return title.replace(/\/\"\'\(\)/g, '')
+      }
+    }) => {
     
     let prune = (title) => {
-      return title.replace(/\/\"\'\(\)/g, '').split(/\s[0-9]{4}/).join('');
+      return title.replace(/\/\"\'\(\)/g, ''); //.split(/\s[0-9]{4}/).join('');
     };
-    let limit = 50;    
-    let relatedDatasets = resource.array({
-        q: prune(dataset.title),
-        fields: 'id,title,collection',
+    
+    return new Promise((resolve, reject) => {
+      
+       resource.array({
+        q: param.prune(param.title),
+        fields: param.fields,
         score: true,
-        limit,
-        'not-id': dataset.id,
+        limit: param.limit,
+        'not-id': param.id,
         op: 'OR'
-      }).$promise;
-      let relatedPublications = Publication.array({
-        q: prune(dataset.title),
-        fields: 'id,title,published,collection,publication_type',
-        //'not-publication_type': 'poster|abstract',
-        score: true,
-        limit,
-        op: 'OR'
-      }).$promise;
-      let relatedProjects = Project.array({
-        q: prune(dataset.title),
-        fields: 'id,title,collection',
-        score: true,
-        limit,
-        op: 'OR'
-      }).$promise;
-      return $q.all([relatedDatasets, relatedPublications, relatedProjects]);
+      },
+        datasets => {
+          resolve(datasets.filter(d => d._score >= param.min_score));
+      }, error => {
+        reject(error);
+      });
+      
+      
+    });
   };
   
   this.metadata = (dataset, resource) => {
-    let uri = self.uri(dataset); // URI to doi.org | data.npolar.no
-    let id = dataset.links.find(l => l.rel === "edit").href;
-    let edits = self.edits(dataset, resource);
-    let byline = "See [the dataset catalogue](https://data.npolar.no/dataset/ae1a945b-6b91-42c0-86e6-4657b4b6ec3c) for details on accessing, reusing, and harvesting the entire metadata catalogue.";
-    let document = { id, revision: dataset._rev.split('-')[0], created: dataset.created, updated: dataset.updated, created_by: name(dataset.created_by), updated_by: name(dataset.updated_by) };
-    let schema = self.schema;
-    return { uri, id, document, formats: self.alternateLinks(dataset), edits, editors: [], byline, schema };
-  };
-  
-  this.edits = (dataset, resource) => {
-    
-    let edits = [];
-
-
-    let created = { action: 'create', user: { id: dataset.created_by, name: name(dataset.created_by) }, when: dataset.created, comment: null, revision: null };
-    let updated = { action: 'update', user: { id: dataset.updated_by, name: name(dataset.updated_by) }, when: dataset.updated, comment: null, revision: dataset._rev.split('-')[0] };
-    
-    let changes = (dataset.changes||[]).map(c => {
-      let id;
-      let name;
-      if ((/[@]/).test(c.email)) {
-        id = c.email;
-      }
-      if (!c.name || c.name === '') {
-        c.name = c.email;
-      }
-      name = c.name;
-      return { action: 'update', when: c.datetime, user: { id, name }, comment: c.comment };
-    });
-    
-    edits[0] = created;
-    edits = edits.concat(changes);
-    edits = edits.concat(updated);
-    
+    // id = $routeParams.id (will not work for DOIs)
+    let uri = self.uri(dataset); // URI to https://doi.org | https://data.npolar.no
     let path = resource.path.replace('//api.npolar.no', '');
-    
-    $http.get('//api.npolar.no/editlog',
-      { params: {
-          q: '',
-          limit: 'all',
-          format: 'json',
-          variant: 'array',
-          sort: '-request.time',
-          'filter-path': `${path}/${dataset.id}`,
-          'filter-method': 'PUT',
-          'filter-response.status': '200..299',
-          //'filter-request.time': `${dataset.created}..${dataset.updated}`, only sensible if newest...
-          fields: 'request.time,request.username,response.header.Location'
-        },
-        cache: true,
-      }).then(r => {
-        r.data.forEach(e => {
-          // hmm only pushing one at a time works, probably async/digest issue
-          // @todo refactor
-          let href = e.response.header.Location;
-          let revision = href.split('rev=')[1].split('-')[0]; 
-          edits.push({ action: 'update', user: { id: e.request.username, name: name(e.request.username)}, when: e.request.time, href, revision });
-        });
-    });
-    return edits;
+    let byline = "See [the dataset catalogue](https://data.npolar.no/dataset/ae1a945b-6b91-42c0-86e6-4657b4b6ec3c) for details on accessing, reusing, and harvesting the entire metadata catalogue.";
+    let schema = self.schema;
+    return { uri, path, formats: self.alternateLinks(dataset), editors: [], byline, schema };
   };
   
   this.alternateLinks = (dataset) => {
@@ -272,10 +222,18 @@ function DatasetModel($location, $q, $http, NpolarTranslate, npolarPeople,
   
   // List of available citations, use href and header for services
   this.citationList = (dataset) => {
+    
     let list = [{ text: self.citation(dataset, 'apa'), title: 'APA'},
       { text: self.citation(dataset, 'bibtex'), title: 'BibTeX'},
-      { text: self.citation(dataset, 'csl'), title: 'CSL JSON'},
-    ].sort((a,b) => a.title.localeCompare(b.title));
+      { text: self.citation(dataset, 'csl'), title: 'CSL JSON'}
+    ]
+    if (dataset.doi) {
+      //{ href: `//data.datacite.org/application/x-bibtex/${dataset.doi}`, title: 'BibTeX (Datacite)'},
+      list.push({ href: `//data.datacite.org/application/x-research-info-systems/${dataset.doi}`, title: 'RIS'});
+    }
+    
+    list = list.sort((a,b) => a.title.localeCompare(b.title));
+    
     if (dataset.citation) {
       list = [{ text: dataset.citation, title: 'Custom'}].concat(list);
     }
@@ -307,7 +265,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate, npolarPeople,
   this.notices = (dataset) => {
     let i = [];
     
-    if (!self.hasData(dataset) && self.hasReleaseYear(dataset)) {
+    if (self.hasReleaseYear(dataset)) {
       let now = new Date();
       let released = Date.parse(dataset.released);
       if (now < released) {
@@ -318,6 +276,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate, npolarPeople,
     if (dataset.draft === 'yes') {
       i.push('Draft');
     }
+    console.log('Notices', i);
     return i;
   }
   
@@ -333,7 +292,6 @@ function DatasetModel($location, $q, $http, NpolarTranslate, npolarPeople,
     if (hasReleaseYear) {
       released = Date.parse(dataset.released);
     }
-    
     //if (hasReleaseYear) {
       //let diff = released-now;
       //if (now < released) {
@@ -371,8 +329,8 @@ function DatasetModel($location, $q, $http, NpolarTranslate, npolarPeople,
     if (hasData && dataset.progress === 'planned') {
       w.push('Data is published while progress = "planned"');
     }
-    if (dataset.draft === 'yes' && dataset.progress !==  'planned' ) {
-      w.push('Draft but progress is set to '+dataset.progress);
+    if (dataset.draft === 'yes' ) {
+      w.push('Draft');
     }
     if (!dataset.iso_topics || dataset.iso_topics.length === 0) {
         w.push('No ISO topics');
@@ -399,6 +357,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate, npolarPeople,
         w.push(`No DOI (because of the ${ w.length === 1 ? 'issue' : 'issues' } above)`);
       }
     }
+    console.log('Warnings', w);
     return w;
   };
 }
