@@ -18,7 +18,7 @@ var router = function($routeProvider, $locationProvider) {
   }).when('/ny-alesund/', {
     redirectTo: '/ny-ålesund',
   }).when('/:id/edit', {
-    template: '<npdc:formula></npdc:formula>',
+    templateUrl: 'edit/edit-dataset.html',
     controller: 'DatasetEditController'
   }).when('/:id/:suffix?', {
     templateUrl: 'show/show-dataset.html',
