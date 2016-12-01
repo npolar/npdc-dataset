@@ -3,6 +3,7 @@
 let npolarPeople = [];
 
 function DatasetModel($location, $q, $http, NpolarTranslate,
+  NpdcDOI,
   DatasetCitation, Publication, Project) {
   'ngInject';
   
@@ -26,11 +27,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
   this.isNyÅlesund = () => {
     return (/\/ny\-[åa]lesund\//).test($location.path());
   };
-  
-  this.isDoi = (str) => {
-    return (/^10[.][0-9]+[/].+/).test(str);
-  };
-
+ 
   this.getAppTitle = () => {
     if (self.isNyÅlesund()) {
       return [
@@ -80,9 +77,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
     });
   };
   
-  this.metadata = (dataset, resource) => {
-    // id = $routeParams.id (will not work for DOIs)
-    let uri = self.uri(dataset); // URI to https://doi.org | https://data.npolar.no
+  this.metadata = (dataset, resource, uri) => {
     let path = resource.path.replace('//api.npolar.no', '');
     let byline = "See [the dataset catalogue](https://data.npolar.no/dataset/ae1a945b-6b91-42c0-86e6-4657b4b6ec3c) for details on accessing, reusing, and harvesting the entire metadata catalogue.";
     let schema = self.schema;
@@ -106,30 +101,35 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
       
     }
     
-    if (self.isDoi(dataset.doi)) {
+    if (NpdcDOI.isDoi(dataset.doi)) {
       formats.push({
         href: `//data.datacite.org/application/vnd.datacite.datacite+xml/${dataset.doi}`,
         title: 'Datacite XML',
         type: 'vnd.datacite.datacite+xml'
       });
+      //formats.push({
+      //  href: `http://hdl.handle.net/api/handles/${dataset.doi}`,
+      //  title: 'handle.net JSON',
+      //  type: 'application/json'
+      //});
     }
     return formats;
   };
   
-  this.authors = (dataset) => {
-
-    let authors = [];
-    
-    if (dataset && dataset.people && dataset.people.length > 0) {
-      authors = dataset.people.filter(p => (p.roles||[]).includes("author"));
-    }
-    if (!authors || authors.length === 0) {
-      if (dataset && dataset.organisations && dataset.organisations.length > 0) {
-        authors = dataset.organisations.filter(o => (o.roles||[]).includes("author"));
-      }
-    }
-    return authors;
-  };
+  //this.authors = (dataset) => {
+  //
+  //  let authors = [];
+  //  
+  //  if (dataset && dataset.people && dataset.people.length > 0) {
+  //    authors = dataset.people.filter(p => (p.roles||[]).includes("author"));
+  //  }
+  //  if (!authors || authors.length === 0) {
+  //    if (dataset && dataset.organisations && dataset.organisations.length > 0) {
+  //      authors = dataset.organisations.filter(o => (o.roles||[]).includes("author"));
+  //    }
+  //  }
+  //  return authors;
+  //};
   
   this.relations = (links=[], rels=['parent','publication','project']) => {
     if (!links) { return; }
@@ -170,75 +170,11 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
   };
   
  
-  // URI (web address) of the dataset  
-  this.uri = (dataset) => {
-    
-    if (!dataset) { return; }
-    
-    // Use DOI if set
-    if (dataset.doi && self.isDoi(dataset.doi)) {
-      let f = dataset.doi.split(/^10./);
-      return `https://doi.org/10.${f[1]}`;
-    } else {
-      let n = '';
-      if (self.isNyÅlesund(dataset)) {
-        n = 'ny-ålesund/';
-      }
-      return `https://data.npolar.no/dataset/${n}${ dataset.id }`;
-    }
-  };
 
-  // Citation helper
-  this.citation = (dataset, style) => {
-    if (!dataset) {
-      return;
-    }
-    
-    let authors = self.authors(dataset);
-    let author = authors;
-    let year = self.published_year(dataset);
-    let title = dataset.title;
-    let type;
-    let pub = self.publisher(dataset);
-    let publisher = pub.name || pub.id;
-    let uri = self.uri(dataset);
-    let url = uri;
-    let doi = dataset.doi;
-    
-    if ((/apa/i).test(style)) {
-      type = 'Data set';
-      return DatasetCitation.apa({ authors, year, title, type, publisher, uri });
-    } else if ((/bibtex/i).test(style)){
-      type = '@misc';
-      return DatasetCitation.bibtex({ title, url, doi, type, publisher, author, year, id: dataset.id });      
-    } else if ((/csl/i).test(style)){
-      type = 'dataset';
-      let issued = { 'date-parts': [year] };
-      return DatasetCitation.csl({ type, DOI: doi, URL: url, title, publisher, issued, author });     
-    } else {
-      throw `Uknown citation style: ${style}`;
-    }
-  };
+
   
-  // List of available citations, use href and header for services
-  this.citationList = (dataset) => {
-    
-    let list = [{ text: self.citation(dataset, 'apa'), title: 'APA'},
-      { text: self.citation(dataset, 'bibtex'), title: 'BibTeX'},
-      { text: self.citation(dataset, 'csl'), title: 'CSL JSON'}
-    ]
-    if (dataset.doi) {
-      //{ href: `//data.datacite.org/application/x-bibtex/${dataset.doi}`, title: 'BibTeX (Datacite)'},
-      list.push({ href: `//data.datacite.org/application/x-research-info-systems/${dataset.doi}`, title: 'RIS'});
-    }
-    
-    list = list.sort((a,b) => a.title.localeCompare(b.title));
-    
-    if (dataset.citation) {
-      list = [{ text: dataset.citation, title: 'Custom'}].concat(list);
-    }
-    return list;
-  };
+  
+
   
   this.datespans = (dataset) => {
     return (dataset.activity||[]).map(c => {

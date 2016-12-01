@@ -13,6 +13,9 @@ npdcDatasetApp.service('DatasetCitation', require('./DatasetCitation'));
 npdcDatasetApp.factory('Dataset', require('./Dataset'));
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
+//npdcDatasetApp.controller('DatasetAutocompleteController', require('./search/DatasetAutocompleteController'));
+
+
 
 npdcDatasetApp.controller('DatasetEditController', require('./edit/DatasetEditController'));
 npdcDatasetApp.directive('datasetCoverage', require('./edit/coverage/coverageDirective'));
@@ -62,7 +65,11 @@ npdcDatasetApp.config(($httpProvider, npolarApiConfig) => {
   
   let autoconfig = new AutoConfig("production");
   angular.extend(npolarApiConfig, autoconfig, { resources });
+  
   console.debug("npolarApiConfig", npolarApiConfig);
+  //console.debug("npolarDatasets", npolarDatasets.updated);
+  //console.debug("npolarPeople", npolarPeople);
+  
 
   $httpProvider.interceptors.push('npolarApiInterceptor');
 });

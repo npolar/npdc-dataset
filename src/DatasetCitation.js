@@ -1,35 +1,88 @@
 'use strict';
 
-function DatasetCitation() {
+function DatasetCitation($location, NpdcDOI, NpdcCitationModel, NpdcAPA, NpdcBibTeX) {
   'ngInject';
   
   let self = this;
   
-  this.isDoi = (str) => {
-    return (/^10[.][0-9]+[/].+/).test(str);
+  this.isNyÅlesund = () => {
+    return (/\/ny\-[åa]lesund\//).test($location.path());
   };
   
-  // BibTeX
-  // Based on http://www.bibtex.org/Format/ and http://citation.datacite.org/format?doi=10.21334/npolar.2016.408e8178&style=bibtex&lang=en-US
-  this.bibtex = (param = { type:'@misc', id:'', year:null, title: '', url: '', doi: '', publisher:'', author: null }) => {
-    let author;
-    if (param.author instanceof Array && param.author.length > 0) {
-      author = param.author.map(a => a.name).join(' and ');
+  // URI (web address) of the dataset  
+  this.uri = (dataset) => {
+    
+    if (!dataset) { return; }
+    
+    // Use DOI if set
+    if (dataset.doi && NpdcDOI.isDoi(dataset.doi)) {
+      let f = dataset.doi.split(/^10./);
+      return `https://doi.org/10.${f[1]}`;
+    } else {
+      let n = '';
+      if (self.isNyÅlesund(dataset)) {
+        n = 'ny-ålesund/';
+      }
+      return `https://data.npolar.no/dataset/${n}${ dataset.id }`;
     }
-    let doi = '';
-    if (self.isDoi(param.doi)) {
-      doi = `
-      DOI="${ param.doi}",`;
-    }
-    return `@${param.type.replace(/^@/, '')}{${ param.doi || param.id },
-      title="${ param.title }",
-      url="${ param.url }",
-      ${doi}
-      publisher="${ param.publisher}",
-      author="${ author }",
-      year={${ param.year }}}`;
   };
   
+  // List of available citations, use href and header for services
+  this.citationList = (dataset) => {
+    
+    let list = [{ text: self.citation(dataset, 'apa'), title: 'APA'},
+      { text: self.citation(dataset, 'bibtex'), title: 'BibTeX'},
+      { text: self.citation(dataset, 'csl'), title: 'CSL JSON'}
+    ]
+    if (dataset.doi) {
+      //{ href: `//data.datacite.org/application/x-bibtex/${dataset.doi}`, title: 'BibTeX (Datacite)'},
+      list.push({ href: `//data.datacite.org/application/x-research-info-systems/${dataset.doi}`,
+        title: 'RIS',
+        header: [{ 'Accept': 'application/x-research-info-systems'}]
+      });
+    }
+    
+    list = list.sort((a,b) => a.title.localeCompare(b.title));
+    
+    if (dataset.citation) {
+      list = [{ text: dataset.citation, title: 'Custom'}].concat(list);
+    }
+    return list;
+  };
+  
+  // Citation helper
+  this.citation = (dataset, style) => {
+    if (!dataset) {
+      return;
+    }
+    
+    let authors = NpdcCitationModel.authors(dataset);
+    let author = authors;
+    let year = NpdcCitationModel.published_year(dataset);
+    //let published = NpdcCitationModel.published(dataset);
+    let title = dataset.title;
+    let type;
+    let pub = NpdcCitationModel.publisher(dataset);
+    let publisher = pub.name || pub.id;
+    let uri = self.uri(dataset);
+    let url = uri;
+    let doi = dataset.doi;
+    
+    if ((/apa/i).test(style)) {
+      type = 'Data set';
+      return NpdcAPA.citation({ authors, year, title, type, publisher, uri });
+    } else if ((/bibtex/i).test(style)){
+      type = '@misc';
+      return NpdcBibTeX.bibtex({ title, url, doi, type, publisher, author, year, id: dataset.id });      
+    } else if ((/csl/i).test(style)){
+      type = 'dataset';
+      let issued = { 'date-parts': [year] };
+      return self.csl({ type, DOI: doi, URL: url, title, publisher, issued, author });     
+    } else {
+      throw `Uknown citation style: ${style}`;
+    }
+  };
+
   // http://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html
   // https://github.com/citation-style-language/schema/blob/master/csl-data.json
   // https://blog.datacite.org/contributor-information-in-datacite-metadata/
@@ -50,43 +103,7 @@ function DatasetCitation() {
     let csl = { type: param.type, DOI: param.doi, URL: param.url, title: param.title,
       publisher: param.publisher, issued: param.issued, author
     };
-    return csl;
-  };
-  
-  this.apa = (param={ authors:[], year:null, title:'', type:'Data set', publisher:'', uri:''}) => {
-    let who = param.authors.map(a => {
-      if (a.last_name && a.first_name) { 
-        a.initials = a.first_name.split(' ').map(c => c[0]);
-        a.apa = `${a.last_name}, ${a.initials.join('. ')+'. '}`.trim();
-        if (!a.name) {
-          a.name = `${a.first_name} ${a.last_name}`;
-        }
-        
-      } else if (a.name) {
-        a.apa = a.name;
-      } else {
-        a.apa = '';
-      }
-      return a;
-    });
-    
-    if (who.length === 0) {
-      who = '';
-    } else if (who.length === 1) {
-      who = who[0].apa;
-    } else if (who.length >= 2) {
-      let last = who.pop();
-      if (who.length <= 7) {
-        who = who.map(a => a.apa).join(', ').trim() +', & '+ last.apa;
-      } else {
-        who = who.slice(0,6).map(a => a.apa).join(', ').trim() +', … '+ last.apa;
-      }
-    }
-    
-    return `${who} (${param.year}).
-      ${ param.title } [${param.type}].
-      ${ param.publisher }. ${ param.uri }`;
-      
+    return JSON.stringify(csl, null, 2);
   }; 
 }
 

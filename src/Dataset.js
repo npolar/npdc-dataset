@@ -65,7 +65,7 @@ function Dataset($location, $q, DatasetResource, DatasetModel, NpolarApiSecurity
     
     // The hashi (v0) file object should be object with keys filename, url, [file_size, icon, extras].
     DatasetResource.hashiObject = function(attachment) {
-      //console.debug('hashiObject()', 'attachment:', attachment);
+      console.debug('hashiObject()', 'attachment:', attachment);
       return {
         url: attachment.href,
         filename: attachment.filename,
@@ -74,12 +74,21 @@ function Dataset($location, $q, DatasetResource, DatasetModel, NpolarApiSecurity
     };
   
     DatasetResource.attachmentObject = function(hashi) {
-      //console.debug('attachmentObject()', 'hashi:', hashi);
-      return {
-        href: hashi.url,
+
+      let href = hashi.url;
+      if ((/\/[0-9a-f]{32,}$/i).test(hashi.url)) {
+        href = hashi.url.split('/');
+        href.pop();
+        href = `${ href.join('/') }/${ hashi.filename }`;
+      }
+      
+      let a = {
+        href: href,
         filename: hashi.filename,
         type: hashi.content_type,
       };
+      console.debug('attachmentObject()', 'hashi:', hashi, '=>', a);
+      return a;
     };
     
     DatasetResource.linkObject = function(hashi, license) {
