@@ -63,12 +63,16 @@
     </md-card-content>
   </md-card>
 
-  <span id="text" class="anchor"></span>   
-  <section class="np-padding">
-    <p class="markdown" marked="document.summary"></p>
-    <p class="markdown" marked="document.quality"></p>
-    <p class="markdown" marked="document.comment"></p>
-  </section>
+  <span id="text" class="anchor"></span>
+  <md-card>
+    <md-card-content>
+      <section class="np-padding">
+        <p class="markdown" marked="document.summary"></p>
+        <p class="markdown" marked="document.quality"></p>
+        <p class="markdown" marked="document.comment"></p>
+      </section>
+    </md-card-content>
+  </md-card>
 
   <span id="links" class="anchor"></span>   
   <md-card ng-if="related.length > 0">
@@ -116,9 +120,11 @@
     </md-card-content>
   </md-card>
 
-  <span id="people" class="anchor"></span>
-  <div ng-if="images" layout-padding class="np-layout-grid" id="images">
- <!--     <md-grid-list
+  <span id="images" class="anchor"></span>
+  <md-card ng-if="images">
+    <md-card-content>
+      <div layout-padding class="np-layout-grid">
+        <!--<md-grid-list
           md-cols="1"
           md-cols-md="1"
           md-cols-gt-md="1"
@@ -132,9 +138,10 @@
                   <h3>{{ img.title(map) }}</h3>
               </md-grid-tile-footer>
           </md-grid-tile>
-       <!-- </md-grid-list>-->
-
-  </div>
+        <!-- </md-grid-list>-->
+      </div>
+    </md-card-content>
+  </md-card>
 
   <span id="people" class="anchor"></span>
   <md-card>
