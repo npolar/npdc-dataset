@@ -24,16 +24,24 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     return person.roles.includes('pointOfContact');
   };
   
-  let sectionList = (dataset, param={ data: false, links: false }) => {
-    let sections = ['id'];
+  let sectionList = (dataset, param={ data: false, relations: false, links: false, similar: false }) => {
+    let sections = ['id'];    
     if (param.data) {
       sections.push('data');
     }
     sections.push('text');
+    if (param.relations) {
+      sections.push('relations');
+    }
     if (param.links) {
       sections.push('links');
     }
-    return sections.concat(['coverage', 'people', 'organisations', 'classification', 'similar', 'machine-metadata', 'edits']);
+    sections = sections.concat(['coverage', 'people', 'organisations', 'classification']);
+    if (param.similar) {
+      sections.push('similar');
+    }
+    sections = sections.concat(['metadata', 'edits']);
+    return sections;
   };
   
   let showDataset = function(dataset) {
@@ -53,13 +61,14 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     $scope.bboxes = DatasetModel.bboxes(dataset);
     $scope.datespans = DatasetModel.datespans(dataset);
     $scope.relations = DatasetModel.relations(dataset); 
-    $scope.related = DatasetModel.relations(dataset, ['related', 'metadata']);
+    $scope.links = $scope.related = DatasetModel.relations(dataset, ['related', 'metadata']); //@todo remove related
     $scope.data = DatasetModel.relations(dataset, ['data','service']);
     
-    //@todo FIXME Waiting for schroll-to ancher fix (destination hidden by static toolbar header)
-    //$scope.sections = sectionList(dataset, { data: $scope.data.length > 0,
-    //  links: $scope.related.length > 0
-    //});
+    $scope.sections = sectionList(dataset, { data: $scope.data.length > 0,
+      links: $scope.links.length > 0,
+      relations: $scope.relations.length > 0,
+      similar: false
+    });
     
     //// Grab Content-Length for stuff in the file API
     //$scope.data.forEach((l,idx) => {
