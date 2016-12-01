@@ -3,6 +3,7 @@
 function DatasetEditController($scope, $controller, $routeParams, $http, $timeout,
   formula, formulaAutoCompleteService, npdcAppConfig, chronopicService, fileFunnelService,
   NpolarMessage, NpolarApiSecurity, NpolarLang, NpolarTranslate,
+  //NpdcWarningsService,
   Dataset, DatasetModel, DatasetFactoryService) {
   
   'ngInject';
@@ -10,6 +11,23 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
   const schema = DatasetModel.schema;
   $scope.resource = DatasetFactoryService.resourceFactory();
   $scope.model = DatasetModel;
+  
+  
+  $scope.$on('npdc-filefunnel-success', (event, file) => {
+//    {bytesSent: 0
+//bytesTotal: 168
+//elements: Object
+//location: null
+//parent: s
+//progress: (...)
+//get progress: progress()
+//reference: File
+//response: null
+//status: 3
+//xhr: null}
+    console.log('event', event, 'file', file);
+  });
+
   
   function isHiddenLink(rel) {
     if (rel.rel) {
@@ -92,22 +110,28 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       server,
       multiple: true,
       restricted: false,
+      on: { success: (file) => {
+        
+      }},
       fileToValueMapper: $scope.resource.attachmentObject,
       valueToFileMapper: $scope.resource.hashiObject,
       fields: ['href']
     }, formula);  
   }
- 
+    
   try {
     init();
      // edit (or new) action
     $scope.edit().$promise.then(dataset => {
+      
+      //NpdcWarningsService.warnings[dataset.id] = ["You are editing"]; //.concat(NpdcWarningsService.warnings[dataset.id]);
+      //console.log(NpdcWarningsService.warnings);
+      
       NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
       
-      $scope.warnings = false;
-     
       // Grab attachments and force update attachments and links
       let fileUri = `${NpolarApiSecurity.canonicalUri($scope.resource.path)}/${dataset.id}/_file`;
+      console.log(fileUri);
       
       $http.get(fileUri).then(r => {
         if (r && r.data && r.data.files && r.data.files.length > 0) {
