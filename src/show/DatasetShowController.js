@@ -1,6 +1,4 @@
 'use strict';
-let NpolarApiRequest = XMLHttpRequest;
-
 var DatasetShowController = function($controller, $routeParams, $scope, $http, $q, $location, $mdDialog,
   NpolarTranslate, NpolarMessage, NpolarApiSecurity,
   npdcAppConfig,NpdcCitationModel,
@@ -72,19 +70,19 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     });
     
     // Grab Content-Length for stuff in the file API
-    $scope.data.forEach((l,idx) => {
-      if ((!l.length || !l.filename) && ((/^http(s)?:\/\//).test(l.href) && !(/[?&]q=/).test(l.href) && (/_file\/.+/).test(l.href))) {
-        let request = new NpolarApiRequest(); //NpolarApiRequest.factory();
-        request.head(request, l.href, (response) => {
-          if (200 === request.status && response.lengthComputable) {
-            $scope.$apply(()=>{
-              l.length = response.total; // same as parseInt(request.getResponseHeader('Content-Length');
-              l.filename =  request.getResponseHeader('Content-Disposition').split('filename=')[1];
-            });
-          }
-        });
-      }
-    });
+    //$scope.data.forEach((l,idx) => {
+    //  if ((!l.length || !l.filename) && ((/^http(s)?:\/\//).test(l.href) && !(/[?&]q=/).test(l.href) && (/_file\/.+/).test(l.href))) {
+    //    let request = new NpolarApiRequest(); //NpolarApiRequest.factory();
+    //    request.head(request, l.href, (response) => {
+    //      if (200 === request.status && response.lengthComputable) {
+    //        $scope.$apply(()=>{
+    //          l.length = response.total; // same as parseInt(request.getResponseHeader('Content-Length');
+    //          l.filename =  request.getResponseHeader('Content-Disposition').split('filename=')[1];
+    //        });
+    //      }
+    //    });
+    //  }
+    //});
     
     $scope.images = dataset.links.filter(l => { // @todo images in files ?
       return (/^image\/.*/).test(l.type);
