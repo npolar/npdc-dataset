@@ -2,18 +2,18 @@
 
 function DatasetCitation($location, NpdcDOI, NpdcCitationModel, NpdcAPA, NpdcBibTeX) {
   'ngInject';
-  
+
   let self = this;
-  
+
   this.isNyÅlesund = () => {
     return (/\/ny\-[åa]lesund\//).test($location.path());
   };
-  
-  // URI (web address) of the dataset  
+
+  // URI (web address) of the dataset
   this.uri = (dataset) => {
-    
+
     if (!dataset) { return; }
-    
+
     // Use DOI if set
     if (dataset.doi && NpdcDOI.isDoi(dataset.doi)) {
       let f = dataset.doi.split(/^10./);
@@ -26,14 +26,15 @@ function DatasetCitation($location, NpdcDOI, NpdcCitationModel, NpdcAPA, NpdcBib
       return `https://data.npolar.no/dataset/${n}${ dataset.id }`;
     }
   };
-  
+
   // List of available citations, use href and header for services
   this.citationList = (dataset) => {
-    
-    let list = [{ text: self.citation(dataset, 'apa'), title: 'APA'},
-      { text: self.citation(dataset, 'bibtex'), title: 'BibTeX'},
-      { text: self.citation(dataset, 'csl'), title: 'CSL JSON'}
-    ]
+
+    let list = [
+        { text: self.citation(dataset, 'apa'), title: 'APA'},
+        { text: self.citation(dataset, 'bibtex'), title: 'BibTeX'},
+        { text: self.citation(dataset, 'csl'), title: 'CSL JSON'}
+    ];
     if (dataset.doi) {
       //{ href: `//data.datacite.org/application/x-bibtex/${dataset.doi}`, title: 'BibTeX (Datacite)'},
       list.push({ href: `//data.datacite.org/application/x-research-info-systems/${dataset.doi}`,
@@ -41,21 +42,21 @@ function DatasetCitation($location, NpdcDOI, NpdcCitationModel, NpdcAPA, NpdcBib
         header: [{ 'Accept': 'application/x-research-info-systems'}]
       });
     }
-    
+
     list = list.sort((a,b) => a.title.localeCompare(b.title));
-    
+
     if (dataset.citation) {
       list = [{ text: dataset.citation, title: 'Custom'}].concat(list);
     }
     return list;
   };
-  
+
   // Citation helper
   this.citation = (dataset, style) => {
     if (!dataset) {
       return;
     }
-    
+
     let authors = NpdcCitationModel.authors(dataset);
     let author = authors;
     let year = NpdcCitationModel.published_year(dataset);
@@ -67,17 +68,17 @@ function DatasetCitation($location, NpdcDOI, NpdcCitationModel, NpdcAPA, NpdcBib
     let uri = self.uri(dataset);
     let url = uri;
     let doi = dataset.doi;
-    
+
     if ((/apa/i).test(style)) {
       type = 'Data set';
       return NpdcAPA.citation({ authors, year, title, type, publisher, uri });
     } else if ((/bibtex/i).test(style)){
       type = '@misc';
-      return NpdcBibTeX.bibtex({ title, url, doi, type, publisher, author, year, id: dataset.id });      
+      return NpdcBibTeX.bibtex({ title, url, doi, type, publisher, author, year, id: dataset.id });
     } else if ((/csl/i).test(style)){
       type = 'dataset';
       let issued = { 'date-parts': [year] };
-      return self.csl({ type, DOI: doi, URL: url, title, publisher, issued, author });     
+      return self.csl({ type, DOI: doi, URL: url, title, publisher, issued, author });
     } else {
       throw `Uknown citation style: ${style}`;
     }
@@ -97,14 +98,14 @@ function DatasetCitation($location, NpdcDOI, NpdcCitationModel, NpdcAPA, NpdcBib
       } else {
         return { literal: p.name };
       }
-      
+
     }
     let author = param.author.map(a => personproc(a));
     let csl = { type: param.type, DOI: param.doi, URL: param.url, title: param.title,
       publisher: param.publisher, issued: param.issued, author
     };
     return JSON.stringify(csl, null, 2);
-  }; 
+  };
 }
 
 module.exports = DatasetCitation;
