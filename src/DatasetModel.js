@@ -1,33 +1,33 @@
 'use strict';
 
-let npolarPeople = [];
+//let npolarPeople = []
 
 function DatasetModel($location, $q, $http, NpolarTranslate,
   NpdcDOI,
   DatasetCitation, Publication, Project) {
   'ngInject';
-  
+
   let self = this;
-  
+
   this.schema = '//api.npolar.no/schema/dataset-1';
-  
-  function name(email,people=npolarPeople) {
-  
-    let p = npolarPeople.find(p => (p.email === email || (p.alias||[]).includes(email)));
-    if (p) {
-      if (p.name) {
-       return p.name;
-      } else {
-        return `${p.first_name} ${p.last_name}`;
-      }
-      
-    }
-  }
-  
+
+//  function name(email,people=npolarPeople) {
+//
+//    let p = npolarPeople.find(p => (p.email === email || (p.alias||[]).includes(email)));
+//    if (p) {
+//      if (p.name) {
+//       return p.name;
+//      } else {
+//        return `${p.first_name} ${p.last_name}`;
+//      }
+//
+//    }
+//  }
+
   this.isNyÅlesund = () => {
     return (/\/ny\-[åa]lesund\//).test($location.path());
   };
- 
+
   this.getAppTitle = () => {
     if (self.isNyÅlesund()) {
       return [
@@ -40,25 +40,21 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
         {'@language': 'no', '@value': 'Datasett'}
       ];
     }
-    
+
   };
-  
+
   this.suggestions = (dataset, resource, param= { title: dataset.title,
       id: dataset.id,
       limit: 100,
       min_score: 0.45,
       fields: 'id,title,collection,updated',
       prune: (title) => {
-        return title.replace(/\/\"\'\(\)/g, '')
+        return title.replace(/\/\"\'\(\)/g, '');
       }
     }) => {
-    
-    let prune = (title) => {
-      return title.replace(/\/\"\'\(\)/g, ''); //.split(/\s[0-9]{4}/).join('');
-    };
-    
+
     return new Promise((resolve, reject) => {
-      
+
        resource.array({
         q: param.prune(param.title),
         fields: param.fields,
@@ -72,18 +68,18 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
       }, error => {
         reject(error);
       });
-      
-      
+
+
     });
   };
-  
+
   this.metadata = (dataset, resource, uri) => {
     let path = resource.path.replace('//api.npolar.no', '');
     let byline = "See [the dataset catalogue](https://data.npolar.no/dataset/ae1a945b-6b91-42c0-86e6-4657b4b6ec3c) for details on accessing, reusing, and harvesting the entire metadata catalogue.";
     let schema = self.schema;
     return { uri, path, formats: self.alternateLinks(dataset), editors: [], byline, schema };
   };
-  
+
   this.alternateLinks = (dataset) => {
     let formats = dataset.links.filter(l => (l.rel === "alternate" || l.rel === "edit") && l.type !== 'text/html').map(l => {
       if (l.rel === 'edit') {
@@ -91,16 +87,16 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
       }
       return l;
     });
-    
+
     if (!self.isNyÅlesund(dataset)) {
       formats.push({
         href: `//api.npolar.no/dataset/?q=&filter-id=${dataset.id}&format=json&variant=ld`,
         title: 'DCAT (JSON-LD)',
         type: 'application/ld+json'
       });
-      
+
     }
-    
+
     if (NpdcDOI.isDoi(dataset.doi)) {
       formats.push({
         href: `//data.datacite.org/application/vnd.datacite.datacite+xml/${dataset.doi}`,
@@ -115,11 +111,11 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
     }
     return formats;
   };
-  
+
   //this.authors = (dataset) => {
   //
   //  let authors = [];
-  //  
+  //
   //  if (dataset && dataset.people && dataset.people.length > 0) {
   //    authors = dataset.people.filter(p => (p.roles||[]).includes("author"));
   //  }
@@ -130,7 +126,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
   //  }
   //  return authors;
   //};
-  
+
   this.relations = (links=[], rels=['parent','publication','project']) => {
     if (!links) { return; }
     if (links.links) {
@@ -138,7 +134,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
     }
     return links.filter(l => rels.includes(l.rel));
   };
-  
+
   this.rel = (dataset, rel) => {
     if (!dataset) { return; }
     let r = self.relations(dataset, [rel]);
@@ -146,10 +142,10 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
       rel = r[0];
       rel['@id'] = rel.href;
       return rel;
-    } 
+    }
   };
-  
-  
+
+
   this.publisher = (dataset) => {
     let p = (dataset.organisations||[]).find(o => o.roles.includes("publisher"));
     if (p) {
@@ -158,7 +154,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
       return { };
     }
   };
-  
+
   this.published_year = (dataset) => {
     let y;
     if (dataset && dataset.released && (/^\d{4}/).test(dataset.released)) {
@@ -168,14 +164,14 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
     }
     return y;
   };
-  
- 
 
 
-  
-  
 
-  
+
+
+
+
+
   this.datespans = (dataset) => {
     return (dataset.activity||[]).map(c => {
       let ts = [];
@@ -185,46 +181,46 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
       }
     );
   };
-  
+
   this.bboxes = (dataset) => {
     return (dataset.coverage||[]).map(c => [c.west, c.south, c.east, c.north]);
   };
-  
+
   this.hasData = (dataset) => {
     return (self.relations(dataset, ['data', 'service']).length > 0);
-  }
-  
+  };
+
   this.hasAuthors = (dataset) => (self.authors(dataset).length > 0);
-  
+
   this.hasReleaseYear = (dataset) => (/^[0-9]{4}/).test(dataset.released);
-  
+
   this.notices = (dataset) => {
     let i = [];
-    
+
     if (self.hasReleaseYear(dataset)) {
       let now = new Date();
       let released = Date.parse(dataset.released);
       if (now < released) {
         i.push('Planned data release is in the future');
       }
-      
+
     }
     if (dataset.draft === 'yes') {
       i.push('Draft');
     }
     console.log('Notices', i);
     return i;
-  }
-  
+  };
+
   this.warnings = (dataset) => {
     let w = [];
-    
+
     let hasData = self.hasData(dataset);
     let hasAuthors = self.hasAuthors(dataset);
     let hasReleaseYear = (/^[0-9]{4}/).test(dataset.released);
     let now = new Date();
     let released;
-     
+
     if (hasReleaseYear) {
       released = Date.parse(dataset.released);
     }
@@ -235,7 +231,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
       //  console.log('Data release in', days_until_release, 'days');
       //}
     //}
-    
+
     if (!hasData) {
       if (!hasReleaseYear) {
         w.push('No data');
@@ -243,7 +239,7 @@ function DatasetModel($location, $q, $http, NpolarTranslate,
          w.push('No data (even if release date is in the past)');
       }
     }
-      
+
     //if (hasData) {
       // @todo check links!?
     //}
