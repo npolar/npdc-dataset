@@ -65,12 +65,41 @@
 
   <span id="text" class="anchor"></span>
   <md-card>
+    
+    <md-card-header>
+      <md-card-avatar>
+        <md-icon>text_fields</md-icon>
+      </md-card-avatar>
+      <md-card-header-text>
+        <span class="md-headline">{{'Description' | t}}</span>
+        <span class="md-subhead">Summary, methods, processing, data management</span>
+      </md-card-header-text>
+    </md-card-header>
     <md-card-content>
-      <section class="np-padding">
+      <section>
         <p class="markdown" marked="document.summary"></p>
         <p class="markdown" marked="document.quality"></p>
         <p class="markdown" marked="document.comment"></p>
       </section>
+    </md-card-content>
+  </md-card>
+  
+  <span id="relations" class="anchor"></span>  
+  <md-card ng-if="relations.length > 0" id="relations">
+    <md-card-header>
+      <md-card-avatar>
+        <md-icon>compare_arrows</md-icon>
+      </md-card-avatar>
+      <md-card-header-text>
+        <span class="md-headline">Relations</span>
+        <span class="md-subhead"> </span>
+      </md-card-header-text>
+    </md-card-header>
+    <md-card-content>
+      <span ng-repeat="link in relations">
+        <span ng-if="link.rel != 'related'">{{ link.rel | t  }}: </span><a ng-href="{{link.href}}" title="{{link.title}}">{{ link.title }}</a>
+        <span ng-if="!$last">|</span>
+      </span>
     </md-card-content>
   </md-card>
 
@@ -121,7 +150,7 @@
   </md-card>
 
   <span id="images" class="anchor"></span>
-  <md-card ng-if="images">
+  <md-card ng-if="images.length > 0">
     <md-card-content>
       <div layout-padding class="np-layout-grid">
         <!--<md-grid-list
@@ -241,25 +270,6 @@
     </md-card-content>
   </md-card>
 
-  <span id="relations" class="anchor"></span>  
-  <md-card ng-if="relations.length > 0" id="relations">
-    <md-card-header>
-      <md-card-avatar>
-        <md-icon>compare_arrows</md-icon>
-      </md-card-avatar>
-      <md-card-header-text>
-        <span class="md-headline">Relations</span>
-        <span class="md-subhead"> </span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content>
-      <span ng-repeat="link in relations">
-        <span ng-if="link.rel != 'related'">{{ link.rel | t  }}: </span><a ng-href="{{link.href}}" title="{{link.title}}">{{ link.title }}</a>
-        <span ng-if="!$last">|</span>
-      </span>
-    </md-card-content>
-  </md-card>
-
   <span id="suggestions" class="anchor"></span>  
   <md-card ng-if="suggestions.length > 0" id="suggestions">
     <md-card-header>
@@ -281,4 +291,7 @@
 
   <span id="metadata" class="anchor"></span>
   <npdc:metadata metadata="metadata" document="document"></npdc:metadata>
+  
+  <span id="edits" class="anchor"></span>
+  
 </div>
