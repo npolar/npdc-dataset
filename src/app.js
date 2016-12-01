@@ -13,7 +13,7 @@ npdcDatasetApp.service('DatasetCitation', require('./DatasetCitation'));
 npdcDatasetApp.factory('Dataset', require('./Dataset'));
 npdcDatasetApp.controller('DatasetShowController', require('./show/DatasetShowController'));
 npdcDatasetApp.controller('DatasetSearchController', require('./search/DatasetSearchController'));
-npdcDatasetApp.controller('DatasetAutocompleteController', require('./search/DatasetAutocompleteController'));
+//npdcDatasetApp.controller('DatasetAutocompleteController', require('./search/DatasetAutocompleteController'));
 
 
 
