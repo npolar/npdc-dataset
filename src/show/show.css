@@ -1,7 +1,15 @@
 .coverage-map .leaflet-map {
-  height: 300px;
+    height: 300px;
 }
 
 .markdown img {
-  width: 75% !important;
+    width: 75% !important;
+}
+
+.anchor {
+    position: relative;
+    top:-80px;
+    display: block;
+    height: 0;
+    width:0;
 }

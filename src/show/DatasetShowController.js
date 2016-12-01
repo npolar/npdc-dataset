@@ -1,5 +1,5 @@
 'use strict';
-//let NpolarApiRequest = XMLHttpRequest;
+let NpolarApiRequest = XMLHttpRequest;
 
 var DatasetShowController = function($controller, $routeParams, $scope, $http, $q, $location, $mdDialog,
   NpolarTranslate, NpolarMessage, NpolarApiSecurity,
@@ -23,19 +23,27 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     if (!person || !person.roles.length) { return; }
     return person.roles.includes('pointOfContact');
   };
-
-  //let sectionList = (dataset, param={ data: false, links: false }) => {
-  //  let sections = ['id'];
-  //  if (param.data) {
-  //    sections.push('data');
-  //  }
-  //  sections.push('text');
-  //  if (param.links) {
-  //    sections.push('links');
-  //  }
-  //  return sections.concat(['coverage', 'people', 'organisations', 'classification', 'similar', 'machine-metadata', 'edits']);
-  //};
-
+  
+  let sectionList = (dataset, param={ data: false, relations: false, links: false, similar: false }) => {
+    let sections = ['id'];    
+    if (param.data) {
+      sections.push('data');
+    }
+    sections.push('text');
+    if (param.relations) {
+      sections.push('relations');
+    }
+    if (param.links) {
+      sections.push('links');
+    }
+    sections = sections.concat(['coverage', 'people', 'organisations', 'classification']);
+    if (param.similar) {
+      sections.push('similar');
+    }
+    sections = sections.concat(['metadata', 'edits']);
+    return sections;
+  };
+  
   let showDataset = function(dataset) {
     NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
 
@@ -52,30 +60,32 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
 
     $scope.bboxes = DatasetModel.bboxes(dataset);
     $scope.datespans = DatasetModel.datespans(dataset);
-    $scope.relations = DatasetModel.relations(dataset);
-    $scope.related = DatasetModel.relations(dataset, ['related', 'metadata']);
+
+    $scope.relations = DatasetModel.relations(dataset); 
+    $scope.links = $scope.related = DatasetModel.relations(dataset, ['related', 'metadata']); //@todo remove related
     $scope.data = DatasetModel.relations(dataset, ['data','service']);
-
-    //@todo FIXME Waiting for schroll-to ancher fix (destination hidden by static toolbar header)
-    //$scope.sections = sectionList(dataset, { data: $scope.data.length > 0,
-    //  links: $scope.related.length > 0
-    //});
-
-    //// Grab Content-Length for stuff in the file API
-    //$scope.data.forEach((l,idx) => {
-    //  if ((!l.length || !l.filename) && ((/^http(s)?:\/\//).test(l.href) && !(/[?&]q=/).test(l.href) && (/_file\/.+/).test(l.href))) {
-    //    let request = new NpolarApiRequest(); //NpolarApiRequest.factory();
-    //    request.head(request, l.href, (response) => {
-    //      if (200 === request.status && response.lengthComputable) {
-    //        $scope.$apply(()=>{
-    //          l.length = response.total; // same as parseInt(request.getResponseHeader('Content-Length');
-    //          l.filename =  request.getResponseHeader('Content-Disposition').split('filename=')[1];
-    //        });
-    //      }
-    //    });
-    //  }
-    //});
-    //
+    
+    $scope.sections = sectionList(dataset, { data: $scope.data.length > 0,
+      links: $scope.links.length > 0,
+      relations: $scope.relations.length > 0,
+      similar: false
+    });
+    
+    // Grab Content-Length for stuff in the file API
+    $scope.data.forEach((l,idx) => {
+      if ((!l.length || !l.filename) && ((/^http(s)?:\/\//).test(l.href) && !(/[?&]q=/).test(l.href) && (/_file\/.+/).test(l.href))) {
+        let request = new NpolarApiRequest(); //NpolarApiRequest.factory();
+        request.head(request, l.href, (response) => {
+          if (200 === request.status && response.lengthComputable) {
+            $scope.$apply(()=>{
+              l.length = response.total; // same as parseInt(request.getResponseHeader('Content-Length');
+              l.filename =  request.getResponseHeader('Content-Disposition').split('filename=')[1];
+            });
+          }
+        });
+      }
+    });
+    
     $scope.images = dataset.links.filter(l => { // @todo images in files ?
       return (/^image\/.*/).test(l.type);
     });
