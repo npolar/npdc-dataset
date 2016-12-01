@@ -5,6 +5,7 @@
 
   <leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map"></leaflet>
 
+  <span id="title" class="anchor"></span>
   <md-card>
     <md-card-content>
       <header>
@@ -28,9 +29,9 @@
     </md-card-content>
   </md-card>
 
-  <md-card id="id">
+  <span id="id" class="anchor"></span>
+  <md-card>
     <md-card-content>
-
       <p>
         <a ng-if="document.doi" ng-href="//doi.org/{{document.doi}}" ><img src="/assets/img/doi.png" height="20px" alt="DOI"><md-tooltip>Digital Object Identifier</md-tooltip>{{ document.doi}}</a>
         <span ng-if="!document.doi">URI: <a ng-href="{{ uri }}">{{ uri }}</a><md-tooltip md-direction="left">URI (persistent web address)</md-tooltip></span>
@@ -40,7 +41,8 @@
     </md-card-content>
   </md-card>
 
-  <md-card id="data" ng-if="isReleased && data.length > 0">
+  <span id="data" class="anchor"></span> 
+  <md-card ng-if="isReleased && data.length > 0">
     <md-card-header>
       <md-card-avatar>
         <md-icon>file_download</md-icon>
@@ -61,13 +63,15 @@
     </md-card-content>
   </md-card>
 
-  <section class="np-padding" id="text">
+  <span id="text" class="anchor"></span>   
+  <section class="np-padding">
     <p class="markdown" marked="document.summary"></p>
     <p class="markdown" marked="document.quality"></p>
     <p class="markdown" marked="document.comment"></p>
   </section>
 
-  <md-card id="links" ng-if="related.length > 0">
+  <span id="links" class="anchor"></span>   
+  <md-card ng-if="related.length > 0">
     <md-card-header>
       <md-card-avatar>
         <md-icon>subdirectory_arrow_right</md-icon>
@@ -86,7 +90,8 @@
     </md-card-content>
   </md-card>
 
-  <md-card ng-if="document.coverage" id="coverage">
+  <span id="coverage" class="anchor"></span>
+  <md-card ng-if="document.coverage">
     <md-card-header>
       <md-card-avatar>
         <md-icon>language</md-icon>
@@ -111,6 +116,7 @@
     </md-card-content>
   </md-card>
 
+  <span id="people" class="anchor"></span>
   <div ng-if="images" layout-padding class="np-layout-grid" id="images">
  <!--     <md-grid-list
           md-cols="1"
@@ -130,7 +136,8 @@
 
   </div>
 
-  <md-card id="people">
+  <span id="people" class="anchor"></span>
+  <md-card>
     <md-card-header>
       <md-card-avatar>
         <md-icon>person</md-icon>
@@ -142,7 +149,7 @@
     </md-card-header>
     <md-card-content>
       <p ng-repeat="p in document.people">
-        <a id="{{ p.first_name | lowercase }}+{{ p.last_name | lowercase}}" class="anchor"></a>
+        <span id="{{ p.first_name | lowercase }}+{{ p.last_name | lowercase}}" class="anchor"></span>
         <span>
           {{ p.first_name}} {{ p.last_name}}
         </span>
@@ -158,7 +165,8 @@
     </md-card-content>
   </md-card>
 
-  <md-card id="organisations">
+  <span id="organisations" class="anchor"></span>
+  <md-card>
     <md-card-header>
       <md-card-avatar>
         <md-icon>business</md-icon>
@@ -168,7 +176,7 @@
         <span class="md-subhead"></span>
       </md-card-header-text>
     </md-card-header>
-    <md-card-content id="classification">
+    <md-card-content>
       <span class="md-subhead">
       <md-list>
         <md-list-item class="md-1-line" ng-repeat="o in document.organisations">
@@ -184,11 +192,11 @@
         </md-list-item>
       </md-list>
       </span>
-      <span id="classification"></span>
     </md-card-content>
   </md-card>
 
-  <md-card ng-if="document.topics || document.iso_topics || document.sets || document.tags || document.gcmd.sciencekeywords" id="classification">
+  <span id="classification" class="anchor"></span>
+  <md-card ng-if="document.topics || document.iso_topics || document.sets || document.tags || document.gcmd.sciencekeywords">
     <md-card-header>
       <md-card-avatar>
         <md-icon>label_outline</md-icon>
@@ -226,6 +234,7 @@
     </md-card-content>
   </md-card>
 
+  <span id="relations" class="anchor"></span>  
   <md-card ng-if="relations.length > 0" id="relations">
     <md-card-header>
       <md-card-avatar>
@@ -244,23 +253,25 @@
     </md-card-content>
   </md-card>
 
+  <span id="suggestions" class="anchor"></span>  
   <md-card ng-if="suggestions.length > 0" id="suggestions">
-  <md-card-header>
-    <md-card-avatar>
-      <md-icon>account_balance</md-icon>
-    </md-card-avatar>
-    <md-card-header-text>
-      <span class="md-headline">See also</span>
-      <span class="md-subhead">Similar datasets</span>
-    </md-card-header-text>
-  </md-card-header>
-  <md-card-content>
-    <p ng-repeat="link in suggestions">
-      <a ng-href="{{link.id}}" title="{{link.title}}"><span>{{link.title}}</span></a>
-      [{{ link._score }}]
-    </p>
-  </md-card-content>
-</md-card>
+    <md-card-header>
+      <md-card-avatar>
+        <md-icon>account_balance</md-icon>
+      </md-card-avatar>
+      <md-card-header-text>
+        <span class="md-headline">See also</span>
+        <span class="md-subhead">Similar datasets</span>
+      </md-card-header-text>
+    </md-card-header>
+    <md-card-content>
+      <p ng-repeat="link in suggestions">
+        <a ng-href="{{link.id}}" title="{{link.title}}"><span>{{link.title}}</span></a>
+        [{{ link._score }}]
+      </p>
+    </md-card-content>
+  </md-card>
 
-  <npdc:metadata id="metadata" metadata="metadata" document="document"></npdc:metadata>
+  <span id="metadata" class="anchor"></span>
+  <npdc:metadata metadata="metadata" document="document"></npdc:metadata>
 </div>
