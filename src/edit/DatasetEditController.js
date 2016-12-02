@@ -124,39 +124,8 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
      // edit (or new) action
     $scope.edit().$promise.then(dataset => {
       
-      //NpdcWarningsService.warnings[dataset.id] = ["You are editing"]; //.concat(NpdcWarningsService.warnings[dataset.id]);
-      //console.log(NpdcWarningsService.warnings);
-      
       NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
-      
-      // Grab attachments and force update attachments and links
-      let fileUri = `${NpolarApiSecurity.canonicalUri($scope.resource.path)}/${dataset.id}/_file`;
-      console.log(fileUri);
-      
-      $http.get(fileUri).then(r => {
-        if (r && r.data && r.data.files && r.data.files.length > 0) {
-          let dataset = $scope.formula.getModel();
-          let files = r.data.files;
-          
-          let attachments = files.map(hashi => Dataset.attachmentObject(hashi));
-          dataset.attachments = attachments;
-          
-          r.data.files.forEach(f => {
-            let link = dataset.links.find(l => l.href === f.url);
-            
-            if (!link) {
-              let license = dataset.licences[0] || Dataset.license;
-              link = Dataset.linkObject(f, license);
-              //dataset.links.push(link);
-            }
-            // else findIndex & objhect.assign?
-          });
-          //$scope.formula.setModel(dataset);
-        }
-      });
-      
-      
-      
+
     });
     
   } catch (e) {
