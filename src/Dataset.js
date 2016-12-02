@@ -79,27 +79,16 @@ function Dataset($location, $q, DatasetResource, DatasetModel, NpolarApiSecurity
       if ((/\/[0-9a-f]{32,}$/i).test(hashi.url)) {
         href = hashi.url.split('/');
         href.pop();
-        href = `${ href.join('/') }/${ hashi.filename }`;
+        href = encodeURI(`${ href.join('/') }/${ encodeURIComponent(hashi.filename) }`);
       }
       
       let a = {
-        href: href,
+        href,
         filename: hashi.filename,
         type: hashi.content_type,
       };
       console.debug('attachmentObject()', 'hashi:', hashi, '=>', a);
       return a;
-    };
-    
-    DatasetResource.linkObject = function(hashi, license) {
-      return {
-        rel: 'data',
-        href: hashi.url,
-        title: hashi.filename,
-        type: hashi.content_type,
-        hash: 'md5:'+hashi.md5sum,
-        license
-      };
     };
 
   return DatasetResource;
