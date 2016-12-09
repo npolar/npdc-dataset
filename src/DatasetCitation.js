@@ -31,13 +31,14 @@ function DatasetCitation($location, NpdcDOI, NpdcCitationModel, NpdcAPA, NpdcBib
   this.citationList = (dataset) => {
 
     let list = [
-        { text: self.citation(dataset, 'apa'), title: 'APA'},
-        { text: self.citation(dataset, 'bibtex'), title: 'BibTeX'},
-        { text: self.citation(dataset, 'csl'), title: 'CSL JSON'}
+      { text: self.citation(dataset, 'apa'), title: 'APA'},
+      { text: self.citation(dataset, 'bibtex'), title: 'BibTeX'},
+      { text: self.citation(dataset, 'csl'), title: 'CSL JSON'}
     ];
     if (dataset.doi) {
       //{ href: `//data.datacite.org/application/x-bibtex/${dataset.doi}`, title: 'BibTeX (Datacite)'},
-      list.push({ href: `//data.datacite.org/application/x-research-info-systems/${dataset.doi}`,
+      list.push({ href: `https://search.datacite.org/citation?format=ris&doi=${dataset.doi}`,
+        //href: `//data.datacite.org/application/x-research-info-systems/${dataset.doi}`,
         title: 'RIS',
         header: [{ 'Accept': 'application/x-research-info-systems'}]
       });
