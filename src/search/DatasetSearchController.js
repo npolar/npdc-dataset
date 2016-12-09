@@ -1,7 +1,7 @@
 'use strict';
 
 function DatasetSearchController($scope, $controller, $filter, $location,
-    DatasetFactoryService, DatasetModel, npdcAppConfig, NpdcAutocompleteConfigFactory,
+    DatasetFactoryService, DatasetModel, NpdcCitationModel, NpdcAPA, npdcAppConfig, NpdcAutocompleteConfigFactory,
     NpdcSearchService, NpolarTranslate) {
   'ngInject';
 
@@ -9,7 +9,7 @@ function DatasetSearchController($scope, $controller, $filter, $location,
 
     let query =  {
       limit: $location.search().limit||50,
-      fields: 'title,id,collection,updated,released,links',
+      fields: 'title,id,collection,updated,released,links,version,people,organisations',
       facets: "sets,topics,tags,links.rel,people.email,organisation.name",
       score: true
     };
@@ -35,15 +35,10 @@ function DatasetSearchController($scope, $controller, $filter, $location,
     $scope.resource = DatasetFactoryService.resourceFactory();
     $scope.model = DatasetModel;
 
+    console.log(npdcAppConfig.search.local);
+    npdcAppConfig.search.local.results.title = (d) => d.title;
     npdcAppConfig.search.local.results.detail = function(entry) {
-      let releasedText = NpolarTranslate.translate('dataset.Released');
-      let r = releasedText +': '+ (entry.released ? $filter('year')(entry.released) : '-');
-      //let warnings = DatasetModel.warnings(entry);
-      let warning = '';
-      //if (warnings[0]) {
-      //  warning = ' [!]';
-      //}
-      return r+warning;
+      return NpdcAPA.reference(NpdcCitationModel.authors(entry), NpdcCitationModel.year(entry))
     };
 
     $scope.$on('$locationChangeSuccess', (event, data) => {

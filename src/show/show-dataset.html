@@ -10,8 +10,12 @@
     <md-card-content>
       <header>
         <h1 class="md-display-2" title="{{ uri }}">{{ document.title }} {{ document.version ? '['+document.version+']' : ''}}</h1>
-
-        <h2 class="md-headline"><npdc:authors authors="authors"></npdc:authors></h2>
+        
+        <span ng-repeat="link in relations">
+          <h2 class="md-headline" ng-if="link.rel == 'publication'">Data from: <a ng-href="{{link.href}}" title="{{link.title}}">{{ link.title }}</a></h2>
+        </span>
+        
+        <h2 class="md-headline"><npdc:authors authors="authors" people="document.people"></npdc:authors></h2>
 
         <span ng-if="publisher">{{ 'Dataset' | t }} {{ 'published'|t }} {{ document.released.split('T')[0] }} {{ 'by'|t }}
           <a ng-href="{{publisher.homepage}}"><md-tooltip>{{'publisher'|t}}</md-tooltip>{{ publisher.name | t }}</a>
@@ -173,63 +177,10 @@
   </md-card>
 
   <span id="people" class="anchor"></span>
-  <md-card>
-    <md-card-header>
-      <md-card-avatar>
-        <md-icon>person</md-icon>
-      </md-card-avatar>
-      <md-card-header-text>
-        <span class="md-headline">{{'People' | t}}</span>
-        <span class="md-subhead"></span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content>
-      <p ng-repeat="p in document.people">
-        <span id="{{ p.first_name | lowercase }}+{{ p.last_name | lowercase}}" class="anchor"></span>
-        <span>
-          {{ p.first_name}} {{ p.last_name}}
-        </span>
-
-        <span ng-if="p.organisation">({{ (p.organisation) }})</span>
-        <i ng-repeat="r in p.roles">{{ r | t }}<span ng-if="!$last">, </span></i>
-
-        <a ng-if="p.homepage" ng-href="{{p.homepage}}"><md-icon alt="Homepage">home</md-icon><md-tooltip>{{'Homepage'}}: {{p.homepage}}</md-tooltip></a>
-        <a ng-if="p.email && isPointOfContact(p)" ng-href="mailto:{{p.email}}"><md-icon>email</md-icon></a>
-        <!-- todo nice menu <md-button ng-href="{{resource.uiBase}}?q={{ p.name }}&filter-people.last_name={{p.last_name}}">{{ 'Search' }}</md-button>-->
-
-      </p>
-    </md-card-content>
-  </md-card>
-
+  <npdc:persons></npdc:persons>
+  
   <span id="organisations" class="anchor"></span>
-  <md-card>
-    <md-card-header>
-      <md-card-avatar>
-        <md-icon>business</md-icon>
-      </md-card-avatar>
-      <md-card-header-text>
-        <span class="md-headline">{{'Organisations' | t}}</span>
-        <span class="md-subhead"></span>
-      </md-card-header-text>
-    </md-card-header>
-    <md-card-content>
-      <span class="md-subhead">
-      <md-list>
-        <md-list-item class="md-1-line" ng-repeat="o in document.organisations">
-
-          <div class="md-list-item-text">
-            <span>{{ (o.name) | t }} ({{ o.id }})</span>
-
-            <i ng-repeat="r in o.roles">{{ r | t }}<span ng-if="!$last">, </span></i>
-
-            <a ng-if="o.homepage" ng-href="{{o.homepage}}"><md-icon>home</md-icon><md-tooltip>{{'Homepage'}}: {{o.homepage}}</md-tooltip></a>
-            <!-- @todo create nice menu --><!--<md-button ng-href="{{resource.uiBase}}?q={{ (o.id || o.name|t) }}">{{ 'Search' }}</md-button>-->
-          </div>
-        </md-list-item>
-      </md-list>
-      </span>
-    </md-card-content>
-  </md-card>
+  
 
   <span id="classification" class="anchor"></span>
   <md-card ng-if="document.topics || document.iso_topics || document.sets || document.tags || document.gcmd.sciencekeywords">

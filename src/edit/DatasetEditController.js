@@ -1,6 +1,6 @@
 'use strict';
 
-function DatasetEditController($scope, $controller, $routeParams, $http, $timeout,
+function DatasetEditController($scope, $controller, $routeParams, $http, $timeout, $route, $location,
   formula, formulaAutoCompleteService, npdcAppConfig, chronopicService, fileFunnelService,
   NpolarMessage, NpolarApiSecurity, NpolarLang, NpolarTranslate,
   //NpdcWarningsService,
@@ -8,24 +8,45 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
   
   'ngInject';
   
+  let self = this;
+  
   const schema = DatasetModel.schema;
   $scope.resource = DatasetFactoryService.resourceFactory();
   $scope.model = DatasetModel;
   
+  this.file_server = (id=':id', base=NpolarApiSecurity.canonicalUri($scope.resource.path)) => `${base}/${id}/_file`;
   
-  $scope.$on('npdc-filefunnel-success', (event, file) => {
-//    {bytesSent: 0
-//bytesTotal: 168
-//elements: Object
-//location: null
-//parent: s
-//progress: (...)
-//get progress: progress()
-//reference: File
-//response: null
-//status: 3
-//xhr: null}
-    console.log('event', event, 'file', file);
+  this.data_link = (dataset, filename='_all', title=dataset.doi||`npolar.no-dataset-${dataset.id}`, rel='data', format='zip', file_server=self.file_server(dataset.id)) => {
+    return { rel, href: `${file_server}/${filename}?filename=${title}&format=${format}`, title, type: `application/${format}` };
+  }
+  
+  $scope.$on('npdc-filefunnel-upload-completed', (event, files) => {
+    if (!$scope.formula) { return; }
+    
+    let d = $scope.formula.getModel();
+    
+    let hasDataLink = ((d.links||[]).findIndex(l => l.rel === 'data') > 0);
+
+    if (!hasDataLink) {
+      d.links.push(self.data_link(d));
+      if (!d.attachments) {
+        d.attachments = [];
+      }
+      // This duplicates attachments injection 
+      let attachments = files.map(f => f.reference).map(r => {
+        return { href: `${self.file_server(d.id)}/${encodeURIComponent(r.name)}`, type: r.type, filename: r.name };
+      });
+      
+      d.attachments = d.attachments.concat(attachments);
+      console.log(d.attachments);
+      $scope.formula.setModel(d);
+      $scope.formula.save();
+    } else {
+      $scope.formula.save();
+    }
+    $location.path(d.id);
+    $route.reload();
+    
   });
 
   
@@ -100,9 +121,8 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     }, format: '{date}'}); */
   }
    
-  function initFileUpload(formula) {
+  function initFileUpload(formula, server=self.file_server()) {
 
-    let server = `${NpolarApiSecurity.canonicalUri($scope.resource.path)}/:id/_file`;
     fileFunnelService.fileUploader({
       match(field) {
         return field.id === "attachments";
@@ -110,9 +130,6 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       server,
       multiple: true,
       restricted: false,
-      on: { success: (file) => {
-        
-      }},
       fileToValueMapper: $scope.resource.attachmentObject,
       valueToFileMapper: $scope.resource.hashiObject,
       fields: ['href']
@@ -122,10 +139,8 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
   try {
     init();
      // edit (or new) action
-    $scope.edit().$promise.then(dataset => {
-      
+    $scope.edit().$promise.then(dataset => { 
       NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
-
     });
     
   } catch (e) {

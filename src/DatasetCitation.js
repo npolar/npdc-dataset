@@ -60,6 +60,8 @@ function DatasetCitation($location, NpdcDOI, NpdcCitationModel, NpdcAPA, NpdcBib
     let authors = NpdcCitationModel.authors(dataset);
     let author = authors;
     let year = NpdcCitationModel.published_year(dataset);
+    let month = new Date(dataset.released).getMonth()+1;
+    let day = new Date(dataset.released).getDate();
     //let published = NpdcCitationModel.published(dataset);
     let title = dataset.title;
     let type;
@@ -77,7 +79,7 @@ function DatasetCitation($location, NpdcDOI, NpdcCitationModel, NpdcAPA, NpdcBib
       return NpdcBibTeX.bibtex({ title, url, doi, type, publisher, author, year, id: dataset.id });
     } else if ((/csl/i).test(style)){
       type = 'dataset';
-      let issued = { 'date-parts': [year] };
+      let issued = { 'date-parts': [year, month, day], 'date-time': dataset.released };
       return self.csl({ type, DOI: doi, URL: url, title, publisher, issued, author });
     } else {
       throw `Uknown citation style: ${style}`;
