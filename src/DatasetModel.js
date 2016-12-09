@@ -1,17 +1,43 @@
-'use  strict';
+'use strict';
 
-function DatasetModel(
-  $location, $q, $http,
-  NpolarTranslate,
+function DatasetModel($location, $q, $http,
+  NpolarTranslate, NpolarApiSecurity,
   NpdcDOI,
   DatasetCitation) {
-
   'ngInject';
 
   let self = this;
-
+  
   this.schema = '//api.npolar.no/schema/dataset-1';
-
+  
+  this.file_server = (base, id=':id') => `${base}/${id}/_file`;
+  
+  this.data_link = (dataset, base, param={filename:'_all',
+    title: dataset.doi||`npolar.no-dataset-${dataset.id}`,
+    rel: 'data',
+    format: 'zip',
+    file_server: self.file_server(base, dataset.id)
+  }) => {
+    let rel = encodeURIComponent(param.rel);
+    let title = encodeURIComponent(param.title);
+    let format = encodeURIComponent(param.format);
+    let type =  encodeURI(`application/${param.format}`);
+    let filename = encodeURIComponent(param.filename);
+    let file_server = encodeURI(param.file_server);
+    let href = `${file_server}/${filename}?filename=${title}&format=${format}`;
+    let formats = ['zip', 'gzip'];
+    if (!formats.includes(format)) {
+      console.error(`Format ${format} not supported by the file server, only: ${ JSON.stringify(formats)}`);
+    }
+    return { rel, href, title, type };
+  };
+  
+  this.hasMagicDataLink = (dataset, base) => {
+    return ((dataset.links||[]).findIndex(l => {
+      return (l.rel === 'data' && (new RegExp(self.file_server(base, dataset.id))).test(l.href));
+    }) > 0);
+  };
+  
   this.isNyÅlesund = () => {
     return (/\/ny\-[åa]lesund\//).test($location.path());
   };
@@ -68,7 +94,8 @@ function DatasetModel(
   this.metadata = (dataset, resource, uri) => {
     let path = resource.path.replace('//api.npolar.no', '');
     // @todo i18n
-    let byline = "See  [the  dataset  catalogue](https://data.npolar.no/dataset/ae1a945b-6b91-42c0-86e6-4657b4b6ec3c)  for  details  on  accessing,  reusing,  and  harvesting  the  entire  metadata  catalogue.";
+    let byline = NpolarTranslate.translate('byline.dataset_catalogue');
+    
     let schema = self.schema;
     return {
       uri,
@@ -113,7 +140,7 @@ function DatasetModel(
     return formats;
   };
 
-  this.relations = (links = [], rels = ['parent', 'publication', 'project']) => {
+  this.relations = (links = [], rels = ['parent', 'publication', 'project', 'metadata', 'expedition']) => {
     if (!links) {
       return;
     }

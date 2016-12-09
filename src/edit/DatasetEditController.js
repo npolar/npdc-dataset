@@ -1,6 +1,6 @@
 'use strict';
 
-function DatasetEditController($scope, $controller, $routeParams, $http, $timeout,
+function DatasetEditController($scope, $controller, $routeParams, $http, $timeout, $route, $location,
   formula, formulaAutoCompleteService, npdcAppConfig, chronopicService, fileFunnelService,
   NpolarMessage, NpolarApiSecurity, NpolarLang, NpolarTranslate,
   //NpdcWarningsService,
@@ -8,26 +8,35 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
   
   'ngInject';
   
-  const schema = DatasetModel.schema;
+  let self = this;
+  
   $scope.resource = DatasetFactoryService.resourceFactory();
-  $scope.model = DatasetModel;
-  
-  
-  $scope.$on('npdc-filefunnel-success', (event, file) => {
-//    {bytesSent: 0
-//bytesTotal: 168
-//elements: Object
-//location: null
-//parent: s
-//progress: (...)
-//get progress: progress()
-//reference: File
-//response: null
-//status: 3
-//xhr: null}
-    console.log('event', event, 'file', file);
+  this.base = NpolarApiSecurity.canonicalUri($scope.resource.path);
+    
+  $scope.$on('npdc-filefunnel-upload-completed', (event, files) => {
+    if (!$scope.formula) { return; }
+    
+    let d = $scope.formula.getModel();
+    
+    if (!DatasetModel.hasMagicDataLink(d)) {
+      d.links.push(DatasetModel.data_link(d, self.base));
+      if (!d.attachments) {
+        d.attachments = [];
+      }
+      // This duplicates attachments injection 
+      let attachments = files.map(f => f.reference).map(r => {
+        return { href: `${DatasetModel.file_server(self.base, d.id)}/${encodeURIComponent(r.name)}`, type: r.type, filename: r.name };
+      });
+      d.attachments = d.attachments.concat(attachments);
+      $scope.formula.setModel(d);
+      $scope.formula.save();
+    } else {
+      $scope.formula.save();
+    }
+    $location.path(d.id);
+    $route.reload();
+    
   });
-
   
   function isHiddenLink(rel) {
     if (rel.rel) {
@@ -43,13 +52,12 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     });
   
     let formulaOptions = {
-      schema,
+      schema:  DatasetModel.schema,
       form: 'edit/formula.json',
       language: NpolarLang.getLang(),
       templates: npdcAppConfig.formula.templates.concat([{
         match(field) {
           if (field.id === 'links_item') {
-              
             // Hide data links and system links
             return isHiddenLink(field.value.rel); 
           }
@@ -87,7 +95,7 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     $scope.formula = formula.getInstance(formulaOptions);
     
     if (!DatasetModel.isNyÅlesund()) {
-      initFileUpload($scope.formula);
+      initFileUpload($scope.formula, DatasetModel.file_server(self.base));
     }
     
     formulaAutoCompleteService.autocompleteFacets(['organisations.name', 'organisations.email',
@@ -100,9 +108,8 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     }, format: '{date}'}); */
   }
    
-  function initFileUpload(formula) {
+  function initFileUpload(formula, server) {
 
-    let server = `${NpolarApiSecurity.canonicalUri($scope.resource.path)}/:id/_file`;
     fileFunnelService.fileUploader({
       match(field) {
         return field.id === "attachments";
@@ -110,9 +117,6 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       server,
       multiple: true,
       restricted: false,
-      on: { success: (file) => {
-        
-      }},
       fileToValueMapper: $scope.resource.attachmentObject,
       valueToFileMapper: $scope.resource.hashiObject,
       fields: ['href']
@@ -123,9 +127,7 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     init();
      // edit (or new) action
     $scope.edit().$promise.then(dataset => {
-      
       NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
-
     });
     
   } catch (e) {
@@ -133,5 +135,4 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
   }
   
 }
-
 module.exports = DatasetEditController;
