@@ -63,7 +63,7 @@ npdcDatasetApp.config(require('./router'));
 
 npdcDatasetApp.config(($httpProvider, npolarApiConfig) => {
   
-  let autoconfig = new AutoConfig('test');
+  let autoconfig = new AutoConfig('production');
   angular.extend(npolarApiConfig, autoconfig, { resources });
   
   console.debug('npolarApiConfig', npolarApiConfig);

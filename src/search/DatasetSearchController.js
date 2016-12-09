@@ -38,7 +38,7 @@ function DatasetSearchController($scope, $controller, $filter, $location,
     console.log(npdcAppConfig.search.local);
     npdcAppConfig.search.local.results.title = (d) => d.title;
     npdcAppConfig.search.local.results.detail = function(entry) {
-      return NpdcAPA.reference(NpdcCitationModel.authors(entry), NpdcCitationModel.year(entry))
+      return NpdcAPA.reference(NpdcCitationModel.authors(entry), NpdcCitationModel.year(entry));
     };
 
     $scope.$on('$locationChangeSuccess', (event, data) => {
