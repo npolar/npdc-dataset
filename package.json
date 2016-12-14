@@ -11,8 +11,7 @@
   "private": true,
   "repository": "https://github.com/npolar/npdc-dataset",
   "dependencies": {
-    "angular": "^1.5",
-    "npdc-common": "npolar/npdc-common#v4.7.2"
+    "npdc-common": "npolar/npdc-common#v4.7.5"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6",

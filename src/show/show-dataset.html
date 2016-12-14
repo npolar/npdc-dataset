@@ -10,11 +10,11 @@
     <md-card-content>
       <header>
         <h1 class="md-display-2" title="{{ uri }}">{{ document.title }} {{ document.version ? '['+document.version+']' : ''}}</h1>
-        
+
         <span ng-repeat="link in relations">
           <h2 class="md-headline" ng-if="link.rel == 'publication'">Data from: <a ng-href="{{link.href}}" title="{{link.title}}">{{ link.title }}</a></h2>
         </span>
-        
+
         <h2 class="md-headline"><npdc:authors authors="authors" people="document.people"></npdc:authors></h2>
 
         <span ng-if="publisher">{{ 'Dataset' | t }} {{ 'published'|t }} {{ document.released.split('T')[0] }} {{ 'by'|t }}
@@ -45,7 +45,7 @@
     </md-card-content>
   </md-card>
 
-  <span id="data" class="anchor"></span> 
+  <span id="data" class="anchor"></span>
   <md-card ng-if="isReleased && data.length > 0">
     <md-card-header>
       <md-card-avatar>
@@ -69,7 +69,6 @@
 
   <span id="text" class="anchor"></span>
   <md-card>
-    
     <md-card-header>
       <md-card-avatar>
         <md-icon>text_fields</md-icon>
@@ -87,8 +86,8 @@
       </section>
     </md-card-content>
   </md-card>
-  
-  <span id="relations" class="anchor"></span>  
+
+  <span id="relations" class="anchor"></span>
   <md-card ng-if="relations.length > 0" id="relations">
     <md-card-header>
       <md-card-avatar>
@@ -107,7 +106,7 @@
     </md-card-content>
   </md-card>
 
-  <span id="links" class="anchor"></span>   
+  <span id="links" class="anchor"></span>
   <md-card ng-if="related.length > 0">
     <md-card-header>
       <md-card-avatar>
@@ -178,9 +177,9 @@
 
   <span id="people" class="anchor"></span>
   <npdc:persons></npdc:persons>
-  
+
   <span id="organisations" class="anchor"></span>
-  
+
 
   <span id="classification" class="anchor"></span>
   <md-card ng-if="document.topics || document.iso_topics || document.sets || document.tags || document.gcmd.sciencekeywords">
@@ -221,7 +220,7 @@
     </md-card-content>
   </md-card>
 
-  <span id="suggestions" class="anchor"></span>  
+  <span id="suggestions" class="anchor"></span>
   <md-card ng-if="suggestions.length > 0" id="suggestions">
     <md-card-header>
       <md-card-avatar>
@@ -242,7 +241,7 @@
 
   <span id="metadata" class="anchor"></span>
   <npdc:metadata metadata="metadata" document="document"></npdc:metadata>
-  
+
   <span id="edits" class="anchor"></span>
-  
+
 </div>
