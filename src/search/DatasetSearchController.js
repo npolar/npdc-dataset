@@ -10,7 +10,7 @@ function DatasetSearchController($scope, $controller, $filter, $location,
     let query =  {
       limit: $location.search().limit||50,
       fields: 'title,id,collection,updated,released,links,version,people,organisations',
-      facets: "sets,topics,tags,links.rel,people.email,organisation.name",
+      facets: "sets,topics,tags,links.rel,people.email,people.roles,organisations.name,organisations.roles",
       score: true
     };
 
@@ -19,9 +19,7 @@ function DatasetSearchController($scope, $controller, $filter, $location,
     }
 
     if (DatasetModel.isNyÅlesund()) {
-      query['not-organisations.id'] = 'npolar.no';
-      query['not-organisations.name'] = 'Norwegian Polar Institute';
-      query['not-organisations.name'] = 'Norsk Polarinstitt';
+      query['facets'] += ''; 
 
     }
     return query;
