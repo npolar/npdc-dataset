@@ -2,7 +2,7 @@
 
 function DatasetModel($location, $q, $http,
   NpolarTranslate, NpolarApiSecurity,
-  NpdcDOI) {
+  NpdcDOI, NpdcCitationModel) {
   'ngInject';
 
   let self = this;
