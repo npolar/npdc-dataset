@@ -22,18 +22,18 @@ npdcDatasetApp.directive('datasetCoverage', require('./edit/coverage/coverageDir
 
 npdcDatasetApp.service('DatasetFactoryService', ($location, DatasetModel, Dataset, NyAlesundDataset) => {
   'ngInject';
-  
+
   return {
-    
+
     resourceFactory: function() {
       if (DatasetModel.isNyÅlesund()) {
-        return NyAlesundDataset; 
+        return NyAlesundDataset;
       } else {
         return Dataset;
       }
     }
   };
-  
+
 });
 
 // Bootstrap ngResource models using NpolarApiResource
@@ -58,22 +58,20 @@ npdcDatasetApp.factory('L', function() {
 });
 
 
-// Routing
 npdcDatasetApp.config(require('./router'));
-
 npdcDatasetApp.config(($httpProvider, npolarApiConfig) => {
-  
+
   let autoconfig = new AutoConfig('production');
   angular.extend(npolarApiConfig, autoconfig, { resources });
-  
+
   console.debug('npolarApiConfig', npolarApiConfig);
   //console.debug("npolarDatasets", npolarDatasets.updated);
   //console.debug("npolarPeople", npolarPeople);
-  
+
 
   $httpProvider.interceptors.push('npolarApiInterceptor');
 });
 
 npdcDatasetApp.run(($http, npdcAppConfig, NpolarTranslate, NpolarLang) => {
-  NpolarTranslate.loadBundles('npdc-dataset');  
+  NpolarTranslate.loadBundles('npdc-dataset');
 });

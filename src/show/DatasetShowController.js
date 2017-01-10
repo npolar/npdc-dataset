@@ -1,8 +1,8 @@
 'use strict';
 var DatasetShowController = function($controller, $routeParams, $scope, $http, $q, $location, $mdDialog,
   NpolarTranslate, NpolarMessage, NpolarApiSecurity,
-  npdcAppConfig,NpdcCitationModel,
-  //NpdcWarningsService,
+  npdcAppConfig, NpdcCitationModel,
+  NpdcWarningsService,
   DatasetFactoryService, DatasetModel, DatasetCitation, Project, Publication ) {
     'ngInject';
 
@@ -21,9 +21,9 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     if (!person || !person.roles.length) { return; }
     return person.roles.includes('pointOfContact');
   };
-  
+
   let sectionList = (dataset, param={ data: false, relations: false, links: false, similar: false }) => {
-    let sections = ['id'];    
+    let sections = ['id'];
     if (param.data) {
       sections.push('data');
     }
@@ -41,12 +41,12 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     sections = sections.concat(['metadata', 'edits']);
     return sections;
   };
-  
+
   let showDataset = function(dataset) {
     NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
 
-    //NpdcWarningsService.warnings[dataset.id] = DatasetModel.warnings(dataset);
-    //NpdcWarningsService.notices[dataset.id] = DatasetModel.notices(dataset);
+    NpdcWarningsService.warnings[dataset.id] = DatasetModel.warnings(dataset);
+    NpdcWarningsService.notices[dataset.id] = DatasetModel.notices(dataset);
 
     $scope.uri = DatasetCitation.uri(dataset);
     $scope.authors = NpdcCitationModel.authors(dataset);
@@ -59,16 +59,16 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     $scope.bboxes = DatasetModel.bboxes(dataset);
     $scope.datespans = DatasetModel.datespans(dataset);
 
-    $scope.relations = DatasetModel.relations(dataset); 
+    $scope.relations = DatasetModel.relations(dataset);
     $scope.links = $scope.related = DatasetModel.relations(dataset, ['related', 'metadata']); //@todo remove related
     $scope.data = DatasetModel.relations(dataset, ['data','service']);
-    
+
     $scope.sections = sectionList(dataset, { data: $scope.data.length > 0,
       links: $scope.links.length > 0,
       relations: $scope.relations.length > 0,
       similar: false
     });
-    
+
     // Grab Content-Length for stuff in the file API
     //$scope.data.forEach((l,idx) => {
     //  if ((!l.length || !l.filename) && ((/^http(s)?:\/\//).test(l.href) && !(/[?&]q=/).test(l.href) && (/_file\/.+/).test(l.href))) {
@@ -83,7 +83,7 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     //    });
     //  }
     //});
-    
+
     $scope.images = dataset.links.filter(l => { // @todo images in files ?
       return (/^image\/.*/).test(l.type);
     });

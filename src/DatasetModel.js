@@ -2,16 +2,15 @@
 
 function DatasetModel($location, $q, $http,
   NpolarTranslate, NpolarApiSecurity,
-  NpdcDOI,
-  DatasetCitation) {
+  NpdcDOI) {
   'ngInject';
 
   let self = this;
-  
+
   this.schema = '//api.npolar.no/schema/dataset-1';
-  
+
   this.file_server = (base, id=':id') => `${base}/${id}/_file`;
-  
+
   this.data_link = (dataset, base, param={filename:'_all',
     title: dataset.doi||`npolar.no-dataset-${dataset.id}`,
     rel: 'data',
@@ -31,13 +30,13 @@ function DatasetModel($location, $q, $http,
     }
     return { rel, href, title, type };
   };
-  
+
   this.hasMagicDataLink = (dataset, base) => {
     return ((dataset.links||[]).findIndex(l => {
       return (l.rel === 'data' && (new RegExp(self.file_server(base, dataset.id))).test(l.href));
     }) > 0);
   };
-  
+
   this.isNyÅlesund = () => {
     return (/\/ny\-[åa]lesund\//).test($location.path());
   };
@@ -95,7 +94,7 @@ function DatasetModel($location, $q, $http,
     let path = resource.path.replace('//api.npolar.no', '');
     // @todo i18n
     let byline = NpolarTranslate.translate('byline.dataset_catalogue');
-    
+
     let schema = self.schema;
     return {
       uri,
@@ -199,7 +198,7 @@ function DatasetModel($location, $q, $http,
     return (self.relations(dataset, ['data', 'service']).length > 0);
   };
 
-  this.hasAuthors = (dataset) => (self.authors(dataset).length > 0);
+  this.hasAuthors = (dataset) => NpdcCitationModel.authors(dataset).length > 0;
 
   this.hasReleaseYear = (dataset) => (/^[0-9]{4}/).test(dataset.released);
 

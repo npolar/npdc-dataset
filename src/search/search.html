@@ -1,9 +1,5 @@
 <!DOCTYPE html>
+
 <npdc:search-input feed="feed"></npdc:search-input>
-<md-content layout-padding>
-  {{ 'Quick_filters'|t}}: <a ng-href="{{resource.uiBase}}?filter-links.rel=data|service">
-  {{ 'dataset.Released'| t }}</a>
-  <!--| <a ng-href="{{resource.uiBase}}?not-links.rel=data">{{ 'dataset.Only_metadata'|t}}</a>
-  | <a ng-href="{{resource.uiBase}}?not-released=0..">{{ 'dataset.Release_date_missing'|t}}</a>-->
-</md-content>
+
 <npdc:search feed="feed"></npdc:search>
