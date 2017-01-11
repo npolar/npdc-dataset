@@ -11,9 +11,9 @@
       <header>
         <h1 class="md-display-2" title="{{ uri }}">{{ document.title }} {{ document.version ? '['+document.version+']' : ''}}</h1>
 
-        <span ng-repeat="link in relations">
+<!--        <span ng-repeat="link in relations">
           <h2 class="md-headline" ng-if="link.rel == 'publication'">Data from: <a ng-href="{{link.href}}" title="{{link.title}}">{{ link.title }}</a></h2>
-        </span>
+        </span>-->
 
         <h2 class="md-headline"><npdc:authors authors="authors" people="document.people"></npdc:authors></h2>
 
