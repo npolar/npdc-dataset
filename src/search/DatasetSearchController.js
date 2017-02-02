@@ -17,8 +17,6 @@ function DatasetSearchController($scope, $controller, $filter, $location,
       sort,
       score: true
     };
-
-    console.log('query', query);
     return query;
   }
 
@@ -35,7 +33,7 @@ function DatasetSearchController($scope, $controller, $filter, $location,
       return NpdcAPA.reference(NpdcCitationModel.authors(entry), NpdcCitationModel.year(entry));
     };
 
-    // Show datasets with data link (on first load)
+    // Show datasets with data link (only on first load)
     if (!$location.search().q  || $location.search().q === "") {
       $location.search(Object.assign({}, $location.search(), { 'filter-links.rel': 'data' }));
     }
