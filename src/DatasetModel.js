@@ -12,14 +12,15 @@ function DatasetModel($location, $q, $http,
   this.file_server = (base, id=':id') => `${base}/${id}/_file`;
 
   this.data_link = (dataset, base, param={filename:'_all',
-    title: dataset.doi||`npolar.no-dataset-${dataset.id}`,
+
+    title: dataset.doi.split('/')[1]||`npolar-dataset-${dataset.id}`,
     rel: 'data',
     format: 'zip',
     file_server: self.file_server(base, dataset.id)
   }) => {
     let rel = encodeURIComponent(param.rel);
-    let title = encodeURIComponent(param.title);
     let format = encodeURIComponent(param.format);
+    let title = encodeURIComponent(param.title+'.'+param.format);
     let type =  encodeURI(`application/${param.format}`);
     let filename = encodeURIComponent(param.filename);
     let file_server = encodeURI(param.file_server);
@@ -33,7 +34,9 @@ function DatasetModel($location, $q, $http,
 
   this.hasMagicDataLink = (dataset, base) => {
     return ((dataset.links||[]).findIndex(l => {
-      return (l.rel === 'data' && (new RegExp(self.file_server(base, dataset.id))).test(l.href));
+      let m = l.rel === 'data' && (new RegExp(self.file_server(base, dataset.id))).test(l.href);
+      console.log('hasMagicDataLink', (m.length > 0) );
+      return (m);
     }) > 0);
   };
 
