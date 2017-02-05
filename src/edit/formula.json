@@ -12,7 +12,8 @@
 		}, {
 			"title": "Texts",
 			"fields": [{
-					"id": "summary: short abstract of the dataset",
+					"id": "summary",
+					"title": "summary: short abstract of the dataset",
 					"type": "textarea"
 				},
 		{
