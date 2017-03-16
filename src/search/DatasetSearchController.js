@@ -1,6 +1,7 @@
 'use strict';
 
 function DatasetSearchController($scope, $controller, $filter, $location,
+    NpolarApiSecurity,
     DatasetFactoryService, DatasetModel, NpdcCitationModel, NpdcAPA, npdcAppConfig, NpdcAutocompleteConfigFactory,
     NpdcSearchService, NpolarTranslate) {
   'ngInject';
@@ -33,8 +34,8 @@ function DatasetSearchController($scope, $controller, $filter, $location,
       return NpdcAPA.reference(NpdcCitationModel.authors(entry), NpdcCitationModel.year(entry));
     };
 
-    // Show datasets with data link (only on first load)
-    if (!$location.search().q  || $location.search().q === "") {
+    // Show datasets with data link (only on first load, and only if not authenticated)
+    if (!NpolarApiSecurity.isAuthenticated() && !$location.search().q  || $location.search().q === "") {
       $location.search(Object.assign({}, $location.search(), { 'filter-links.rel': 'data' }));
     }
 
