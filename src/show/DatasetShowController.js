@@ -15,8 +15,7 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   $scope.warnings = false;
   $scope.notices = false;
   $scope.dataset = null;
-
-
+  
   $scope.isPointOfContact = (person) => {
     if (!person || !person.roles.length) { return; }
     return person.roles.includes('pointOfContact');
