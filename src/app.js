@@ -59,8 +59,13 @@ npdcDatasetApp.config(($httpProvider, npolarApiConfig) => {
   Object.assign(npolarApiConfig, autoconfig, { resources });
   console.debug('npolarApiConfig', npolarApiConfig);
   $httpProvider.interceptors.push('npolarApiInterceptor');
+
 });
 
-npdcDatasetApp.run((NpolarTranslate) => {
+npdcDatasetApp.run((NpolarTranslate, npdcAppConfig) => {
   NpolarTranslate.loadBundles('npdc-dataset');
+  //npdcAppConfig.help = {
+  //  uri: "https://github.com/npolar/npdc-dataset/tree/master/docs"
+  //};
+
 });
