@@ -31,12 +31,12 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       //d.attachments = d.attachments.concat(attachments);
 
       $scope.formula.setModel(d);
-      $scope.formula.save();
+      //$scope.formula.save();
 
     } else {
-      $scope.formula.save();
+      //$scope.formula.save();
     }
-    $location.path(d.id);
+    //$location.path(d.id);
     //$route.reload();
 
   });
