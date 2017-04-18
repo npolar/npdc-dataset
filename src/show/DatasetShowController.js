@@ -1,7 +1,7 @@
 'use strict';
 var DatasetShowController = function($controller, $routeParams, $scope, $http, $q, $location, $mdDialog,
   NpolarTranslate, NpolarMessage, NpolarApiSecurity,
-  npdcAppConfig, NpdcCitationModel,
+  npdcAppConfig, NpdcCitationModel, NpdcDOI,
   NpdcWarningsService,
   DatasetFactoryService, DatasetModel, DatasetCitation, Project, Publication ) {
     'ngInject';
@@ -10,38 +10,39 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     $scope: $scope
   });
 
+  let self = this;
+
   $scope.resource = DatasetFactoryService.resourceFactory();
   $scope.model = DatasetModel;
   $scope.warnings = false;
   $scope.notices = false;
   $scope.dataset = null;
-  
+  $scope.files = [];
+
+  this.file_all_filename = (d) => `${ d.doi.split('/')[1] || 'npolar.'+d.id.split('-')[0] }-data`;
+
+  this.file_base = (id=$routeParams.id) => DatasetModel.file_server(NpolarApiSecurity.canonicalUri($scope.resource.path)).replace('/:id/', `/${id}/`);
+
+  this.file_all = (d, filename=self.file_all_filename(d), format='zip') => {
+    return self.file_base(d.id)+`/_all/?filename=${filename}&format=zip`;
+  };
+
   $scope.isPointOfContact = (person) => {
     if (!person || !person.roles.length) { return; }
     return person.roles.includes('pointOfContact');
   };
 
-  let sectionList = (dataset, param={ data: false, relations: false, links: false, similar: false }) => {
-    let sections = ['id'];
-    if (param.data) {
-      sections.push('data');
-    }
-    sections.push('text');
-    if (param.relations) {
-      sections.push('relations');
-    }
-    if (param.links) {
-      sections.push('links');
-    }
-    sections = sections.concat(['coverage', 'people', 'organisations', 'classification']);
-    if (param.similar) {
-      sections.push('similar');
-    }
-    sections = sections.concat(['metadata', 'edits']);
-    return sections;
-  };
-
   let showDataset = function(dataset) {
+
+    $http.get(self.file_base(dataset.id)).then(r => {
+      let hashi = r.data;
+      if (hashi.files && hashi.files.length > 0) {
+        $scope.files = hashi.files.map(f => DatasetModel.linksFromHashi(f, dataset));
+      }
+    }, (error) => {
+      $scope.files = dataset.attachments;
+      $scope.file_error = error;
+    });
     NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
 
     NpdcWarningsService.warnings[dataset.id] = DatasetModel.warnings(dataset);
@@ -59,29 +60,16 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     $scope.datespans = DatasetModel.datespans(dataset);
 
     $scope.relations = DatasetModel.relations(dataset);
-    $scope.links = $scope.related = DatasetModel.relations(dataset, ['related', 'metadata']); //@todo remove related
-    $scope.data = DatasetModel.relations(dataset, ['data','service']);
+    $scope.links = $scope.related = DatasetModel.relations(dataset, ['related', 'metadata']);
 
-    $scope.sections = sectionList(dataset, { data: $scope.data.length > 0,
-      links: $scope.links.length > 0,
-      relations: $scope.relations.length > 0,
-      similar: false
+    $scope.data_links = DatasetModel.relations(dataset, ['data']).filter(l => {
+      let re = new RegExp(self.file_base());
+      return !re.test(l.href) && !(/api\.npolar\.no/).test(l.href);
     });
 
-    // Grab Content-Length for stuff in the file API
-    //$scope.data.forEach((l,idx) => {
-    //  if ((!l.length || !l.filename) && ((/^http(s)?:\/\//).test(l.href) && !(/[?&]q=/).test(l.href) && (/_file\/.+/).test(l.href))) {
-    //    let request = new NpolarApiRequest(); //NpolarApiRequest.factory();
-    //    request.head(request, l.href, (response) => {
-    //      if (200 === request.status && response.lengthComputable) {
-    //        $scope.$apply(()=>{
-    //          l.length = response.total; // same as parseInt(request.getResponseHeader('Content-Length');
-    //          l.filename =  request.getResponseHeader('Content-Disposition').split('filename=')[1];
-    //        });
-    //      }
-    //    });
-    //  }
-    //});
+    $scope.service_links = DatasetModel.relations(dataset, ['service']).filter(l => {
+      return (null === $scope.data_links.find(dl => dl.href === l.href));
+    });
 
     $scope.images = dataset.links.filter(l => { // @todo images in files ?
       return (/^image\/.*/).test(l.type);
@@ -114,7 +102,7 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
 
     if ($routeParams.suffix) {
       let cand = `${$routeParams.id}/${$routeParams.suffix}`;
-      if (DatasetModel.isDoi(cand)) {
+      if (NpdcDOI.isDoi(cand)) {
         doi = cand;
       }
     }
