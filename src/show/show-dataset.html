@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <npdc:edit-button class="np-primary-control"></npdc:edit-button>
 <npdc:loader ng-if="!document"></npdc:loader>
-<div ng-if="document">
+<div ng-if="document" ng-controller="DatasetShowController as ctrl">
 
   <leaflet ng-if="document && mapOptions.coverage" options="mapOptions" class="coverage-map"></leaflet>
 
@@ -33,7 +33,6 @@
     </md-card-content>
   </md-card>
 
-  <span id="id" class="anchor"></span>
   <md-card>
     <md-card-content>
       <p>
@@ -45,29 +44,78 @@
     </md-card-content>
   </md-card>
 
-  <span id="data" class="anchor"></span>
-  <md-card ng-if="isReleased && data.length > 0">
-    <md-card-header>
-      <md-card-avatar>
-        <md-icon>file_download</md-icon>
-      </md-card-avatar>
-      <md-card-header-text>
-        <span class="md-headline">Data</span>
-        <span class="md-subhead">Files and data services</span>
-      </md-card-header-text>
-    </md-card-header>
+  <md-card>
+
     <md-card-content>
-      <table><tr ng-repeat="link in data">
-        <td><span><code><a target="_blank" rel="nofollow" title="{{ link.title }} ({{ link.type}})" ng-href="{{link.href}}">{{ link.filename || link.title || link.href }}</a></code></span></td>
-        <td><code title="{{ link.type }}">{{ link.length | bytes }}</code></td>
+      <md-menu ng-show="files.length > 0">
+
+        <md-button class="md-fab md-primary md-hue-2" aria-label="Download data files" ng-click="$mdOpenMenu($event)">
+           <md-icon md-menu-origin>file_download</md-icon>
+           <md-tooltip md-direction="top">Download data files</md-tooltip>
+        </md-button>
+
+        <md-menu-content width="6">
+          <md-menu-item>
+            <md-button>
+              <a ng-href="{{ctrl.file_all(document)}}">
+                <span ng-show="files.length == 1">Download data file as zip archive</span>
+                <span ng-show="files.length > 1">Download all {{ files.length}} data files as a zip archive</span>
+              </a>
+            </md-button>
+          </md-menu-item>
+
+        <md-menu-divider.></md-menu-divider>
+
+        <md-menu-item ng-if="ctrl.contributors.length > 0">
+          <md-button ng-click="ctrl.flip('contributor')">
+            Show {{ ctrl.show('contributor') ? 'only authors' : 'contributors' }}
+          </md-button>
+        </md-menu-item>
+
+      </md-menu-content>
+    </md-menu>
+
+    <md-card-header-text>
+       <span class="md-headline">Data</span>
+    </md-card-header-text>
+
+    <div ng-show="files.length > 0">
+      <table ng-show="files && files.length > 0"><tr ng-repeat="f in files" class="np-citation">
+       <b>Files</b>
+        <td><span><a target="_blank" rel="nofollow" title="{{ f.type }}" ng-href="{{ f.href }}">{{ f.title || f.filename || f.href }}</a></span></td>
+        <td><span ng-show="f.length">({{ f.length | bytes }})</span></td>
+        <!--<td><code>{{ f.integrity }}</code><md-tooltip>Checksum: use to verify integrity ({{f.integrity.split('-')[0]}})</md-tooltip></td>
+        --><!--<td><code>{{ f.modified }}</code></td>-->
        </tr>
       </table>
-      <npdc:licences licences="document.licences" license=""></npdc:licences> <!-- {{ document.licences[0] | json }}  -->
+      <p ng-if="files.length > 1">Notice: You may download data files above individually, or <a title="{{ctrl.file_all_filename(document)}}" ng-href="{{ctrl.file_all(document)}}">all {{ files.length }} files as a zip archive</a>.</p>
+    </div>
+    <p ng-if="file_error" class="error">Failed reaching: {{ file_error.config.url }}</p>
 
+    <div ng-show="service_links.length > 0">
+      <b>Services</b>
+      <table>
+        <tr ng-repeat="link in service_links" class="np-citation">
+          <td><span><code><a target="_blank" rel="nofollow" title="{{ link.title }} ({{ link.type}})" ng-href="{{link.href}}">{{ link.filename || link.title || link.href }}</a></code></span></td>
+          <td><code title="{{ link.type }}">{{ link.length | bytes }}</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <div ng-show="data_links.length > 0">
+      <b>Data links</b>
+      <table>
+        <tr ng-repeat="link in data_links" class="np-citation">
+          <td><span><code><a target="_blank" rel="nofollow" title="{{ link.title }} ({{ link.type}})" ng-href="{{link.href}}">{{ link.filename || link.title || link.href }}</a></code></span></td>
+          <td><code title="{{ link.type }}">{{ link.length | bytes }}</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <npdc:licences licences="document.licences" license=""></npdc:licences> <!-- {{ document.licences[0] | json }}  -->
     </md-card-content>
   </md-card>
 
-  <span id="text" class="anchor"></span>
   <md-card>
     <md-card-header>
       <md-card-avatar>

@@ -1,7 +1,7 @@
 'use strict';
 
-function DatasetModel($location, $q, $http,
-  NpolarTranslate, NpolarApiSecurity,
+function DatasetModel($location, $q, $http, $filter,
+  NpolarApiSecurity,
   NpdcDOI, NpdcCitationModel) {
   'ngInject';
 
@@ -96,7 +96,7 @@ function DatasetModel($location, $q, $http,
   this.metadata = (dataset, resource, uri) => {
     let path = resource.path.replace('//api.npolar.no', '');
     // @todo i18n
-    let byline = NpolarTranslate.translate('byline.dataset_catalogue');
+    let byline = $filter('i18n')('byline.dataset_catalogue');
 
     let schema = self.schema;
     return {
@@ -245,11 +245,15 @@ function DatasetModel($location, $q, $http,
     //}
     //}
 
+    if (!dataset.summary || dataset.summary === 'MISSING') {
+      w.push("No summary");
+    }
+
     if (!hasData) {
       if (!hasReleaseYear) {
-        w.push('No  data');
+        w.push('No data');
       } else if (now > released) {
-        w.push('No  data  (even  if  release  date  is  in  the  past)');
+        w.push('No data  (even  if  release  date  is  in  the  past)');
       }
     }
 
@@ -305,6 +309,29 @@ function DatasetModel($location, $q, $http,
     }
     console.log('Warnings', w);
     return w;
+  };
+
+  this.linksFromHashi = (hashi, dataset) => {
+
+      let href = hashi.url;
+      if ((/\/[0-9a-f]{32,}$/i).test(hashi.url)) {
+        href = hashi.url.split('/');
+        href.pop();
+        href = encodeURI(`${ href.join('/') }/${ encodeURIComponent(hashi.filename) }`);
+      }
+
+      let a = {
+        href,
+        rel: "data",
+        license: dataset.license||dataset.licences[0],
+        title: hashi.filename,
+        integrity: `md5-${hashi.md5sum}`,
+        hash: `md5:${hashi.md5sum}`,
+        type: hashi.content_type,
+        length: hashi.file_size,
+        modified: hashi.modified
+      };
+      return a;
   };
 }
 module.exports = DatasetModel;

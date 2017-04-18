@@ -3,7 +3,6 @@
 function DatasetEditController($scope, $controller, $routeParams, $http, $timeout, $route, $location,
   formula, formulaAutoCompleteService, npdcAppConfig, chronopicService, fileFunnelService,
   NpolarMessage, NpolarApiSecurity, NpolarLang, NpolarTranslate,
-  //NpdcWarningsService,
   Dataset, DatasetModel, DatasetFactoryService) {
 
   'ngInject';
@@ -13,42 +12,14 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
   $scope.resource = DatasetFactoryService.resourceFactory();
   this.base = NpolarApiSecurity.canonicalUri($scope.resource.path);
 
-  $scope.$on('npdc-filefunnel-upload-completed', (event, files) => {
-    if (!$scope.formula) { return; }
-
-    let d = $scope.formula.getModel();
-    if (!d.attachments) {
-      d.attachments = [];
-    }
-
-    if (!DatasetModel.hasMagicDataLink(d)) {
-      d.links.push(DatasetModel.data_link(d, self.base));
-
-      // This duplicates attachments injection
-      //let attachments = files.map(f => f.reference).map(r => {
-      //  return { href: `${DatasetModel.file_server(self.base, d.id)}/${encodeURIComponent(r.name)}`, type: r.type, filename: r.name };
-      //});
-      //d.attachments = d.attachments.concat(attachments);
-
-      $scope.formula.setModel(d);
-      //$scope.formula.save();
-
-    } else {
-      //$scope.formula.save();
-    }
-    //$location.path(d.id);
-    //$route.reload();
-
-  });
-
-  function isHiddenLink(rel) {
+  this.isHiddenLink = (rel) => {
     if (rel.rel) {
       rel = rel.rel;
     }
     return ["alternate", "edit", "via"].includes(rel);
-  }
+  };
 
-  function init() {
+  this.init = () => {
 
     $controller('NpolarEditController', {
       $scope: $scope
@@ -62,7 +33,7 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
         match(field) {
           if (field.id === 'links_item') {
             // Hide data links and system links
-            return isHiddenLink(field.value.rel);
+            return self.isHiddenLink(field.value.rel);
           }
         },
         hidden: true
@@ -98,7 +69,7 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     $scope.formula = formula.getInstance(formulaOptions);
 
     if (!DatasetModel.isNyÅlesund()) {
-      initFileUpload($scope.formula, DatasetModel.file_server(self.base));
+      self.initFileUpload($scope.formula, DatasetModel.file_server(self.base));
     }
 
     formulaAutoCompleteService.autocompleteFacets(['organisations.name', 'organisations.email',
@@ -109,9 +80,22 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     chronopicService.defineOptions({ match(field) {
       return field.path.match(/^#\/activity\/\d+\/.+/);
     }, format: '{date}'}); */
-  }
 
-  function initFileUpload(formula, server) {
+    $scope.$watch('formula.getModel().attachments', (attachments, was) => {
+      let d = $scope.formula.getModel();
+      if (d && attachments && attachments.length > 0) {
+        if (!DatasetModel.hasMagicDataLink(d)) {
+          if (!d.links) {
+            d.links = [];
+          }
+          d.links.push(DatasetModel.data_link(d, self.base));
+          $scope.formula.setModel(d);
+        }
+      }
+    });
+  };
+
+  this.initFileUpload = (formula, server) => {
 
     fileFunnelService.fileUploader({
       match(field) {
@@ -124,10 +108,10 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       valueToFileMapper: $scope.resource.hashiObject,
       fields: ['href']
     }, formula);
-  }
+  };
 
   try {
-    init();
+    self.init();
      // edit (or new) action
     $scope.edit().$promise.then(dataset => {
       NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
