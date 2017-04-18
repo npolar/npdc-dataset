@@ -18,6 +18,9 @@ function DatasetSearchController($scope, $controller, $filter, $location,
       sort,
       score: true
     };
+    if (NpolarApiSecurity.isAuthenticated()) {
+      delete query.fields;
+    }
     return query;
   }
 
@@ -30,6 +33,20 @@ function DatasetSearchController($scope, $controller, $filter, $location,
     $scope.model = DatasetModel;
 
     npdcAppConfig.search.local.results.title = (d) => d.title;
+    if (NpolarApiSecurity.isAuthenticated()) {
+
+      npdcAppConfig.search.local.results.subtitle = (d) => {
+        let w = DatasetModel.warnings(d);
+        console.debug(d.id, w);
+        if (w.length > 0) {
+          return w.length+'!';
+        } else {
+          return '';
+        }
+      };
+    }
+
+    // DatasetModel.warnings(dataset);
     npdcAppConfig.search.local.results.detail = function(entry) {
       return NpdcAPA.reference(NpdcCitationModel.authors(entry), NpdcCitationModel.year(entry));
     };
