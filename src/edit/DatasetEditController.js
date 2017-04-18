@@ -81,18 +81,18 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       return field.path.match(/^#\/activity\/\d+\/.+/);
     }, format: '{date}'}); */
 
-    $scope.$watch('formula.getModel().attachments', (attachments, was) => {
-      let d = $scope.formula.getModel();
-      if (d && attachments && attachments.length > 0) {
-        if (!DatasetModel.hasMagicDataLink(d)) {
-          if (!d.links) {
-            d.links = [];
-          }
-          d.links.push(DatasetModel.data_link(d, self.base));
-          $scope.formula.setModel(d);
-        }
-      }
-    });
+    //$scope.$watch('formula.getModel().attachments', (attachments, was) => {
+    //  let d = $scope.formula.getModel();
+    //  if (d && attachments && attachments.length > 0) {
+    //    if (!DatasetModel.hasMagicDataLink(d)) {
+    //      if (!d.links) {
+    //        d.links = [];
+    //      }
+    //      d.links.push(DatasetModel.data_link(d, self.base));
+    //      $scope.formula.setModel(d);
+    //    }
+    //  }
+    //});
   };
 
   this.initFileUpload = (formula, server) => {

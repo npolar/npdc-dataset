@@ -62,9 +62,10 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     $scope.relations = DatasetModel.relations(dataset);
     $scope.links = $scope.related = DatasetModel.relations(dataset, ['related', 'metadata']);
 
+    // Set data links (but reject those in the _file API)
     $scope.data_links = DatasetModel.relations(dataset, ['data']).filter(l => {
       let re = new RegExp(self.file_base());
-      return !re.test(l.href) && !(/api\.npolar\.no/).test(l.href);
+      return !re.test(l.href);
     });
 
     $scope.service_links = DatasetModel.relations(dataset, ['service']).filter(l => {
