@@ -11,7 +11,7 @@
   "private": true,
   "repository": "https://github.com/npolar/npdc-dataset",
   "dependencies": {
-    "npdc-common": "npolar/npdc-common#v4.9.9",
+    "npdc-common": "npolar/npdc-common#v4.10.6",
     "leaflet-coverage": "*"
   },
   "devDependencies": {
