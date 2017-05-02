@@ -261,19 +261,19 @@ function DatasetModel($location, $q, $http, $filter,
     //  @todo  check  links!? => would require Promise...
     //}
     if (!hasAuthors) {
-      w.push('No  authors');
+      w.push('No authors');
     }
     if (!self.publisher(dataset).name) {
-      w.push('No  publisher');
+      w.push('No publisher');
     }
     if (!hasReleaseYear) {
-      w.push('No  release  date');
+      w.push('No release  date');
     }
     if (!dataset.coverage || dataset.coverage.length === 0) {
-      w.push('No  geographic  coverage');
+      w.push('No geographic  coverage');
     }
     if (!dataset.activity || dataset.activity.length === 0) {
-      w.push('No  timespans');
+      w.push('No timespans');
     }
     if (hasData && dataset.progress === 'planned') {
       w.push('Data  is  published  while  progress  =  "planned"');
@@ -282,29 +282,29 @@ function DatasetModel($location, $q, $http, $filter,
       w.push('Draft');
     }
     if (!dataset.iso_topics || dataset.iso_topics.length === 0) {
-      w.push('No  ISO  topics');
+      w.push('No ISO  topics');
     }
     if (!dataset.sets || dataset.sets.length === 0) {
-      w.push('No  sets');
+      w.push('No sets');
     }
     if (!dataset.topics || dataset.topics.length === 0) {
-      w.push('No  topics');
+      w.push('No topics');
     }
     // I guess other is legit, or?
     //if (dataset.topics.length === 1 && dataset.topics[0] === 'other') {
     //  w.push('Only  "other"  is  set  as  topic');
     //}
     if (dataset.topics.length > 1 && dataset.topics.includes('other')) {
-      w.push('"other"  is  used  addition  to  other  topics');
+      w.push('"other" is used addition to other topics');
     }
     if (!dataset.sets || dataset.sets.includes('gcmd.nasa.gov')) {
       if (!dataset.gcmd || !dataset.gcmd.sciencekeywords || dataset.gcmd.sciencekeywords.length === 0) {
-        w.push('No  GCMD  science  keywords');
+        w.push('No GCMD science keywords');
       }
     }
     if (!dataset.doi) {
       if (w.length > 0) {
-        w.push(`No  DOI  (because  of  the  ${  w.length  ===  1  ?  'issue'  :  'issues'  }  above)`);
+        w.push(`No DOI (because of the ${  w.length  ===  1  ?  'issue'  :  'issues'  }  above)`);
       }
     }
     console.log('Warnings', w);
