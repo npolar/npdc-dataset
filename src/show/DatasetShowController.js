@@ -26,14 +26,45 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   this.file_all = (d, filename=self.file_all_filename(d), format='zip') => {
     return self.file_base(d.id)+`/_all/?filename=${filename}&format=zip`;
   };
+  
+  this.isInEmbargo = (released) => {
+    return (Date.parse(released) > new Date().getTime());
+  };
+  
+  this.releaseNow = (files=$scope.files, resource=$scope.resource, id=$routeParams.id) => {
+    console.log('Releasing dataset...');
+    if (files && files.length > 0) {
+      resource.unprotectFiles(files);
+    }
+    let uri = `${NpolarApiSecurity.canonicalUri(resource.path)}/${id}`;
+    $http.get(uri).then(r => {
+      let d = r.data;
+      d.released = new Date().toISOString();
+      $http.put(uri, d);
+    });
+    
+ 
+  };
+  
+  this.protectFiles = (files=$scope.files, resource=$scope.resource) => {
+    if (files && files.length > 0) {
+      console.log('Protecting files...');
+      resource.protectFiles(files);
+    }
+  };
+  
+  
+  this.isWriter = () => {
+    return NpolarApiSecurity.isAuthorized('update', $scope.resource.path);
+  };
 
-  $scope.isPointOfContact = (person) => {
+  this.isPointOfContact = (person) => {
     if (!person || !person.roles.length) { return; }
     return person.roles.includes('pointOfContact');
   };
 
-  let showDataset = function(dataset) {
-
+  this.showDataset = function(dataset) {
+    
     $http.get(self.file_base(dataset.id)).then(r => {
       let hashi = r.data;
       if (hashi.files && hashi.files.length > 0) {
@@ -96,43 +127,16 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     }
   };
 
-  let showAction = function() {
-
-    // Check for DOI access eg. /dataset/10.21334/npolar.2016.664d3c4c
-    let doi;
-
-    if ($routeParams.suffix) {
-      let cand = `${$routeParams.id}/${$routeParams.suffix}`;
-      if (NpdcDOI.isDoi(cand)) {
-        doi = cand;
-      }
-    }
-
-    if (doi) {
-      $scope.resource.array({ 'filter-doi': doi, fields: 'id,doi', limit: 1 }).$promise.then((r) => {
-
-        if (r && r.length === 1 && r[0].doi === doi) {
-          $routeParams.id = r[0].id;
-          $scope.show().$promise.then(dataset => {
-            showDataset(dataset);
-          });
-        } else {
-         $scope.document = {};
-         NpolarMessage.error(`Unknown DOI: ${doi}`);
-        }
-      });
-
-    } else {
-      $scope.show().$promise.then(dataset => {
-        showDataset(dataset);
-      });
-    }
-
-
-
+  this.showAction = () => {
+    $scope.show().$promise.then(dataset => {
+      self.showDataset(dataset);
+    });
   };
-  showAction();
-
+  
+  //if (!$scope.document) {
+    self.showAction();
+  //}
+  
 };
 
 module.exports = DatasetShowController;
