@@ -42,32 +42,28 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   this.isInEmbargo = (released=$scope.document.released) => {
     return (Date.parse(released) > new Date().getTime());
   };
-  
-  this.releaseNow = (files=$scope.files, resource=$scope.resource, id=$routeParams.id) => {
-    console.log('Releasing dataset');
-    if (files && files.length > 0) {
-      resource.unprotectFiles(files);
-    }
-    let uri = `${NpolarApiSecurity.canonicalUri(resource.path)}/${id}`;
-    $http.get(uri).then(r => {
-      let d = r.data;
-      d.released = new Date().toISOString();
-      $http.put(uri, d);
-    });
-  };
+  //this.releaseNow = (files=$scope.files, resource=$scope.resource, id=$routeParams.id) => {
+  //  console.log('Releasing dataset');
+  //  if (files && files.length > 0) {
+  //    resource.unprotectFiles(files);
+  //  }
+  //  let uri = `${NpolarApiSecurity.canonicalUri(resource.path)}/${id}`;
+  //  $http.get(uri).then(r => {
+  //    let d = r.data;
+  //    // if d.release is in the future, set now
+  //    //d.released = new Date().toISOString();
+  //    // $http.put(uri, d);
+  //  });
+  //};
   
   this.protectFiles = (files=$scope.files, resource=$scope.resource) => {
-    if (files && files.length > 0) {
-      console.log('Protecting files');
-      resource.setRestrictedStatusForFiles(files, true);
-    }
+    console.log('Protecting files');
+    resource.setRestrictedStatusForFiles(files, true);
   };
   
   this.unprotectFiles = (files=$scope.files, resource=$scope.resource) => {
-    if (files && files.length > 0) {
-      console.log('Unlocking files');
-      resource.setRestrictedStatusForFiles(files, false);
-    }
+    console.log('Unlocking files');
+    resource.setRestrictedStatusForFiles(files, false);
   };
   
   this.isWriter = () => {
@@ -80,14 +76,20 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   };
 
   this.showDataset = function(dataset) {
-    
+    self.file_icon = 'file_download';
     $http.get(self.file_base(dataset.id)).then(r => {
       let hashi = r.data;
       if (hashi.files && hashi.files.length > 0) {
+        
+        let restricted = hashi.files.find(f => f.restricted === true);
+        if (restricted) {
+          self.file_icon = 'lock';
+        } 
         $scope.files = hashi.files.map(f => DatasetModel.linksFromHashi(f, dataset));
       }
     }, (error) => {
       $scope.files = dataset.attachments;
+      self.file_icon = 'error';
       $scope.file_error = error;
     });
     NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();

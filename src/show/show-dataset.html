@@ -47,14 +47,14 @@
   <md-card>
 
     <md-card-content>
+      {{ file_lock | json }}
       <md-menu ng-show="files.length > 0 || document.attachments && document.attachments.length > 0">
 
-        <md-button class="md-fab md-primary md-hue-2" aria-label="Download data files" ng-click="$mdOpenMenu($event)">
-           <md-icon ng-show="!ctrl.isInEmbargo()" md-menu-origin>file_download</md-icon>
-           <md-icon ng-show="ctrl.isInEmbargo()" md-menu-origin>lock</md-icon>
+        <md-button ng-show="file_lock != true" class="md-fab md-primary md-hue-2" aria-label="Download data files" ng-click="$mdOpenMenu($event)">
+           <md-icon md-menu-origin>{{ctrl.file_icon}}</md-icon>
            <md-tooltip md-direction="top">Download data files</md-tooltip>
         </md-button>
-
+        
         <md-menu-content width="6">
           <md-menu-item>
             <md-button>

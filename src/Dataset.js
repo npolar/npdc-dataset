@@ -8,7 +8,7 @@ function Dataset($location, $http, $q, DatasetResource, DatasetModel, NpolarApiS
   const license = 'http://creativecommons.org/licenses/by/4.0/';
   
   DatasetResource.setRestrictedStatusForFiles = (files, restricted=true) => {
-    if (!files || files.length < 1) { return; }
+    if (!files || files.length < 1) { return; }
     console.log('Setting restricted =', restricted, 'for', files.map(f => f.filename||f.href));
     files.forEach(f => {
       $http.put(`${f.href}?restricted=${restricted}`).then(r => {
