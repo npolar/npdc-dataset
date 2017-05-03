@@ -44,7 +44,7 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   };
   
   this.releaseNow = (files=$scope.files, resource=$scope.resource, id=$routeParams.id) => {
-    console.log('Releasing dataset...');
+    console.log('Releasing dataset');
     if (files && files.length > 0) {
       resource.unprotectFiles(files);
     }
@@ -54,14 +54,19 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
       d.released = new Date().toISOString();
       $http.put(uri, d);
     });
-    
- 
   };
   
   this.protectFiles = (files=$scope.files, resource=$scope.resource) => {
     if (files && files.length > 0) {
-      console.log('Protecting files...');
+      console.log('Protecting files');
       resource.protectFiles(files);
+    }
+  };
+  
+  this.unprotectFiles = (files=$scope.files, resource=$scope.resource) => {
+    if (files && files.length > 0) {
+      console.log('Unlocking files');
+      resource.unprotectFiles(files);
     }
   };
   
