@@ -10,6 +10,7 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
   let self = this;
 
   $scope.resource = DatasetFactoryService.resourceFactory();
+  
   this.base = NpolarApiSecurity.canonicalUri($scope.resource.path);
 
   this.isHiddenLink = (rel) => {
@@ -17,6 +18,10 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       rel = rel.rel;
     }
     return ["alternate", "edit", "via"].includes(rel);
+  };
+  
+  this.isInEmbargo = (released) => {
+    return (Date.parse(released) > new Date().getTime());
   };
 
   this.init = () => {
@@ -67,10 +72,11 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
     };
 
     $scope.formula = formula.getInstance(formulaOptions);
-
+    
     if (!DatasetModel.isNyÅlesund()) {
       self.initFileUpload($scope.formula, DatasetModel.file_server(self.base));
     }
+    
 
     formulaAutoCompleteService.autocompleteFacets(['organisations.name', 'organisations.email',
       'organisations.homepage', 'organisations.gcmd_short_name', 'links.type', 'tags', 'sets', 'licenses_item'], $scope.resource, $scope.formula);
@@ -103,7 +109,7 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       },
       server,
       multiple: true,
-      restricted: false,
+      //restricted: false,
       fileToValueMapper: $scope.resource.attachmentObject,
       valueToFileMapper: $scope.resource.hashiObject,
       fields: ['href']

@@ -63,13 +63,16 @@ function Dataset($location, $http, $q, DatasetResource, DatasetModel, NpolarApiS
       let user = NpolarApiSecurity.getUser();
       let id = user.email;
       let email = user.email;
+      let homepage = `http://www.npolar.no/en/people/${email.split('@')[0]}`;
       let [first_name,last_name] = user.name.split(' ');
       let organisation = user.email.split('@')[1];
       
-      user = { id, roles: ['editor', 'pointOfContact'], first_name, last_name, email, organisation};
+      user = { id, roles: ['editor', 'pointOfContact'], first_name, last_name, email, homepage, organisation };
       let collection = 'dataset';
-      let topics = ['other'];
-      let title = `Dataset created by ${user.email} ${new Date().toISOString()}`;
+      let topics = [];
+      let released = new Date().toISOString();
+      let licences = [license];
+      let title = `Dataset created by ${user.email} ${released}`;
       let people = [user];
       let sets = []; 
       //let locations = [{ country: 'NO'}];
@@ -78,7 +81,7 @@ function Dataset($location, $http, $q, DatasetResource, DatasetModel, NpolarApiS
         sets.push('Ny-Ålesund');
       }
 
-      return { title, collection, schema, people, topics, draft:'no', sets };
+      return { title, released, licences, collection, schema, people, topics, draft:'no', sets };
     };
     
     // The hashi (v0) file object should be object with keys filename, url, [file_size, icon, extras].
