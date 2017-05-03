@@ -20,7 +20,7 @@ var router = function($routeProvider, $locationProvider) {
   }).when('/:id/edit', {
     templateUrl: 'edit/edit-dataset.html',
     controller: 'DatasetEditController'
-  }).when('/:id/:suffix?', {
+  }).when('/:id', {
     templateUrl: 'show/show-dataset.html',
     controller: 'DatasetShowController'
   }).when('/', {

@@ -59,17 +59,27 @@
             <md-button>
               <a ng-href="{{ctrl.file_all(document)}}">
                 <span ng-show="files.length == 1">Download data file as zip archive</span>
-                <span ng-show="files.length > 1">Download all {{ files.length}} data files as a zip archive</span>
+                <span ng-show="files.length > 1">Download {{ files.length }} data files as a zip archive</span>
               </a>
             </md-button>
           </md-menu-item>
 
-        <md-menu-divider.></md-menu-divider>
+        <md-menu-divider></md-menu-divider>
 
-        <md-menu-item ng-if="ctrl.contributors.length > 0">
-          <md-button ng-click="ctrl.flip('contributor')">
-            Show {{ ctrl.show('contributor') ? 'only authors' : 'contributors' }}
+        <md-menu-item ng-show="ctrl.isWriter()">
+          
+          <md-button ng.show="ctrl.isInEmbargo(document.released)" ng-click="ctrl.releaseNow()">
+            Unprotect uploaded files and release dataset
           </md-button>
+          
+        </md-menu-item>
+        
+        <md-menu-item ng-if="ctrl.isWriter()">
+          
+          <md-button ng-click="ctrl.protectFiles()">
+            Protect uploaded files
+          </md-button>
+          
         </md-menu-item>
 
       </md-menu-content>
@@ -89,6 +99,8 @@
        </tr>
       </table>
       <p ng-if="files.length > 1">Notice: You may download data files above individually, or <a title="{{ctrl.file_all_filename(document)}}" ng-href="{{ctrl.file_all(document)}}">all {{ files.length }} files as a zip archive</a>.</p>
+    
+
     </div>
     <p ng-if="file_error" class="error">Failed reaching: {{ file_error.config.url }}</p>
 

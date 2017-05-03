@@ -1,11 +1,29 @@
 'use strict';
 
-function Dataset($location, $q, DatasetResource, DatasetModel, NpolarApiSecurity) {
+function Dataset($location, $http, $q, DatasetResource, DatasetModel, NpolarApiSecurity) {
   'ngInject';
   
   const schema = 'http://api.npolar.no/schema/dataset-1';
   
   const license = 'http://creativecommons.org/licenses/by/4.0/';
+  
+  
+  DatasetResource.unprotectFiles = (files) => {
+    console.log('Removing protection for', files.map(f => f.filename||f.href));
+    files.forEach(f => {
+      $http.post(`${f.href}?restricted=false`).then(r => {
+        
+      });
+    });  
+  };
+  
+  DatasetResource.protectFiles = (files) => {
+    console.log('Protecting', files.map(f => f.filename||f.href));
+    files.forEach(f => {
+      $http.post(`${f.href}?restricted=true`).then(r => {
+      });
+    });  
+  };
 
   DatasetResource.geoQuery = function(bounds) {
     let deferred = $q.defer();
