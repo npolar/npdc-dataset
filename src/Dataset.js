@@ -20,7 +20,7 @@ function Dataset($location, $http, $q, DatasetResource, DatasetModel, NpolarApiS
   DatasetResource.protectFiles = (files) => {
     console.log('Protecting', files.map(f => f.filename||f.href));
     files.forEach(f => {
-      $http.post(`${f.href}?restricted=true`).then(r => {
+      $http.put(`${f.href}?restricted=true`).then(r => {
       });
     });  
   };

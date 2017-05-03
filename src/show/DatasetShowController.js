@@ -24,7 +24,15 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   this.file_base = (id=$routeParams.id) => DatasetModel.file_server(NpolarApiSecurity.canonicalUri($scope.resource.path)).replace('/:id/', `/${id}/`);
 
   this.file_all = (d, filename=self.file_all_filename(d), format='zip') => {
-    return self.file_base(d.id)+`/_all/?filename=${filename}&format=zip`;
+    return self.file_href_with_key(self.file_base(d.id)+`/_all/?filename=${filename}&format=zip`, '&');
+  };
+  
+  this.file_href_with_key = (href, sep='?') => {
+    let system = NpolarApiSecurity.getSystem('read', $scope.resource.path);
+    if (system && system['key']) {
+      href += sep+'key='+system['key'];
+    }
+    return href;
   };
   
   this.isInEmbargo = (released) => {
@@ -52,7 +60,6 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
       resource.protectFiles(files);
     }
   };
-  
   
   this.isWriter = () => {
     return NpolarApiSecurity.isAuthorized('update', $scope.resource.path);
