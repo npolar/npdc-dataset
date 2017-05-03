@@ -7,20 +7,12 @@ function Dataset($location, $http, $q, DatasetResource, DatasetModel, NpolarApiS
   
   const license = 'http://creativecommons.org/licenses/by/4.0/';
   
-  
-  DatasetResource.unprotectFiles = (files) => {
-    console.log('Removing protection for', files.map(f => f.filename||f.href));
+  DatasetResource.setRestrictedStatusForFiles = (files, restricted=true) => {
+    if (!files || files.length < 1) { return; }
+    console.log('Setting restricted =', restricted, 'for', files.map(f => f.filename||f.href));
     files.forEach(f => {
-      $http.post(`${f.href}?restricted=false`).then(r => {
-        
-      });
-    });  
-  };
-  
-  DatasetResource.protectFiles = (files) => {
-    console.log('Protecting', files.map(f => f.filename||f.href));
-    files.forEach(f => {
-      $http.put(`${f.href}?restricted=true`).then(r => {
+      $http.put(`${f.href}?restricted=${restricted}`).then(r => {
+        console.log(r);
       });
     });  
   };

@@ -39,7 +39,7 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     return href;
   };
   
-  this.isInEmbargo = (released) => {
+  this.isInEmbargo = (released=$scope.document.released) => {
     return (Date.parse(released) > new Date().getTime());
   };
   
@@ -59,14 +59,14 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   this.protectFiles = (files=$scope.files, resource=$scope.resource) => {
     if (files && files.length > 0) {
       console.log('Protecting files');
-      resource.protectFiles(files);
+      resource.setRestrictedStatusForFiles(files, true);
     }
   };
   
   this.unprotectFiles = (files=$scope.files, resource=$scope.resource) => {
     if (files && files.length > 0) {
       console.log('Unlocking files');
-      resource.unprotectFiles(files);
+      resource.setRestrictedStatusForFiles(files, false);
     }
   };
   
