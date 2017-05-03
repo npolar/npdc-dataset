@@ -267,10 +267,10 @@ function DatasetModel($location, $q, $http, $filter,
       w.push('No publisher');
     }
     if (!hasReleaseYear) {
-      w.push('No release  date');
+      w.push('No release date');
     }
     if (!dataset.coverage || dataset.coverage.length === 0) {
-      w.push('No geographic  coverage');
+      w.push('No geographic coverage');
     }
     if (!dataset.activity || dataset.activity.length === 0) {
       w.push('No timespans');

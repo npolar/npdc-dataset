@@ -19,11 +19,15 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   $scope.dataset = null;
   $scope.files = [];
 
-  this.file_all_filename = (d) => `${ d.doi.split('/')[1] || 'npolar.'+d.id.split('-')[0] }-data`;
+  this.file_all_filename = (d) => {
+    if (!d) { return; }
+    return `${ d.doi.split('/')[1] || 'npolar.'+d.id.split('-')[0] }-data`;
+  };
 
   this.file_base = (id=$routeParams.id) => DatasetModel.file_server(NpolarApiSecurity.canonicalUri($scope.resource.path)).replace('/:id/', `/${id}/`);
 
   this.file_all = (d, filename=self.file_all_filename(d), format='zip') => {
+    if (!d) { return; }
     return self.file_href_with_key(self.file_base(d.id)+`/_all/?filename=${filename}&format=zip`, '&');
   };
   

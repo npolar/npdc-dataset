@@ -47,7 +47,7 @@
   <md-card>
 
     <md-card-content>
-      <md-menu ng-show="files.length > 0">
+      <md-menu ng-show="files.length > 0 || document.attachments && document.attachments.length > 0">
 
         <md-button class="md-fab md-primary md-hue-2" aria-label="Download data files" ng-click="$mdOpenMenu($event)">
            <md-icon md-menu-origin>file_download</md-icon>
@@ -68,8 +68,8 @@
 
         <md-menu-item ng-show="ctrl.isWriter()">
           
-          <md-button ng.show="ctrl.isInEmbargo(document.released)" ng-click="ctrl.releaseNow()">
-            Unprotect uploaded files and release dataset
+          <md-button ng-click="ctrl.unprotectFiles()">
+            Unprotect uploaded files
           </md-button>
           
         </md-menu-item>
