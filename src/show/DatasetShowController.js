@@ -20,8 +20,14 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   $scope.files = [];
 
   this.file_all_filename = (d) => {
+    let f = '';
     if (!d) { return; }
-    return `${ d.doi.split('/')[1] || 'npolar.'+d.id.split('-')[0] }-data`;
+    if (d.doi) {
+      f = d.doi.split('/')[1];
+    } else {
+      f = 'npolar.'+d.id.split('-')[0];
+    }
+    return `${ f }-data`;
   };
 
   this.file_base = (id=$routeParams.id) => DatasetModel.file_server(NpolarApiSecurity.canonicalUri($scope.resource.path)).replace('/:id/', `/${id}/`);
@@ -66,10 +72,32 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     resource.setRestrictedStatusForFiles(files, false);
   };
   
-  this.isWriter = () => {
-    return NpolarApiSecurity.isAuthorized('update', $scope.resource.path);
+  this.isAuthorized = (action='update') => {
+    return NpolarApiSecurity.isAuthorized(action, $scope.resource.path);
   };
-
+  
+  this.isData = (d=$scope.document) => {
+    if (!d) { return ; }
+    if (d.attachments && d.attachments.length & d.attachments.length > 0) {
+      return true;
+    }
+    return false;
+  };
+  
+  this.isFilesMenu = (files=$scope.files, inembargo=self.isInEmbargo()) => {
+    if (!files) {
+      files = $scope.document.attachments;
+    }
+    const anyfiles = (files && files.length && files.length > 0);
+       
+    if (inembargo) {
+      return (self.isAuthorized('update') && anyfiles);
+    } else {
+      return anyfiles;
+    }
+  };
+  
+  
   this.isPointOfContact = (person) => {
     if (!person || !person.roles.length) { return; }
     return person.roles.includes('pointOfContact');
@@ -77,21 +105,28 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
 
   this.showDataset = function(dataset) {
     self.file_icon = 'file_download';
-    $http.get(self.file_base(dataset.id)).then(r => {
-      let hashi = r.data;
-      if (hashi.files && hashi.files.length > 0) {
-        
-        let restricted = hashi.files.find(f => f.restricted === true);
-        if (restricted) {
-          self.file_icon = 'lock';
-        } 
-        $scope.files = hashi.files.map(f => DatasetModel.linksFromHashi(f, dataset));
+    if (dataset.released && (/^[0-9]{4}/).test(dataset.released)) {
+      if (self.isInEmbargo(dataset.released)) {
+        self.file_icon = 'lock';
       }
-    }, (error) => {
-      $scope.files = dataset.attachments;
-      self.file_icon = 'error';
-      $scope.file_error = error;
-    });
+    }
+    
+    $scope.files = dataset.attachments;
+    //$http.get(self.file_base(dataset.id)).then(r => {
+    //  let hashi = r.data;
+    //  if (hashi.files && hashi.files.length > 0) {
+    //    
+    //    let restricted = hashi.files.find(f => f.restricted === true);
+    //    if (restricted) {
+    //      self.file_icon = 'lock';
+    //    } 
+    //    $scope.files = hashi.files.map(f => DatasetModel.linksFromHashi(f, dataset));
+    //  }
+    //}, (error) => {
+    //  
+    //  self.file_icon = 'error';
+    //  $scope.file_error = error;
+    //});
     NpolarTranslate.dictionary['npdc.app.Title'] = DatasetModel.getAppTitle();
 
     NpdcWarningsService.warnings[dataset.id] = DatasetModel.warnings(dataset);
@@ -151,9 +186,7 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     });
   };
   
-  //if (!$scope.document) {
-    self.showAction();
-  //}
+  self.showAction();
   
 };
 

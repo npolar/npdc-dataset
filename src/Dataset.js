@@ -89,11 +89,11 @@ function Dataset($location, $http, $q, DatasetResource, DatasetModel, NpolarApiS
     DatasetResource.attachmentObject = function(hashi) {
 
       let href = hashi.url;
-      if ((/\/[0-9a-f]{32,}$/i).test(hashi.url)) {
-        href = hashi.url.split('/');
-        href.pop();
-        href = encodeURI(`${ href.join('/') }/${ encodeURIComponent(hashi.filename) }`);
-      }
+      //if ((/\/[0-9a-f]{32,}$/i).test(hashi.url)) {
+      //  href = hashi.url.split('/');
+      //  href.pop();
+      //  href = encodeURI(`${ href.join('/') }/${ encodeURIComponent(hashi.filename) }`);
+      //}
       
       let a = {
         href,

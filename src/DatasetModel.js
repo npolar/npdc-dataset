@@ -209,17 +209,18 @@ function DatasetModel($location, $q, $http, $filter,
     let i = [];
 
     if (self.hasReleaseYear(dataset)) {
-      let now = new Date();
+      let now = new Date().getTime();
       let released = Date.parse(dataset.released);
       if (now < released) {
-        i.push('Planned  data  release  is  in  the  future');
+        console.log(now, released);
+        i.push(`Data is in embargo until ${new Date(dataset.released).toISOString().split('T')[0]}`);
       }
 
     }
     if (dataset.draft === 'yes') {
       i.push('Draft');
     }
-    console.log('Notices', i);
+    //console.log('Notices', i);
     return i;
   };
 
@@ -307,7 +308,7 @@ function DatasetModel($location, $q, $http, $filter,
         w.push(`No DOI (because of the ${  w.length  ===  1  ?  'issue'  :  'issues'  }  above)`);
       }
     }
-    console.log('Warnings', w);
+    //console.log('Warnings', w);
     return w;
   };
 

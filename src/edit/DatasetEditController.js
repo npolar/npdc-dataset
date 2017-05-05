@@ -109,10 +109,13 @@ function DatasetEditController($scope, $controller, $routeParams, $http, $timeou
       },
       server,
       multiple: true,
-      //restricted: false,
+      restricted: function(d = formula.getModel(), isembargo=self.isInEmbargo(d.released||d.created)) {
+        console.log('restricted', isembargo);
+        return isembargo;
+      },
       fileToValueMapper: $scope.resource.attachmentObject,
       valueToFileMapper: $scope.resource.hashiObject,
-      fields: ['href']
+      fields: ['filename']
     }, formula);
   };
 

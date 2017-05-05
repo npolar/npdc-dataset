@@ -47,41 +47,40 @@
   <md-card>
 
     <md-card-content>
-      {{ file_lock | json }}
-      <md-menu ng-show="files.length > 0 || document.attachments && document.attachments.length > 0">
+     
+      <md-menu>
 
-        <md-button ng-show="file_lock != true" class="md-fab md-primary md-hue-2" aria-label="Download data files" ng-click="$mdOpenMenu($event)">
+        <md-button class="md-fab md-primary md-hue-2" aria-label="Open download menu" ng-click="$mdMenu.open($event)">
            <md-icon md-menu-origin>{{ctrl.file_icon}}</md-icon>
            <md-tooltip md-direction="top">Download data files</md-tooltip>
         </md-button>
         
-        <md-menu-content width="6">
-          <md-menu-item>
+        <md-menu-content width="6" ng-show="ctrl.isFilesMenu()">
+          <md-menu-item ng-show="ctrl.isAuthorized('update')">
             <md-button>
-              <a ng-show="document" ng-href="{{ctrl.file_all(document)}}">
+              <a ng-href="{{ctrl.file_all(document)}}">
                 <span ng-show="files.length == 1">Download data file as zip archive</span>
                 <span ng-show="files.length > 1">Download {{ files.length }} data files as a zip archive</span>
               </a>
             </md-button>
           </md-menu-item>
 
-        <md-menu-divider></md-menu-divider>
+          <div ng-show="ctrl.isAuthorized('update')">
+            <md-menu-divider></md-menu-divider>
 
-        <md-menu-item ng-show="ctrl.isWriter()">
-          
-          <md-button ng-click="ctrl.unprotectFiles()">
-            Unprotect uploaded files
-          </md-button>
-          
-        </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="ctrl.unprotectFiles()">
+                Open access to uploaded files
+              </md-button>
+            </md-menu-item>
         
-        <md-menu-item ng-if="ctrl.isWriter()">
+            <md-menu-item>
+              <md-button ng-click="ctrl.protectFiles()">
+                Protect uploaded files until dataset is released
+              </md-button>  
+            </md-menu-item>
           
-          <md-button ng-click="ctrl.protectFiles()">
-            Protect uploaded files
-          </md-button>
-          
-        </md-menu-item>
+          </div>
 
       </md-menu-content>
     </md-menu>
@@ -99,10 +98,9 @@
         --><!--<td><code>{{ f.modified }}</code></td>-->
        </tr>
       </table>
-      <p ng-if="files.length > 1">Notice: You may download data files individually,
+      <p ng-if="ctrl.isFilesMenu()">Notice: You may download data files individually,
       or <a title="{{ctrl.file_all_filename(document)}}" ng-href="{{ctrl.file_all(document)}}">all {{ files.length }} files as a zip archive</a>.</p>
-    
-
+      
     </div>
     <p ng-if="file_error" class="error">Failed reaching: {{ file_error.config.url }}</p>
 
