@@ -78,7 +78,7 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   
   this.isData = (d=$scope.document) => {
     if (!d) { return ; }
-    if (d.attachments && d.attachments.length & d.attachments.length > 0) {
+    if (d.attachments && d.attachments.length && d.attachments.length > 0) {
       return true;
     }
     return false;
