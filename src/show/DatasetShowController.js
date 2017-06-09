@@ -90,7 +90,7 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     }
     const anyfiles = (files && files.length && files.length > 0);
     if (anyfiles && files.length === 1) {
-      if (files[0].href=this.file_base()) {
+      if (files[0].href === this.file_base()) {
         return false;
       }
     }
