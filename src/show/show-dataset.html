@@ -47,14 +47,14 @@
   <md-card>
 
     <md-card-content>
-     
+
       <md-menu>
 
         <md-button class="md-fab md-primary md-hue-2" aria-label="Open download menu" ng-click="$mdMenu.open($event)">
            <md-icon md-menu-origin>{{ctrl.file_icon}}</md-icon>
            <md-tooltip md-direction="top">Download data files</md-tooltip>
         </md-button>
-        
+
         <md-menu-content width="6" ng-show="ctrl.isFilesMenu()">
           <md-menu-item ng-show="ctrl.isAuthorized('update')">
             <md-button>
@@ -73,13 +73,13 @@
                 Open access to uploaded files
               </md-button>
             </md-menu-item>
-        
+
             <md-menu-item>
               <md-button ng-click="ctrl.protectFiles()">
                 Protect uploaded files until dataset is released
-              </md-button>  
+              </md-button>
             </md-menu-item>
-          
+
           </div>
 
       </md-menu-content>
@@ -98,9 +98,10 @@
         --><!--<td><code>{{ f.modified }}</code></td>-->
        </tr>
       </table>
-      <p ng-if="ctrl.isFilesMenu()">Notice: You may download data files individually,
-      or <a title="{{ctrl.file_all_filename(document)}}" ng-href="{{ctrl.file_all(document)}}">all {{ files.length }} files as a zip archive</a>.</p>
-      
+      <p ng-if="ctrl.isFilesMenu()">You may download the data files above individually,
+      or <a title="{{ctrl.file_all_filename(document)}}" ng-href="{{ctrl.file_all(document)}}"> packed as a zip archive</a>.</p>
+      <p ng-if="!ctrl.isFilesMenu() && hashi_files_count > 1">The dataset contains {{hashi_files_count}} files.</p>
+
     </div>
     <p ng-if="file_error" class="error">Failed reaching: {{ file_error.config.url }}</p>
 
