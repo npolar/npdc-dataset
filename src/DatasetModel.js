@@ -198,7 +198,7 @@ function DatasetModel($location, $q, $http, $filter,
   };
 
   this.hasData = (dataset) => {
-    return (self.relations(dataset, ['data', 'service']).length > 0);
+    return (self.relations(dataset, ['data', 'service']).length > 0 || (dataset.attachments && dataset.attachments.length > 0));
   };
 
   this.hasAuthors = (dataset) => NpdcCitationModel.authors(dataset).length > 0;
@@ -277,7 +277,7 @@ function DatasetModel($location, $q, $http, $filter,
       w.push('No timespans');
     }
     if (hasData && dataset.progress === 'planned') {
-      w.push('Data  is  published  while  progress  =  "planned"');
+      w.push('Data  is published  while  progress  =  "planned"');
     }
     if (dataset.draft === 'yes') {
       w.push('Draft');
