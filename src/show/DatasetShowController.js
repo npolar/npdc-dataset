@@ -38,11 +38,28 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
   };
 
   this.file_href_with_key = (href, sep='?') => {
+    if (!href) { return ; }
+    if (href && href === self.file_base() && href.filename) {
+      href += `/${href.filename}`;
+      console.log('href', href, was);
+    }
     let system = NpolarApiSecurity.getSystem('read', $scope.resource.path);
     if (system && system['key']) {
       href += sep+'key='+system['key'];
     }
+
     return href;
+  };
+
+  // If file.href is the same as file base => append filename
+  this.file_href = (file) => {
+    if (!file || !file.href) { return ; }
+    if (file.href && file.href === self.file_base()) {
+      if (file.filename && file.filename.length > 0 && file.filename !== "files.json") {
+        file.href += `/${file.filename}`;
+      }
+    }
+    return self.file_href_with_key(file.href);
   };
 
   this.isInEmbargo = (released=$scope.document.released) => {
@@ -101,7 +118,6 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     }
   };
 
-
   this.isPointOfContact = (person) => {
     if (!person || !person.roles.length) { return; }
     return person.roles.includes('pointOfContact');
@@ -116,6 +132,8 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     }
 
     $scope.files = dataset.attachments;
+
+    // Sync attachments display with file backend (but not if the first "attachments" is just the File API base path)
     $http.get(self.file_base(dataset.id)).then(r => {
      let hashi = r.data;
      if (hashi.files && hashi.files.length > 0) {
@@ -124,7 +142,11 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
        if (restricted) {
          self.file_icon = 'lock';
        }
-       //$scope.files = hashi.files.map(f => DatasetModel.linksFromHashi(f, dataset));
+       if ($scope.files.length && hashi.files.length !== $scope.files.length) {
+         if ($scope.files && $scope.files[0].href && $scope.files[0].href !== this.file_base()) {
+           $scope.files = hashi.files.map(f => DatasetModel.linksFromHashi(f, dataset));
+        }
+       }
      }
     }, (error) => {
 

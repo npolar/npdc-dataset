@@ -55,7 +55,7 @@
            <md-tooltip md-direction="top">Download data files</md-tooltip>
         </md-button>
 
-        <md-menu-content width="6" ng-show="ctrl.isFilesMenu()">
+        <md-menu-content width="6" ng-show="true || ctrl.isFilesMenu()">
           <md-menu-item ng-show="ctrl.isAuthorized('update')">
             <md-button>
               <a ng-href="{{ctrl.file_all(document)}}">
@@ -92,7 +92,11 @@
     <div ng-show="files.length > 0">
       <table ng-show="files && files.length > 0"><tr ng-repeat="f in files" class="np-citation">
        <b>Files</b>
-        <td><span><a target="_blank" rel="nofollow" title="{{ f.type }}" ng-href="{{ ctrl.file_href_with_key(f.href) }}">{{ f.title || f.filename || f.href }}</a></span></td>
+
+        <td><span>
+          <a ng-show="f.filename == 'files.json' || ctrl.isFilesMenu()" target="_blank" rel="nofollow" title="{{ f.type }}" ng-href="{{ ctrl.file_href(f) }}">{{ f.title || f.filename || f.href }}</a>
+          <code ng-show="f.filename != 'files.json' && !ctrl.isFilesMenu()">{{ f.title || f.filename || f.href }}</code>
+        </span></td>
         <td><span ng-show="f.length">({{ f.length | bytes }})</span></td>
         <!--<td><code>{{ f.integrity }}</code><md-tooltip>Checksum: use to verify integrity ({{f.integrity.split('-')[0]}})</md-tooltip></td>
         --><!--<td><code>{{ f.modified }}</code></td>-->

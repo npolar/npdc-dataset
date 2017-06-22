@@ -212,7 +212,6 @@ function DatasetModel($location, $q, $http, $filter,
       let now = new Date().getTime();
       let released = Date.parse(dataset.released);
       if (now < released) {
-        console.log(now, released);
         i.push(`Data is in embargo until ${new Date(dataset.released).toISOString().split('T')[0]}`);
       }
 
@@ -220,7 +219,6 @@ function DatasetModel($location, $q, $http, $filter,
     if (dataset.draft === 'yes') {
       i.push('Draft');
     }
-    //console.log('Notices', i);
     return i;
   };
 
