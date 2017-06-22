@@ -41,7 +41,6 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
     if (!href) { return ; }
     if (href && href === self.file_base() && href.filename) {
       href += `/${href.filename}`;
-      console.log('href', href, was);
     }
     let system = NpolarApiSecurity.getSystem('read', $scope.resource.path);
     if (system && system['key']) {
