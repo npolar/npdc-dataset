@@ -177,9 +177,7 @@ var DatasetShowController = function($controller, $routeParams, $scope, $http, $
       return !re.test(l.href);
     });
 
-    $scope.service_links = DatasetModel.relations(dataset, ['service']).filter(l => {
-      return (null === $scope.data_links.find(dl => dl.href === l.href));
-    });
+    $scope.service_links = DatasetModel.relations(dataset, ['service']);
 
     $scope.images = dataset.links.filter(l => { // @todo images in files ?
       return (/^image\/.*/).test(l.type);

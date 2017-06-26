@@ -102,7 +102,7 @@
         --><!--<td><code>{{ f.modified }}</code></td>-->
        </tr>
       </table>
-      <p ng-if="ctrl.isFilesMenu()">You may download the data files above individually,
+      <p ng-if="ctrl.isFilesMenu() && files.length > 1">You may download the data files above individually,
       or <a title="{{ctrl.file_all_filename(document)}}" ng-href="{{ctrl.file_all(document)}}"> packed as a zip archive</a>.</p>
       <p ng-if="!ctrl.isFilesMenu() && hashi_files_count > 1">The dataset contains {{hashi_files_count}} files.</p>
 
