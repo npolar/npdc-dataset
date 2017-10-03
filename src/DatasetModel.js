@@ -7,7 +7,7 @@ function DatasetModel($location, $q, $http, $filter,
 
   let self = this;
 
-  this.schema = '//api.npolar.no/schema/dataset-1';
+  this.schema = 'https://api.npolar.no/schema/dataset-1';
 
   this.file_server = (base, id=':id') => `${base}/${id}/_file`;
 
