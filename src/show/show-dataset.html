@@ -93,7 +93,7 @@
       <table ng-show="files && files.length > 0"><tr ng-repeat="f in files" class="np-citation">
        <b>Files</b>
 
-        <td><span ng-show="f.type.split('/')[0] != 'image'">
+        <td><span>
           <a ng-show="f.filename == 'files.json' || ctrl.isFilesMenu()" target="_blank" rel="nofollow" title="{{ f.type }}" ng-href="{{ ctrl.file_href(f) }}">{{ f.title || f.filename || f.href }}</a>
           <code ng-show="f.filename != 'files.json' && !ctrl.isFilesMenu()">{{ f.title || f.filename || f.href }}</code>
         </span></td>
